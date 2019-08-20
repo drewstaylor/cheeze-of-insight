@@ -1,0 +1,144 @@
+.row {
+    min-width: 100%;
+}
+
+input[type=number] {
+    min-width: 300px;
+    padding: 1rem;
+}
+
+input[type=text] {
+    min-width: 300px;
+    padding: 0.5rem;
+}
+
+p.current-wizard-label,
+p.opponent-wizard-label {
+    margin-top: 1rem;
+}
+
+a {
+    cursor: pointer;
+}
+
+a:hover,
+a:active {
+    text-decoration: underline !important;
+}
+
+ul.list-group {
+    padding: 1.5rem;
+}
+
+ul.list-group li:hover {
+    opacity: 0.9;
+}
+
+ul.wizards-list {
+    list-style: none;
+}
+
+div.predict-btn,
+div.prediction-data {
+    margin-top: 1.5rem;
+}
+
+div.cheese-wizard-image-small {
+    max-width: 25vw;
+    height: auto;
+    margin: auto;
+}
+
+div.jumbotron {
+    margin-bottom: 1.75rem !important;
+}
+
+div.search-toggle,
+div.search-controls {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+div.traits.traits-container {
+    margin: auto;
+}
+
+div.block-item.block-item-inner {
+    background-color: aliceblue;
+    padding: 1.5rem;
+    width: 218px;
+    height: 218px;
+}
+
+/*div.block-item.block-item-inner:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}*/
+
+div.single-wizard {
+    margin: auto;
+    width: 100%;
+}
+
+div.cheese-wizard-image.selected-opponent-img,
+div.cheese-wizard-image.my-wizard-img {
+    margin: auto;
+    width: 480px;
+    height: 500px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+div.selected-wizard-left,
+div.selected-wizard-right {
+    width: 50%;
+}
+
+div.selected-wizard-left {
+    padding: 1.5rem;
+    float: left;
+}
+
+div.selected-wizard-right {
+    float: right;
+    position: relative;
+    top: -125px;
+}
+
+.icon.external-link {
+    height: 20px;
+    margin-left: 0.75rem;
+}
+
+div.traits.traits-container {
+    clear: both;
+    position: relative;
+}
+
+div.traits.traits-container.select-wizard {
+    z-index: -1;
+    top: -50px;
+}
+
+div.traits.traits-container.wizards-compare {
+    margin-top: 1.75rem;
+}
+
+div.block-item p {
+    margin: auto;
+    line-height: 30px;
+}
+
+p.rarity-percentage,
+p.extra-rare {
+    font-style: italic;
+}
+
+p.label > strong {
+    text-transform: uppercase;
+}
+
+p.trait-name {
+    font-weight: 500;
+    color: #333333;
+}
