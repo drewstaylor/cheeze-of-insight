@@ -27,7 +27,7 @@ psychology. Enter _Cheese of Insight_. The _Cheeze of Insight_ DApp is a web app
 
     1. Decentralized prediction markets can be used to generate sets of tokens that represent a financial stake in the outcomes of any event.  
 
-    2. By combining the _0x Protocol_ with an _Augur_ prediction market and open source code from _Veil_, once phase Phase III of the tournament has is reached our platform automatically begins launching prediction markets that speculate on each daily Duel window. 
+    2. By combining the _0x Protocol_ with an _Augur_ prediction market and open source code from _Veil_, once phase Phase III of the tournament is reached our platform automatically begins launching prediction markets that speculate on each daily Duel window. 
 
     3. Each day, before each Dueling window, 2 categories of prediction markets will be launched, and this will acount for a total of 10
             prediction markets launched daily throughout Phase III of the tournament: 
