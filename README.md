@@ -1,5 +1,7 @@
 # Cheeze of Insight
 
+![Cheeze of Insight](https://pbs.twimg.com/profile_images/724361623335362565/hnYhOeHl_400x400.jpg)
+
 ## ABSTRACT
 
 As a team built from players of Satoshi’s Treasure, we’re uniquely aware of the role statistics can have on gameplay and player
