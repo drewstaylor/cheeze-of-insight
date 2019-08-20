@@ -14,9 +14,8 @@ $ browserify index.js > build/app.js
 // Run development server
 $ npm run develop
 
-// When running the development server
-// Changes to files are watched, but
-// still need to be built using on the server
-// each time src code changes are made. e.g.:
+// When running the development server, changes to the files are watched, but the app still needs to be 
+// built for the server each time src code changes are updated. 
+// E.g.:
 $ browserify index.js > build/app.js
 ```
