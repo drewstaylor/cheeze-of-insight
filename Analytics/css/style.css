@@ -70,13 +70,17 @@ div.block-item.block-item-inner {
     height: 218px;
 }
 
-/*div.block-item.block-item-inner:hover {
+div.block-item.block-item-inner:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
-}*/
+}
 
 div.single-wizard {
     margin: auto;
     width: 100%;
+}
+
+div.view-single-wizard {
+    display: inline;
 }
 
 div.cheese-wizard-image.selected-opponent-img,
@@ -116,7 +120,7 @@ div.traits.traits-container {
 }
 
 div.traits.traits-container.select-wizard {
-    z-index: -1;
+    /*z-index: -1;*/
     top: -50px;
 }
 
