@@ -331,6 +331,32 @@ const getWizardMetadata = function (wizard) {
 }
 
 /**
+ * Takes an Ethereum address and the API list of Wizards and returns only the Wizards owned by that address
+ * @param {String} address : The Ethereum address owner to get Wizards for
+ * @param {Object} allWizards : The full list of Wizards from the API
+ * @return {Mixed} `Object | Boolean` : Returns an array of Wizards owned by the `address` parameter, or `false` if invalid params
+ * @see api.js
+ */
+const getWizardsByOwnerAddress = function (address = null, allWizards = null) {
+    let wizards = [];
+    if (!address || !allWizards) {
+        return false;
+    } else if (!allWizards instanceof Array) {
+        return false;
+    }
+    let addressA = address.toLowerCase();
+    // Filter Wizards
+    allWizards.filter((wizard) => {
+        let addressB = wizard.owner.toLowerCase();
+        if (addressA == addressB) {
+            return wizards.push(wizard);
+        }
+    });
+    // Return result
+    return wizards;
+};
+
+/**
  * ROUTINES - Uncomment to debug
  */
 
@@ -364,6 +390,11 @@ const getWizardMetadata = function (wizard) {
 //let wizardB = Wizards[344];
 //let matchPrediction = predictWinner(wizardA, wizardB);
 //console.log('Match prediction =>', matchPrediction);
+
+// Find all Wizards belonging to owner address
+//let address = "0xe96867a9C4987070889DfA9231f41f75F18d19B1";
+//let userWizards = getWizardsByOwnerAddress(address, strongestWizards);
+//console.log('User Wizards =>', userWizards);
 
 module.exports = {
     affinities: affinities,

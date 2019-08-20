@@ -128,7 +128,7 @@ let vm = new Vue({
                 console.log('Accounts =>', this.wallets);
                 // ERC721 Instance
                 this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
-                console.log(this.contracts.mainnet.wizards);
+                console.log('ERC721 Contract', this.contracts.mainnet.wizards);
                 this.fetchUserWizards();
             }
         }
@@ -222,7 +222,7 @@ let vm = new Vue({
 
             // Disable loading
             this.isLoading = false;
-            //console.log('Wizards =>', this.wizards);
+            console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
             let userTotalWizards = null;
