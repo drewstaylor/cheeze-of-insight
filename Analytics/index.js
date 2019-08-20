@@ -225,7 +225,7 @@ let vm = new Vue({
             //console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
-            let userWizards = null;
+            let userTotalWizards = null;
             if (provider !== MAINNET) {
                 // XXX TODO: Get Rinkeby Wizards
             } else {
