@@ -1,6 +1,9 @@
 # Cheeze of Insight
 
-![Cheeze of Insight](https://pbs.twimg.com/profile_images/724361623335362565/hnYhOeHl_400x400.jpg)
+<p align="center">
+  <img src="https://pbs.twimg.com/profile_images/724361623335362565/hnYhOeHl_400x400.jpg" alt="Cheeze of Insight"/>
+</p>
+
 
 ## ABSTRACT
 
