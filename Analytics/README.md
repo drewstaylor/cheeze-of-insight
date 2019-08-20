@@ -1,12 +1,22 @@
 # Analytics Component - POC
 
-To run the POC simply open `index.html`
+To test the built POC simply open `index.html`
 
-For development:
+Or For development:
 ```
 // Install
 $ npm install
 $ npm install -g browserify
 
-// Build
+// Build App
 $ browserify index.js > build/app.js
+
+// Run development server
+$ npm run develop
+
+// When running the development server
+// Changes to files are watched, but
+// still need to be build using:
+// `$ browserify index.js > build/app.js`
+// each time src code changes are made
+```

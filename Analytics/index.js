@@ -25,6 +25,10 @@ const VULNERABILITY_SEARCH = 2;
 // Total Wizarsd
 const TOTAL_WIZARDS = 4882;
 
+// Contract constants
+const MAINNET = 0;
+const RINKEBY = 1;
+
 let vm = new Vue({
     el: '#cheese-of-insight',
     data: () => ({
@@ -44,6 +48,8 @@ let vm = new Vue({
         PRIMARY_SEARCH: PRIMARY_SEARCH,
         VULNERABILITY_SEARCH: VULNERABILITY_SEARCH,
         TOTAL_WIZARDS: TOTAL_WIZARDS,
+        MAINNET: MAINNET,
+        RINKEBY: RINKEBY,
         // Dependencies
         Provider: require('./providers'),
         api: require('./api'),
@@ -56,6 +62,18 @@ let vm = new Vue({
         wallets: {
             rinkeby: null,
             mainnet: null
+        },
+        contracts: {
+            rinkeby: {},
+            mainnet: {}
+        },
+        tokens: {
+            rinkeby: {
+                wizards: []
+            },
+            mainnet: {
+                wizards: []
+            }
         },
         // App
         navigation: {
@@ -81,6 +99,7 @@ let vm = new Vue({
             'Wind',
             'Water'
         ],
+        userOwnsWizards: false,
         currentWizard: {},
         currentOpposingWizard: {},
         matchPrediction: null,
@@ -96,17 +115,23 @@ let vm = new Vue({
         //console.log('api', this.api);
 
         // Web3 Instance
-        this.web3Providers.mainnet = this.Provider.getWssWeb3Mainnet();
+        this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
 
         // Wallet Instance
         let accounts;
         if (window.hasOwnProperty('ethereum')) {
             accounts = await window.ethereum.enable();
-            console.log('Accounts =>', accounts);
+            if (accounts[0]) {
+                // Wallets
+                this.wallets.rinkeby = false;
+                this.wallets.mainnet = accounts[0];
+                console.log('Accounts =>', this.wallets);
+                // ERC721 Instance
+                this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
+                console.log(this.contracts.mainnet.wizards);
+                this.fetchUserWizards();
+            }
         }
-
-        //this.web3Providers.mainnet.eth.defaultAccount = '';
-        //newestWeb3.eth.defaultAccount = accounts[0];
     },
     methods: {
         setNavigation: function (state = null) {
@@ -198,6 +223,19 @@ let vm = new Vue({
             // Disable loading
             this.isLoading = false;
             //console.log('Wizards =>', this.wizards);
+        },
+        fetchUserWizards: async function (provider = MAINNET) {
+            let userWizards = null;
+            if (provider !== MAINNET) {
+                // XXX TODO: Get Rinkeby Wizards
+            } else {
+                // Get Mainnet Wizards
+                userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(this.wallets.mainnet).call();
+                // If user has Wizards -> get wizards
+                if (userTotalWizards > 0) {
+                    this.userOwnsWizards = userTotalWizards;
+                }
+            }
         },
         showWizard: async function (wizardId = null) {
             if (wizardId == null) {
