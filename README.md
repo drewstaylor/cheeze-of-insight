@@ -1,14 +1,13 @@
 # Cheeze of Insight
 
-<p align="center">
-  <img src="https://pbs.twimg.com/profile_images/724361623335362565/hnYhOeHl_400x400.jpg" alt="Cheeze of Insight"/>
-</p>
-
-
 ## ABSTRACT
 
 As a team built from players of Satoshi’s Treasure, we’re uniquely aware of the role statistics can have on gameplay and player
 psychology. Enter _Cheese of Insight_. The _Cheeze of Insight_ DApp is a web application and browser extension designed to enrich player psychology by providing methods for realistic and test battle predictions, and a module for doing deep analytics of battle history. More specifically, _Cheese of Insight_ approaches player psychology using a three-pronged method that includes: an **Analytics** component, a **Battle** component, and a **Prediction Market** component.
+
+<p align="center">
+  <img src="https://pbs.twimg.com/profile_images/724361623335362565/hnYhOeHl_400x400.jpg" alt="Cheeze of Insight"/>
+</p>
 
 - **Analytics Component:** 
 
