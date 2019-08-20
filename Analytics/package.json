@@ -24,13 +24,15 @@
   "bugs": {
     "url": "https://github.com/drewstaylor/cheeze-wizards-resources/issues"
   },
-  "homepage": "https://github.com/drewstaylor/cheeze-wizards-resources#readme",
+  "homepage": "https://github.com/drewstaylor/cheeze-of-insight",
   "dependencies": {
     "browserify": "^16.5.0",
     "dotenv": "^8.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "svgson": "^4.0.0",
+    "vue": "^2.6.10",
     "web3": "^1.2.1"
-  }
+  },
+  "devDependencies": {}
 }

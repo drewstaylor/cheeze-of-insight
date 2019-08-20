@@ -45,8 +45,18 @@ let vm = new Vue({
         VULNERABILITY_SEARCH: VULNERABILITY_SEARCH,
         TOTAL_WIZARDS: TOTAL_WIZARDS,
         // Dependencies
+        Provider: require('./providers'),
         api: require('./api'),
         wizardUtils: require('./wizards'),
+        // Web3
+        web3Providers: {
+            rinkeby: null,
+            mainnet: null
+        },
+        wallets: {
+            rinkeby: null,
+            mainnet: null
+        },
         // App
         navigation: {
             state: HOME_STATE
@@ -84,6 +94,19 @@ let vm = new Vue({
     }),
     mounted: async function () {
         //console.log('api', this.api);
+
+        // Web3 Instance
+        this.web3Providers.mainnet = this.Provider.getWssWeb3Mainnet();
+
+        // Wallet Instance
+        let accounts;
+        if (window.hasOwnProperty('ethereum')) {
+            accounts = await window.ethereum.enable();
+            console.log('Accounts =>', accounts);
+        }
+
+        //this.web3Providers.mainnet.eth.defaultAccount = '';
+        //newestWeb3.eth.defaultAccount = accounts[0];
     },
     methods: {
         setNavigation: function (state = null) {
