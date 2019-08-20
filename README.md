@@ -38,4 +38,4 @@ psychology. Enter _Cheese of Insight_. The _Cheeze of Insight_ DApp is a web app
 
     4. Using _0x_, the order book for our **Prediction Markets** are kept offline to limit gas transactions, and both LONG and SHORT tokens get merged into a single order book. 
 
-    5. As the Blue Mold begins to show its effects, this **Prediction Market** will become a place where players who no longer have Wizards in the tournament (_"rind-in-the-game"_) can continue to follow along and participate in battles.
+    5. As the Blue Mold begins to show its effects, this **Prediction Market** will become a place where players that no longer have Wizards in the tournament (_"rind-in-the-game"_) can continue to follow along and participate in battles.
