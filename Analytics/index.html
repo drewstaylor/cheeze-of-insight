@@ -391,17 +391,35 @@
             <h5>Match Predictor</h5>
 
             <!-- Enter Wizards to Compare -->
-            <div class="choose-wizard">
+            <div class="choose-wizard" v-if="!userOwnsWizards || manualCurrentWizardSelection">
                 <p class="current-wizard-label">
                     <label for="current_wizard">My Wizard:</label>
                 </p>
-                <input type="number" name="current_wizard" min="0" max="99999" v-model="currentWizard.selectedId" placeholder="Enter your Wizard ID here">
+                <input type="number" name="current_wizard" min="0" max="99999" v-model="currentWizard.selectedId" placeholder="Enter your Wizard ID">
+                <p v-if="userOwnsWizards">
+                    <a v-on:click="manualCurrentWizardSelection = false">Choose from owned Wizards</a>
+                </p>
             </div>
+
+            <!-- Auto-Select Owned Wizards From Dapper / Metamask Account -->
+            <div class="choose-wizard" v-if="userOwnsWizards && !manualCurrentWizardSelection">
+                <p class="current-wizard-label">
+                    <label for="current_wizard" v-if="userOwnsWizards < 2">My Wizard:</label>
+                    <label for="current_wizard" v-else>My Wizards:</label>
+                </p>
+                <select v-model="currentWizard.selectedId">
+                    <option v-for="wizard in tokens.mainnet.wizards" v-bind:value="wizard.id">Cheeze Wizard #{{ wizard.id }}</option>
+                </select>
+                <p>
+                    <a v-on:click="manualCurrentWizardSelection = true">Choose Wizard manually</a>
+                </p>
+            </div>
+
             <div class="choose-opponent">
                 <p class="opponent-wizard-label">
                     <label for="current_wizard">My Opponent's Wizard:</label>
                 </p>
-                <input type="number" name="opposing_wizard" min="0" max="99999" v-model="currentOpposingWizard.selectedId" placeholder="Enter opponent's Wizard ID here">
+                <input type="number" name="opposing_wizard" min="0" max="99999" v-model="currentOpposingWizard.selectedId" placeholder="Enter opponent's Wizard ID">
             </div>
             <div class="predict predict-btn">
                 <button class="btn btn-primary" v-on:click="predictMatchOutcome(currentWizard.selectedId, currentOpposingWizard.selectedId);" :disabled="!currentWizard || !currentOpposingWizard">Compare Wizards</button>

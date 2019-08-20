@@ -99,7 +99,7 @@ let vm = new Vue({
             'Wind',
             'Water'
         ],
-        userOwnsWizards: false,
+        userOwnsWizards: 0,
         currentWizard: {},
         currentOpposingWizard: {},
         matchPrediction: null,
@@ -109,7 +109,8 @@ let vm = new Vue({
         wizardsVulnerabilityFilter: '',
         showSearch: false,
         showMyWizardTraits: false,
-        showOpponentTraits: false
+        showOpponentTraits: false,
+        manualCurrentWizardSelection: false
     }),
     mounted: async function () {
         //console.log('api', this.api);
@@ -220,9 +221,18 @@ let vm = new Vue({
                 ++this.totalWizardsPages;
             }*/
 
+            // Set user Wizards as required
+            if (this.userOwnsWizards) {
+                this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                if (this.tokens.mainnet.wizards) {
+                    this.currentWizard = this.tokens.mainnet.wizards[0];
+                }
+                //console.log('User Tokens =>', this.tokens);
+            }
+
             // Disable loading
             this.isLoading = false;
-            console.log('Wizards =>', this.wizards);
+            //console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
             let userTotalWizards = null;

@@ -407,5 +407,6 @@ module.exports = {
     compareWizardPowerLevels: compareWizardPowerLevels,
     compareWizardAffinities: compareWizardAffinities,
     getWizardMetadata: getWizardMetadata,
+    getWizardsByOwnerAddress: getWizardsByOwnerAddress,
     predictWinner: predictWinner
 }

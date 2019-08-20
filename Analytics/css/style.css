@@ -2,7 +2,8 @@
     min-width: 100%;
 }
 
-input[type=number] {
+input[type=number],
+select {
     min-width: 300px;
     padding: 1rem;
 }

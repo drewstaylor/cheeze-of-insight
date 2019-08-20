@@ -34351,7 +34351,7 @@ let vm = new Vue({
             'Wind',
             'Water'
         ],
-        userOwnsWizards: false,
+        userOwnsWizards: 0,
         currentWizard: {},
         currentOpposingWizard: {},
         matchPrediction: null,
@@ -34361,7 +34361,8 @@ let vm = new Vue({
         wizardsVulnerabilityFilter: '',
         showSearch: false,
         showMyWizardTraits: false,
-        showOpponentTraits: false
+        showOpponentTraits: false,
+        manualCurrentWizardSelection: false
     }),
     mounted: async function () {
         //console.log('api', this.api);
@@ -34472,9 +34473,18 @@ let vm = new Vue({
                 ++this.totalWizardsPages;
             }*/
 
+            // Set user Wizards as required
+            if (this.userOwnsWizards) {
+                this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                if (this.tokens.mainnet.wizards) {
+                    this.currentWizard = this.tokens.mainnet.wizards[0];
+                }
+                //console.log('User Tokens =>', this.tokens);
+            }
+
             // Disable loading
             this.isLoading = false;
-            console.log('Wizards =>', this.wizards);
+            //console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
             let userTotalWizards = null;
@@ -120209,6 +120219,32 @@ const getWizardMetadata = function (wizard) {
 }
 
 /**
+ * Takes an Ethereum address and the API list of Wizards and returns only the Wizards owned by that address
+ * @param {String} address : The Ethereum address owner to get Wizards for
+ * @param {Object} allWizards : The full list of Wizards from the API
+ * @return {Mixed} `Object | Boolean` : Returns an array of Wizards owned by the `address` parameter, or `false` if invalid params
+ * @see api.js
+ */
+const getWizardsByOwnerAddress = function (address = null, allWizards = null) {
+    let wizards = [];
+    if (!address || !allWizards) {
+        return false;
+    } else if (!allWizards instanceof Array) {
+        return false;
+    }
+    let addressA = address.toLowerCase();
+    // Filter Wizards
+    allWizards.filter((wizard) => {
+        let addressB = wizard.owner.toLowerCase();
+        if (addressA == addressB) {
+            return wizards.push(wizard);
+        }
+    });
+    // Return result
+    return wizards;
+};
+
+/**
  * ROUTINES - Uncomment to debug
  */
 
@@ -120243,6 +120279,11 @@ const getWizardMetadata = function (wizard) {
 //let matchPrediction = predictWinner(wizardA, wizardB);
 //console.log('Match prediction =>', matchPrediction);
 
+// Find all Wizards belonging to owner address
+//let address = "0xe96867a9C4987070889DfA9231f41f75F18d19B1";
+//let userWizards = getWizardsByOwnerAddress(address, strongestWizards);
+//console.log('User Wizards =>', userWizards);
+
 module.exports = {
     affinities: affinities,
     getVulnerability: getVulnerability,
@@ -120254,6 +120295,7 @@ module.exports = {
     compareWizardPowerLevels: compareWizardPowerLevels,
     compareWizardAffinities: compareWizardAffinities,
     getWizardMetadata: getWizardMetadata,
+    getWizardsByOwnerAddress: getWizardsByOwnerAddress,
     predictWinner: predictWinner
 }
 },{}]},{},[194]);
