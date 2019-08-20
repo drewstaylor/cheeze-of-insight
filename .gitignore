@@ -4,4 +4,4 @@
 node_modules/
 dist/
 .~lock.*
-poc/svg/
+Analytics/svg/
