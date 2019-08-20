@@ -33081,7 +33081,7 @@ const apiBaseUrl = 'cheezewizards.alchemyapi.io';
 const mainnetTournamentContract = '0xec2203e38116f09e21bc27443e063b623b01345a';
 const mainnetWizardsContract = '0x023C74B67dfCf4c20875A079e59873D8bBE42449';
 const imageStorageUrl = 'https://storage.googleapis.com/cheeze-wizards-production/' + mainnetTournamentContract + '/';
-const proxyImageStorageUrl = 'https://cheeseofinsight.infiniteinternet.ca/svg/';
+const proxyImageStorageUrl = 'https://cheezeofinsight.infiniteinternet.ca/svg/';
 const openSeaTraits = 'api.opensea.io/collection/cheezewizard/';
 const traitsData = require('./json/wizardTraits.json');
 
