@@ -34484,7 +34484,7 @@ let vm = new Vue({
 
             // Disable loading
             this.isLoading = false;
-            console.log('Wizards =>', this.wizards);
+            //console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
             let userTotalWizards = null;
