@@ -602,7 +602,11 @@ const getWizardTraitsById = async (id = null) => {
                                                         // "Appenzeller"
                                                         case 'head05':
                                                             traits.rarities.push({head: "Appenzeller", rarity: traitsCollection[trait]['Appenzeller']});
-                                                            break;                                          
+                                                            break;
+                                                        // "Pawface" / head07
+                                                        case 'head07':
+                                                            traits.rarities.push({head: "Pawface", rarity: traitsCollection[trait]['Pawface']});
+                                                            break;                                    
 
                                                         /**
                                                          * Extra Rare Wizards ^_^
