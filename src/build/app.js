@@ -34084,7 +34084,7 @@ const getWizardTraitsById = async (id = null) => {
                                                             break;
                                                         // "Orb wand"
                                                         case 'wand05':
-                                                            traits.rarities.push({wand: "Orb Wand", rarity: traitsCollection[trait]['Orb Wand']});
+                                                            traits.rarities.push({wand: "Orb Wand", rarity: traitsCollection[trait]['Orb wand']});
                                                             break;
 
                                                         /**
@@ -34100,8 +34100,8 @@ const getWizardTraitsById = async (id = null) => {
                                                             traits.rarities.push({wand: "Epic Scepter", rarity: traitsCollection[trait]['[wand 15]'], extraRare: "Big Cheeze"});
                                                             break;
 
-                                                        default:
-                                                            console.log('Unknown wand =>', foundWand);
+                                                        //default:
+                                                            //console.log('Unknown wand =>', foundWand);
                                                     }
                                                 } else {
                                                     break;
