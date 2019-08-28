@@ -398,8 +398,9 @@ let vm = new Vue({
             // Returns Wizards
             } else {
                 wizards = this.wizards;
+                //return wizards;
                 if (wizards && this.currentWizardsPage) {
-                    let pageStart = this.wizardsPageSize * this.currentWizardsPage;
+                    let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];

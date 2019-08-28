@@ -34484,7 +34484,7 @@ let vm = new Vue({
 
             // Disable loading
             this.isLoading = false;
-            //console.log('Wizards =>', this.wizards);
+            console.log('Wizards =>', this.wizards);
         },
         fetchUserWizards: async function (provider = MAINNET) {
             let userTotalWizards = null;
@@ -34650,8 +34650,9 @@ let vm = new Vue({
             // Returns Wizards
             } else {
                 wizards = this.wizards;
+                //return wizards;
                 if (wizards && this.currentWizardsPage) {
-                    let pageStart = this.wizardsPageSize * this.currentWizardsPage;
+                    let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
@@ -119971,16 +119972,16 @@ const getOptimalOponent = function (affinity) {
  * @param {Number} b 
  */
 const sortByPowerLevel = function (a, b) {
-    let powerLevelA = parseInt(a.power);
-    let powerLevelB = parseInt(b.power);
-    let comparison = 0;
+    let powerLevelA = Number(a.power);
+    let powerLevelB = Number(b.power);
     // Compare
     if (powerLevelA < powerLevelB) {
-        comparison = 1;
+        return 1;
     } else if (powerLevelA > powerLevelB) {
-        comparison = -1;
+        return -1;
+    } else {
+        return 0;
     }
-    return comparison;
 };
 
 /**

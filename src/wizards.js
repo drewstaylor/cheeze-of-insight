@@ -85,14 +85,14 @@ const getOptimalOponent = function (affinity) {
 const sortByPowerLevel = function (a, b) {
     let powerLevelA = Number(a.power);
     let powerLevelB = Number(b.power);
-    let comparison = 0;
     // Compare
     if (powerLevelA < powerLevelB) {
-        comparison = 1;
+        return 1;
     } else if (powerLevelA > powerLevelB) {
-        comparison = -1;
+        return -1;
+    } else {
+        return 0;
     }
-    return comparison;
 };
 
 /**
