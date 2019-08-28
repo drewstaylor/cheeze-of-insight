@@ -177,7 +177,7 @@
                 </div>
 
                 <!-- Right Pane - Wizard Image -->
-                <div class="selected-wizard-right">
+                <div class="selected-wizard-right" v-if="currentOpposingWizard.image">
                     <div class="cheese-wizard-image selected-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'">
                         <!--
                         <img class="img-fluid opponent-wizard-img" :src="currentOpposingWizard.image">
