@@ -58,6 +58,9 @@
                         <p class="descr">Example searches: "Fire", "1614".</p>
                         <div>
                             <input type="text" name="search_wizards_by_id_or_affinity" v-model="wizardsPrimaryFilter" placeholder="Search Wizards">
+                            <p v-if="wizardsPrimaryFilter.length">
+                                <a v-on:click="wizardsPrimaryFilter = ''">Clear search</a>
+                            </p>
                         </div>
                         <!-- Search Options -->
                         <div class="search-toggle">

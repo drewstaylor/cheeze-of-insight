@@ -119971,8 +119971,8 @@ const getOptimalOponent = function (affinity) {
  * @param {Number} b 
  */
 const sortByPowerLevel = function (a, b) {
-    let powerLevelA = Number(a.power);
-    let powerLevelB = Number(b.power);
+    let powerLevelA = parseInt(a.power);
+    let powerLevelB = parseInt(b.power);
     let comparison = 0;
     // Compare
     if (powerLevelA < powerLevelB) {

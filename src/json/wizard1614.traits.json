@@ -1,0 +1,1959 @@
+[  
+   {  
+      "name":"style",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "type":"text/css"
+      },
+      "children":[  
+         {  
+            "name":"",
+            "type":"text",
+            "value":"\n\n * {\n --hat-base: #FF506E;\n --hat-accent: #FFFFFF;\n --medallion-base: #FFFFFF;\n --collar-base: #FF506E;\n --cape-base: #FFFF FF;\n --pants-base: #FF506E;\n --boot-accent: #FF4848;\n --boot-base: #FFFFFF;\n --hands-base: #FFFFFF;\n --hands-accent: #FF506E;\n --wand-accent: #FF4848;\n}\n \n /* L02 Legs/Pants */\n#legs #base {\n fill: var(--pants-base);\n}\n\n/* L03 Boots * /\n#left_boot #base, #right_boot #base-2 {\n fill: var(--boot-base);\n}\n\n#left_boot #accent, #right_boot #accent-2 {\n fill: var(--boot-accent);\n}\n\n/* L04 Hat */\n#hat01 #base,\n#hat02 #base,\n#hat03 #base,\n#hat04 #base,\n#hat05 #base,\n#hat06 #base,\n#hat07 #base,\n#hat07 #base-2,\n#hat08 #base,\n#hat09 #base,\n#hat10 #base,\n#hat11 #base,\n#hat12 #base,\n#hat13 #base,\n#hat14 #base,\n#hat14 #basic,\n#hat15 #base,\n#hat16 #base {\n fill: var(--hat-base);\n}\n\n#hat01 #accent,\n#hat02 #accent,\n#hat03 #accent,\n#hat04 #a ccent,\n#hat05 #accent,\n#hat05 #accent-2,\n#hat05 #accent-3,\n#hat05 #accent-4,\n#hat06 #accent,\n#hat07 #accent,\n#hat07 #accent-2,\n#hat08 #accent,\n#hat09 #accent,\n#hat10 #accent,\n#hat11 #accent,\n#hat12 #accent,\n#hat13 #accent,\n#hat14 #accent,\n#hat15 #accent,\n #hat16 #accent,\n#hat16 #accent-2,\n#hat16 #accent-3 {\n fill: var(--hat-accent);\n}\n\n/*L07 - Cape */\n#medallion {\n fill: var(--medallion-base);\n}\n\n#collar {\n fill: var(--collar-base);\n}\n\n#cape {\n fill: var(--cape-base);\n}\n\n/* L08 Hands */\n\n# down_righthand #base, #bottom_part #base, #top_part #base {\n fill: var(--hands-base);\n}\n\n#down_righthand #accent, #bottom_part #accent {\n fill: var(--hands-accent);\n}\n\n/* L09 Wands */\n\n#wand01 #accent,\n#wand02 #accent,\n#wand03 #accent,\n#wand04 #accent, \n#wand04 #accent-2,\n#wand05 #accent,\n#wand05 #accent-2,\n#wand05 #accent-3,\n#wand06 #accent,\n#wand06 #accent-2\n{\n fill: var(--wand-accent);\n}\n",
+            "attributes":{  
+
+            },
+            "children":[  
+
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#backneck-clippath)",
+         "id":"backneck"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"backneck-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"backneck01",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"BACK_BLACK"
+            },
+            "children":[  
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "at tributes":{  
+                     "id":"back_neck",
+                     "data-name":"back neck",
+                     "d":"M628.3,648.2s53.5-75.7,70.3-85.9c0,0-2.1-8.2-85.9-8.2h-.1c-83.9,0-86,8.2-86,8.2,16.8,10.2,70.4,85.9,70.4,85.9Z",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round",
+                     "stroke-width":"1.7"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#backcape-clippath)",
+         "id":"backcape"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"backcape-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":" 0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"backcape04",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"BACK_BLACK"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"capes"
+                  },
+                  "children":[  
+                     {  
+                        "name":"g",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"_04_fire_back_cape",
+                           "data-name":"04 fire back cape"
+                        },
+                        "children":[  
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attri butes":{  
+                                 "d":"M590.9,1044.4l22.5,59.9c20.6-24.1,37.9-68,70.2-76.7,47.9-12.8,153.1,23.8,153.1,23.8l-4.4-14.6L708.2,840l-113-11.9",
+                                 "stroke":"#000",
+                                 "stroke-linejoin":"round",
+                                 "stroke-width":"1.7"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M5 90.9,1044.4l-22.4,59.9c-20.7-24.1-38-68-70.3-76.7-47.9-12.8-152.9,23.8-152.9,23.8l13.3-20.3L536.9,844l54-15.9",
+                                 "stroke":"#000",
+                                 "stroke-linejoin":"round",
+                                 "stroke-width":"1.7"
+                              },
+                              "children":[  
+
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#l egs-clippath)",
+         "id":"legs"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"legs-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title ",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"legs01",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"polygon",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"base",
+               "points":"627.9 1265.5 689.9 1265.5 715.9 810.8 714.5 720.7 515.1 720.7 514.5 812.2 535.3 1265.5 597.4 1265.5 620.7 884.2 627.9 1265.5",
+               "fill":"gray"
+            },
+            "children":[  
+
+            ]
+         },
+         {  
+            "name":"path",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "d":"M656.9,874s-12.1,9.8-35.9,9.8h.1",
+               "fill":"none",
+               "stroke":"#000",
+               "stroke-linejoin":"round"
+            },
+            "children":[  
+
+            ]
+         },
+         {  
+            "n ame":"polygon",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "points":"627.9 1265.5 689.9 1265.5 715.9 810.8 714.5 720.7 515.1 720.7 514.5 812.2 535.3 1265.5 597.4 1265.5 620.7 884.2 627.9 1265.5",
+               "fill":"none",
+               "stroke":"#000",
+               "stroke-linejoin":"round"
+            },
+            "children":[  
+
+            ]
+         }
+      ]
+   },
+   {  
+      "na me":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#boots-clippath)",
+         "id":"boots"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"boots-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"boots01",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"left_ boot",
+               "data-name":"left boot"
+            },
+            "children":[  
+               {  
+                  "name":"polygon",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"base",
+                     "points":"615.5 1266.8 620.6 1402 723 1402 732.8 1402 698.5 1374.3 698.2 1259.8 615.5 1266.8",
+                     "fill":"gray"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"polygon",
+                  "type":"elemen t",
+                  "value":"",
+                  "attributes":{  
+                     "id":"line",
+                     "points":"615.5 1266.8 620.6 1402 723 1402 732.8 1402 698.5 1374.3 698.2 1259.8 615.5 1266.8",
+                     "fill":"none",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"polygon",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "poin ts":"698.2 1295.7 617.2 1295.7 615.9 1262.2 698.2 1259.8 698.2 1295.7",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"accent",
+                     "d":"M616.4,1250.8l82,.6a14.6,14.6,0,0,1,14.4,14.5v17.8l-19.6.3-9.3-21. 1-11.3,21.5-70.5,1.2-.3-20.1A14.5,14.5,0,0,1,616.4,1250.8Z",
+                     "fill":"#ccc"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"line-2",
+                     "data-name":"line",
+                     "d":"M616.4,1250.8l82,.6a14.6,14.6,0,0,1,14.4,14.5v17.8l-19.6.3-9.3-21.1-11.3,21.5-70.5,1.2 -.3-20.1A14.5,14.5,0,0,1,616.4,1250.8Z",
+                     "fill":"none",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"right_boot",
+               "data-name":"right boot"
+            },
+            "children":[  
+               {  
+                  "name":"polygon",
+                  "type":"element",
+                  "value":"",
+                  " attributes":{  
+                     "id":"base-2",
+                     "data-name":"base",
+                     "points":"524.8 1266.8 529.9 1402 635.7 1402 645.5 1402 607.8 1374.3 607.5 1259.8 524.8 1266.8",
+                     "fill":"gray"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"polygon",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"line-3",
+                     "data-name":"line",
+                     "point s":"524.8 1266.8 529.9 1402 635.7 1402 645.5 1402 607.8 1374.3 607.5 1259.8 524.8 1266.8",
+                     "fill":"none",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"polygon",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "points":"607.5 1295.7 526.5 1295.7 525.2 1262.2 607.5 1259.8 607.5 1295.7",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"accent-2",
+                     "data-name":"accent",
+                     "d":"M525.7,1250.8l81.9.6a14.6,14.6,0,0,1,14.5,14.5v17.8l-19.6.3-9.3-21.1-11.3,21.5-70.6,1.2 -.2-20.1A14.5,14.5,0,0,1,525.7,1250.8Z",
+                     "fill":"#ccc"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "d":"M525.7,1250.8l81.9.6a14.6,14.6,0,0,1,14.5,14.5v17.8l-19.6.3-9.3-21.1-11.3,21.5-70.6,1.2-.2-20.1A14.5,14.5,0,0,1,525.7,1250.8Z",
+                     "fill":"none ",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#hat-clippath)",
+         "id":"hat"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"hat-clippath"
+            },
+            "children":[  
+               {  
+                  " name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"hat06",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "nam e":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"hat06"
+            },
+            "children":[  
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"base",
+                     "d":"M658.4,345.7a260.3,260.3,0,0,1-17.1-24.1,24.2,24.2,0,0,1-6.3,1.6c-12,1.5-22.8-4.6-24.1-13.7-.9-7,4.1-13.7,12-17.1-15.9-25. 3-31.5-51-33.3-56.6a22.1,22.1,0,0,1-.9-5h.2c11,5.1,21.1-1.5,23.2-8.4s1.3-21.1-13.8-23.5c-10.8-1.7-16.5,3.4-18.9,6.5a9.1,9.1,0,0,0-1.9,3.8c-1.7,5.9-7.7,27.6-14.6,52.9l1.5.6c14.7,5.4,22.8,19.1,18.1,30.6s-18,15.7-31.6,12.2c-8.2,29.8-15.6,53.3-15.9,54.6l2-.9c25.9-10.5,89.1-1 6.9,118.7-14Z",
+                     "fill":"#999"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"line",
+                     "d":"M658.4,345.7a260.3,260.3,0,0,1-17.1-24.1,24.2,24.2,0,0,1-6.3,1.6c-12,1.5-22.8-4.6-24.1-13.7-.9-7,4.1-13.7,12-17.1-15.9-25.3-31.5-51-33.3-56.6a22.1,22.1, 0,0,1-.9-5h.2c11,5.1,21.1-1.5,23.2-8.4s1.3-21.1-13.8-23.5c-10.8-1.7-16.5,3.4-18.9,6.5a9.1,9.1,0,0,0-1.9,3.8c-1.7,5.9-7.7,27.6-14.6,52.9l1.5.6c14.7,5.4,22.8,19.1,18.1,30.6s-18,15.7-31.6,12.2c-8.2,29.8-15.6,53.3-15.9,54.6l2-.9c26-10.5,87.3-17,118.7-14Z",
+                     "fill":"none",
+                     "stro ke":"#000",
+                     "stroke-linecap":"round",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"hat06_back",
+                     "data-name":"hat06 back",
+                     "d":"M658.8,346.6c.5,4-26.9,9-61.1,12.9s-62.3,5.2-62.8,1.1,26.8-10.5,61-14.4S658.3,342.5,658. 8,346.6Z",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#face-clippath)",
+         "id":"face"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"face-clippath"
+            },
+            "ch ildren":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"head03",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"_03_Circle",
+               "data-name":"03 Circle"
+            },
+            "children":[  
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "d":"M677,394.4l-24.2,4.9a7.6,7.6,0,0,0-5.9,5L608.8,509.4l41.8-2.9Z",
+                     "fill":"#f4aa4a",
+                     "stroke":"#0 00",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "d":"M610,566c-36.8-5.6-62.5-19.1-77.4-35.1a3.2,3.2,0,0,1-.6-2,12.2,12.2,0,0,0-6.4-10.5,5.6,5.6,0,0,1-2.4-2.1c-5.9-11.1-9-23.3-10.3-36.2a165.2,165.2,0,0,1,.1-30.7h.1a10 .7,10.7,0,0,0,6.3-15.3,7.7,7.7,0,0,0-1.5-2.2c8.7-24.8,26.5-41.9,47.5-49.8a77.6,77.6,0,0,1,9.7-2.9l24.4-5.8,22.8,193.5Z",
+                     "fill":"#f4aa4a",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "d":"M677,394.4c20. 1,17.2,34.4,42.4,37.2,70.4,5.4,54.3-31.6,96.5-76.2,102.4-52.7,7-91.2-35.5-97.9-87.2-6.5-49.7,21.1-96.5,59.4-106.6a2.4,2.4,0,0,1,2.8,1.6l38.2,122.7Z",
+                     "fill":"#ffef57",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               },
+               {  
+                  "name":"path",
+                  "type":"element",
+                  "value":"",
+                  "att ributes":{  
+                     "d":"M655.2,436.1a23.1,23.1,0,0,0,2.1,11.8s7.6-7.3,8.9-12.4-.6-11.5-.6-11.5S655.7,429.4,655.2,436.1Z",
+                     "fill":"#e0913b",
+                     "stroke":"#000",
+                     "stroke-linejoin":"round"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#expressi on-clippath)",
+         "id":"expression"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"expression-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"head03exp08",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"_03_circle",
+               "data-name":"03 circle"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  " type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"_03_circle_exp08",
+                     "data-name":"03 circle exp08"
+                  },
+                  "children":[  
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M584.1,480.9c-4.3,0-7.6-2.9-7.6-8.1v-8c0-5.2,3.3-3.9,7.7-2.4s7.8,4.2,7.8,9.4v1A7.7,7.7,0,0,1,584.1,48 0.9Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M691.7,481a6.7,6.7,0,0,1-6.6-6.1l-.2-2.6c1.4.3,2.3.4,5.4-1.6s7.1-7.4,7.4-3.8l.6,6.8a6.6,6.6,0,0,1-6.1,7.2Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M 666.4,510.4c.3-.6-39.4,9.9-74.2-15.1,0,0,8.6,24.6,34.1,35.2a28,28,0,0,0,33-9A79.1,79.1,0,0,0,666.4,510.4Z",
+                           "fill":"#fff"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M637,533.3a29.3,29.3,0,0,1-10.9-2.1c-25.6-10.6-34.5-35.4-34.6-35.6a.8.8, 0,0,1,.3-.9.6.6,0,0,1,.8,0c19.7,14.2,45.3,19.5,72.2,15.1,1.7-.3,1.9-.3,2.2.1a.8.8,0,0,1,.1.8,89.5,89.5,0,0,1-7.2,11.2A28.5,28.5,0,0,1,637,533.3Zm-43.1-35.9c2.9,6.4,12.4,24,32.7,32.4a27.2,27.2,0,0,0,32.1-8.8,85.7,85.7,0,0,0,6.4-9.7C638.7,515.6,613.6,510.7,593.9,497.4Z"
+                        },
+                        " children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M629.5,547.8a.9.9,0,0,1-.4-1.6c7.1-4,14.2-3.4,17-2.5a.9.9,0,0,1,.6,1.1.9.9,0,0,1-1.1.5c-2.5-.8-9.1-1.4-15.7,2.4Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M58 6.5,500.4h-.3a.7.7,0,0,1-.3-1c4.3-7.1,9.7-7.2,13.5-6.6a.7.7,0,0,1,.6.9.9.9,0,0,1-.9.6c-3.5-.6-8.1-.4-11.9,5.9A.8.8,0,0,1,586.5,500.4Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M593.5,471.8h-1a47.3,47.3,0,0,1-20.8-13.5l-1.9-2.1a3.3,3.3 ,0,1,1,5-4.4l1.9,2.1a39,39,0,0,0,17.8,11.5,3.4,3.4,0,0,1,2.2,4.2A3.4,3.4,0,0,1,593.5,471.8Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M680.9,480.2a3.5,3.5,0,0,1-3-1.8,3.4,3.4,0,0,1,1.5-4.5,49.9,49.9,0,0,0,18.1-15.4h0a3.5,3.5,0,0,1,4.7 -.8,3.2,3.2,0,0,1,.7,4.6v.2a55.4,55.4,0,0,1-20.4,17.4A2.8,2.8,0,0,1,680.9,480.2Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M637.3,533.4a.7.7,0,0,1-.6-.4.6.6,0,0,1,.2-1c.1-.1,8.2-5.5,13-20.2a.8.8,0,0,1,1.5.5c-5.1,15.2-13.3,20.7-13.7,20 .9Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M625.3,530.8a.5.5,0,0,1-.6-.4.8.8,0,0,1,.2-1c.1-.1,4.2-2.8,9.4-17.9a.7.7,0,0,1,1-.4.6.6,0,0,1,.4.9c-5.4,15.9-9.8,18.6-10,18.7Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        " attributes":{  
+                           "d":"M614.2,523.5h-.5a.8.8,0,0,1-.1-1.1,83.4,83.4,0,0,0,7.3-13.3.8.8,0,0,1,1-.3.7.7,0,0,1,.4,1c-4.3,9.2-7.4,13.4-7.5,13.5A.9.9,0,0,1,614.2,523.5Z"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "d":"M605.2,516.4l-.5-.2a.7.7,0,0,1-.1 -1c0-.1.8-1.2,5.2-9.5a.8.8,0,0,1,1.4.7c-3.6,6.7-5.2,9.4-5.5,9.7A.5.5,0,0,1,605.2,516.4Z"
+                        },
+                        "children":[  
+
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#cape-clippath)",
+         "id":"cape"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"cape-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"cape04",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"CAPES"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"fire04"
+                  },
+                  "children":[  
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"c ape",
+                           "d":"M696.4,628.9c-10.7-9.6-25.5-13.7-40.2-13l-5.9,13.6c-.6.3-8.5,0-27.6-.8L610,615h-.7l-46.2.9a59.8,59.8,0,0,0-40.2,13c-27,21.6-130.8,315.2-177.6,422.5,203.9-105.4,139.4-162,296.1-76.3,10.1,5.5,22.2-2.2,23.2-13.3,1,11.3,14.9,19.5,23.3,11.8,89.5-82.2,42.9-29.5,148.8 ,77.8C805.8,944.6,721.1,650.9,696.4,628.9Z",
+                           "fill":"gray"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"line",
+                           "d":"M696.4,628.9c-10.7-9.6-25.5-13.7-40.2-13l-5.9,13.6c-.6.3-8.5,0-27.6-.8L610,615h-.7l-46.2.9a59.8,59.8,0,0,0-40.2,13c-27,21.6 -130.8,315.2-177.6,422.5,203.9-105.4,139.4-162,296.1-76.3,10.1,5.5,22.2-2.2,23.2-13.3,1,11.3,14.9,19.5,23.3,11.8,89.5-82.2,42.9-29.5,148.8,77.8C805.8,944.6,721.1,650.9,696.4,628.9Z",
+                           "fill":"none",
+                           "stroke":"#000",
+                           "stroke-linejoin":"round"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"line",
+                        "t ype":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"line_cape",
+                           "data-name":"line cape",
+                           "x1":"757.9",
+                           "y1":"943.7",
+                           "x2":"742.3",
+                           "y2":"896.4",
+                           "fill":"none",
+                           "stroke":"#000",
+                           "stroke-miterlimit":"10"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"line",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"line _cape-2",
+                           "data-name":"line cape",
+                           "x1":"512.2",
+                           "y1":"941.1",
+                           "x2":"535.1",
+                           "y2":"896.4",
+                           "fill":"none",
+                           "stroke":"#000",
+                           "stroke-miterlimit":"10"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"collar",
+                           "d":"M654.8,573.4,642,620.1l-18.5-46.7s-80.1 -.9-96.9-11.1l26.3,54.4c7.1.8,48.3-5.9,53.8,38.6,3.5,23.9,13.2,56.6,49.6,52.2,38.5-4.6,5.2-88.2,16.1-90.8l26.2-54.4C681.8,572.5,654.8,573.4,654.8,573.4Z",
+                           "fill":"#ccc",
+                           "stroke":"#fff",
+                           "stroke-linejoin":"round"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "a ttributes":{  
+                           "id":"line-2",
+                           "data-name":"line",
+                           "d":"M654.8,573.4,642,620.1l-18.5-46.7s-80.1-.9-96.9-11.1l26.3,54.4c7.1.8,48.3-5.9,53.8,38.6,3.5,23.9,13.2,56.6,49.6,52.2,38.5-4.6,5.2-88.2,16.1-90.8l26.2-54.4C681.8,572.5,654.8,573.4,654.8,573.4Z",
+                           "fill":"none",
+                           "stroke":"#000 ",
+                           "stroke-linejoin":"round"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"cape_center_line",
+                           "data-name":"cape center line",
+                           "d":"M664.6,961.8s-1.9-180.1-10.2-254.1",
+                           "fill":"none",
+                           "stroke":"#000",
+                           "stroke-linejoin":"round"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        " name":"ellipse",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"medallion",
+                           "cx":"645.1",
+                           "cy":"640",
+                           "rx":"16",
+                           "ry":"21",
+                           "transform":"translate(-54.4 60) rotate(-5.1)",
+                           "fill":"gray"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"ellipse",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"line-3",
+                           " data-name":"line",
+                           "cx":"645.1",
+                           "cy":"640",
+                           "rx":"16",
+                           "ry":"21",
+                           "transform":"translate(-54.4 60) rotate(-5.1)",
+                           "fill":"none",
+                           "stroke":"#000",
+                           "stroke-linejoin":"round"
+                        },
+                        "children":[  
+
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#left-hand-ba ck-clippath)",
+         "id":"left-hand-back"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"left-hand-back-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"Lhandback-01",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"uiux"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"element",
+                  "valu e":"",
+                  "attributes":{  
+                     "id":"down_lefthand"
+                  },
+                  "children":[  
+                     {  
+                        "name":"g",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"bottom_part",
+                           "data-name":"bottom part"
+                        },
+                        "children":[  
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"base",
+                                 "d":"M885.5,876.6s5.3,2.7,9.6,2,9-5. 8,9.4-11-2-10.2-5.8-13.8a32,32,0,0,0-13.6-7.2c-1.7-.5-2.7-1-4.4-1.4l-.5.4,1.5-4.3c2.5-7.6-6.3-17-6.3-17-8-6.8-41.6-6.7-41.6-6.7s-20.2,6-31.7,43.3a12.4,12.4,0,0,0,2.5,10c6,7.8,17.2,20,32.1,22.6.4.1.4.4.7.3s1.1,1.5,1.2,2.1c1.4,4.6,6.1,7.1,9.8,10.7a26.6,26.6,0,0,0,15.8,7.1c 1.9.1,4.6-.8,6.3-1.4,4.9-1.6,7-9,5.5-14l-.2-1.2a12.3,12.3,0,0,0,5.7.4c3.4-.8,4.2-.4,5.7-3.5A17.3,17.3,0,0,0,885.5,876.6Zm-34.8.8",
+                                 "fill":"#fff"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"accent",
+                                 "d":"M835.5,818.4c-4.4-4.8-14.1-10-14.1- 10-6,.4-23.9,10.6-30,28.8s-4.2,37,1.2,38.2c0,0,16.4,5.3,18,5.3,0,0-.1-.2,1.1-1.6l-2.3-2.4c-4.3-3.5-9.1-13.9-2.1-30.8s20.3-28.5,26.2-28.4Z",
+                                 "fill":"#ccc"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"g",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"outline"
+                              },
+                              "children":[  
+                                 {  
+                                    "name":"path",
+                                    "type ":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M837,893.2c-10.9-.6-19.5-7.9-26.3-15.1,0,0-12-10.1-3.4-32.2,6.2-16.2,21.1-28.1,27-28",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 },
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "at tributes":{  
+                                       "d":"M836.1,818c-4.4-4.8-14.7-9.6-14.7-9.6-6,.4-23.9,10.6-30,28.8s-4.2,37,1.2,38.2c0,0,17.7,4.8,19.3,4.8",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attrib utes":{  
+         "clip-path":"url(#wand-clippath)",
+         "id":"wand"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"wand-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "chil dren":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"Lhand01-wand04",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"uiux"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"eleme nt",
+                  "value":"",
+                  "attributes":{  
+                     "id":"down_lefthand"
+                  },
+                  "children":[  
+                     {  
+                        "name":"g",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"wand04"
+                        },
+                        "children":[  
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"base",
+                                 "d":"M935.9,725.3l-4.7-36.9a11.3,11.3,0,0,1,8.9-12.4l52.2- 10.5a11.2,11.2,0,0,1,13.3,9.7l6.2,55.2a8.3,8.3,0,0,1-6.2,8.9l-22.2,5.6,13-19.6L990.8,682l-43.6,9,8.5,48.7a25.4,25.4,0,0,1-4.3,18.9L835,921.3A28.1,28.1,0,0,1,813.5,907L932,740.8A21.4,21.4,0,0,0,935.9,725.3Z",
+                                 "fill":"#96543c"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"accent",
+                                 "d":"M826.2,933.5c.5-.6-3.9-4.5-9.8-8.7s-11-7.1-11.5-6.5v.2L801,946l25.1-12.4A.1.1,0,0,0,826.2,933.5Z",
+                                 "fill":"#ccc"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"rect",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"accent-2",
+                                 "data-name":"accent",
+                                 "x":"962",
+                                 "y":"698.2",
+                                 "width":"19.8",
+                                 "height":"19.83",
+                                 "transform":"translate(1511.6 -366.5) rotate(80.6)",
+                                 "fill":"#ccc"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"rect",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "x":"962",
+                                 "y":"698.2",
+                                 "width":"19.8",
+                                 "height":"19.83",
+                                 "transform":"translate(1511. 6 -366.5) rotate(80.6)",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"ellipse",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "cx":"815.6",
+                                 "cy":"925.9",
+                                 "rx":"1.4",
+                                 "ry":"13.1",
+                                 "transform":"translate(-412 1050.3) rotat e(-54.4)",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"polyline",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "points":"804.9 918.3 801 946 826.2 933.5",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stro ke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"ellipse",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "cx":"815.6",
+                                 "cy":"925.9",
+                                 "rx":"1.4",
+                                 "ry":"13.1",
+                                 "transform":"translate(-412 1050.3) rotate(-54.4)"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 " d":"M983,744.6,996.4,726l-5.6-44-43.6,9,8.7,48.3a25.2,25.2,0,0,1-4.2,19L835,921.3s-13-.1-21.5-15L932,740.8a21.9,21.9,0,0,0,3.9-15.5l-4.7-36.9a11.3,11.3,0,0,1,8.9-12.4l52.2-10.5a11.3,11.3,0,0,1,13.4,9.7l6.3,55.3a8.2,8.2,0,0,1-6.2,9l-22.4,5.4",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#left-hand-front-clippath)",
+         "id":"left-hand-front"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"left-hand-front-clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value ":"Lhand01",
+                  "attributes":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"uiux"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"down_lefthand"
+                  },
+                  "children":[  
+                     {  
+                        "name":"g",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"top_part",
+                           "data-name":"top part"
+                        },
+                        "children":[  
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"base",
+                                 "d":"M821.3,829a24,24,0,0,0,4.8,17c6.3,7.8,19.7,7.6,29.2,5.4l-3,10.7s-.1,4.2,1.6,6.9c0,0-5.1.5-4.8,8.9v.5s-5.1-3.2-9.5,4-3.5,11.6.3,15.9,13.1,11.9,13.1,11. 9a23.2,23.2,0,0,0,11.1,3.4c6.8.4,14.5-5.4,12-16.9,0,0,9.7,2.7,12.9-4.4s-3.4-15.8-3.4-15.8,13.4,6.9,18-4.9c0,0,4.5-10.9-6.9-19.8a46.1,46.1,0,0,0-16.3-6.7s8.2-16.7-12-24.7a198.6,198.6,0,0,0-32.4-2.3l-3.6,1.4c-5.2,1.5-7.2,4.8-9.7,7.7Z",
+                                 "fill":"#fff"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"g",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "id":"outline"
+                              },
+                              "children":[  
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M834.4,818c4.8,0,23.9.4,34.7,2.8,3,.6,8.3,4.3,9.9,7.2s4.1,9,2.7,13.3c0,0-4.9,12.9-9.7,22.2,0,0-6.9,17.8-15.8,8.4-3-3.2-4.9-7.2-3.3-12l5 .1-15.4",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 },
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M880.7,845.2c1.7.4,2.7.9,4.4,1.4a32,32,0,0,1,13.6,7.2c3.8,3.6,6.3,8.7,5.8,13.8s-4.3,10.2-9.4,11-8.7-1.6 -12.6-3.8L870.2,868",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 },
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M853.8,868.9a4.6,4.6,0,0,0-3.3,2.7c-5.9,10,6,15.1,6,15.1l12.3,6.8c3.9,2.2,8.2,4.5,12.6,3.7s 7.7-3.6,8.1-8.7-1.3-8.6-3.8-11.9",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 },
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M876,897.3c.5,2.5.8,5.6,0,8-1.7,5-6.6,8.8-11.8,8.4s-9.9-1.8-13.2-4.9l-10.3-9.5 s-8.9-8.6-.4-17.9c0,0,3.2-5.2,8.8-2.9",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-linecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 },
+                                 {  
+                                    "name":"path",
+                                    "type":"element",
+                                    "value":"",
+                                    "attributes":{  
+                                       "d":"M855.7,851.4s-29.6,7.2-33.6-13.9",
+                                       "fill":"none",
+                                       "stroke":"#000",
+                                       "stroke-l inecap":"round",
+                                       "stroke-linejoin":"round"
+                                    },
+                                    "children":[  
+
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {  
+      "name":"g",
+      "type":"element",
+      "value":"",
+      "attributes":{  
+         "clip-path":"url(#right-hand-clippath)",
+         "id":"right-hand"
+      },
+      "children":[  
+         {  
+            "name":"clipPath",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"right-hand- clippath"
+            },
+            "children":[  
+               {  
+                  "name":"rect",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "x":"0",
+                     "y":"0",
+                     "width":"1200",
+                     "height":"1600"
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"title",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+
+            },
+            "children":[  
+               {  
+                  "name":"",
+                  "type":"text",
+                  "value":"Rhand01",
+                  "attributes ":{  
+
+                  },
+                  "children":[  
+
+                  ]
+               }
+            ]
+         },
+         {  
+            "name":"g",
+            "type":"element",
+            "value":"",
+            "attributes":{  
+               "id":"uiux"
+            },
+            "children":[  
+               {  
+                  "name":"g",
+                  "type":"element",
+                  "value":"",
+                  "attributes":{  
+                     "id":"down_righthand"
+                  },
+                  "children":[  
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"accent",
+                           "d":"M414. 6,906.8c-3.3-7.1-5.4-27.1-5.4-27.1,3.3-5.5,30.5-13.1,54.2-8s37.3,21.5,36,27.4c0,0-12,15.4-14.2,16.6",
+                           "fill":"#ccc"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"path",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"base",
+                           "d":"M450.4,893.7c10.2,1.9,21.2,6.3,32.1,18.2l.8,1c2,2.2,5.5,10,5.9,12. 1s1.3,4.3,2.1,6.8l3.2,14,4.7,15.4-1.8,5a15.5,15.5,0,0,1-6.6,7.8c-2.3,1-3.5.6-6.8.7-1,3.5-3.8,6-6.5,9.1s-6.9,2.9-8.3,2.6c-3.1-.6-8.3-.6-11.8-9.6-2,10-9.3,12.5-11.7,12.5-5.6.1-10-1.3-11.6-3.1s-3.2-7.6-3.5-11.8l-1.2,2.4a9.3,9.3,0,0,1-3.3,4.5l-2.3,1.2c-3.2-.9-5.2-2.2-8.5-4.2 s-7-13.5-7.6-17.8c-2.3-18.7.9-37.3,5.2-48.1,0,0,1.7-7.8,10.4-14C426.4,896.2,441.2,892.1,450.4,893.7Z",
+                           "fill":"#fff"
+                        },
+                        "children":[  
+
+                        ]
+                     },
+                     {  
+                        "name":"g",
+                        "type":"element",
+                        "value":"",
+                        "attributes":{  
+                           "id":"outline"
+                        },
+                        "children":[  
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M414.6,906.8c-3.3-7.1-5.4-27.1-5.4-27.1,3.3-5.5,30.5-13.1,54.2-8s37.3,21.5,36,27.4c0,0-11.5,15.2-13.7,16.4",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M485.1,915.5a53.7,53.7,0,0,0-34.8-21.8c-9.2-1.6-24.1,2.6-27.2,4.7-8.6,6.2-10.3,14.1-10.3,14.1-4.4,10.7-6.1,24.5-5.6,41.5.3,10.8,3.6,21,8.1,24.3s10.9,8.1,15.4-4",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"pat h",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M483.6,941.1c3.8,17.9,3.5,33.6-4.5,41.3-3.8,3.6-9.4,5-14.2,2.9-3.1-1.2-6.2-3.9-7.7-9.5",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "val ue":"",
+                              "attributes":{  
+                                 "d":"M457.2,969.4c1.2,12.6-4.2,17.7-9.5,19.4s-12.3-.8-14-3-4.2-12.9-2.3-18.2",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M485.4,915.6c 6.5,12.7,8,30.8,13.5,43.9.9,2.2-1.1,5.6-2,7.7",
+                                 "fill":"none",
+                                 "stroke":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           },
+                           {  
+                              "name":"path",
+                              "type":"element",
+                              "value":"",
+                              "attributes":{  
+                                 "d":"M484,974.4h3.2c4.2.1,5.9-1.5,8.2-5l1.5-2.1",
+                                 "fill":"none",
+                                 "stroke ":"#000",
+                                 "stroke-linecap":"round",
+                                 "stroke-linejoin":"round"
+                              },
+                              "children":[  
+
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   }
+]
