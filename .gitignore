@@ -4,5 +4,5 @@
 node_modules/
 dist/
 .~lock.*
-Analytics/svg/
+src/svg/
 .cache/
