@@ -1017,7 +1017,7 @@ const getWizardTraitsById = async (id = null) => {
                                                             break;
                                                         // "Orb wand"
                                                         case 'wand05':
-                                                            traits.rarities.push({wand: "Orb Wand", rarity: traitsCollection[trait]['Orb Wand']});
+                                                            traits.rarities.push({wand: "Orb Wand", rarity: traitsCollection[trait]['Orb wand']});
                                                             break;
 
                                                         /**
@@ -1162,9 +1162,9 @@ let construct = async () => {
     */
     
     // Load Traits of a given Wizard by its ID
-    //let wizard = 1;
+    //let wizard = 5192;
     //let traits = await getWizardTraitsById(wizard);
-    //console.log('Traits =>', traits);
+    ///console.log('Traits =>', traits);
 };
 
 // Debug:

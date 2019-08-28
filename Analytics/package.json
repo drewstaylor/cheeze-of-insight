@@ -1,0 +1,41 @@
+{
+  "name": "cheeze-wizards-poc",
+  "version": "1.0.0",
+  "description": "Proof of concept code stems for getting Cheeze Wizards data and analytics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drewstaylor/cheeze-wizards-resources.git"
+  },
+  "keywords": [
+    "Cheeze Wizards",
+    "hackathon",
+    "Ethereum",
+    "Dapper Labs",
+    "Web3",
+    "JavaScript",
+    "Solidity"
+  ],
+  "author": "drew@infiniteinternet.ca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drewstaylor/cheeze-wizards-resources/issues"
+  },
+  "homepage": "https://github.com/drewstaylor/cheeze-of-insight",
+  "dependencies": {
+    "browserify": "^16.5.0",
+    "dotenv": "^8.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "svgson": "^4.0.0",
+    "vue": "^2.6.10",
+    "web3": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
