@@ -606,7 +606,7 @@ const getWizardTraitsById = async (id = null) => {
                                                         // "Pawface" / head07
                                                         case 'head07':
                                                             traits.rarities.push({head: "Pawface", rarity: traitsCollection[trait]['Pawface']});
-                                                            break;                                    
+                                                            break;
 
                                                         /**
                                                          * Extra Rare Wizards ^_^
@@ -1166,7 +1166,7 @@ let construct = async () => {
     */
     
     // Load Traits of a given Wizard by its ID
-    //let wizard = 1;
+    //let wizard = 5974;
     //let traits = await getWizardTraitsById(wizard);
     //console.log('Traits =>', traits);
 };

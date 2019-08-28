@@ -1037,8 +1037,8 @@ const getWizardTraitsById = async (id = null) => {
                                                             traits.rarities.push({wand: "Epic Scepter", rarity: traitsCollection[trait]['[wand 15]'], extraRare: "Big Cheeze"});
                                                             break;
 
-                                                        default:
-                                                            console.log('Unknown wand =>', foundWand);
+                                                        //default:
+                                                            //console.log('Unknown wand =>', foundWand);
                                                     }
                                                 } else {
                                                     break;
@@ -1166,13 +1166,13 @@ let construct = async () => {
     */
     
     // Load Traits of a given Wizard by its ID
-    //let wizard = 5974;
-    //let traits = await getWizardTraitsById(wizard);
-    //console.log('Traits =>', traits);
+    let wizard = 5974;
+    let traits = await getWizardTraitsById(wizard);
+    console.log('Traits =>', traits);
 };
 
 // Debug:
-//construct();
+construct();
 
 module.exports = {
     getAllWizards: getAllWizards,
