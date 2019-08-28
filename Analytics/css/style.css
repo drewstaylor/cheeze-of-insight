@@ -115,6 +115,11 @@ div.selected-wizard-right {
     margin-left: 0.75rem;
 }
 
+.icon.icon-search {
+    height: 20px;
+    margin: 0.5rem;
+}
+
 div.traits.traits-container {
     clear: both;
     position: relative;
