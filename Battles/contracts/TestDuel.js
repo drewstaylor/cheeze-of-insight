@@ -130,6 +130,11 @@ function generateMoveSet(move1,move2,move3,move4,move5){
     return '0x0'+move1+'0'+move2+'0'+move3+'0'+move4+'0'+move5+'000000000000000000000000000000000000000000000000000000'
 }
 
+function decodeMoveSet(Movebytes){
+  let slice=Movebytes.slice(3,12)
+  let moves=[Number(slice[0]),Number(slice[2]),Number(slice[4]),Number(slice[6]),Number(slice[8])]
+  return moves
+}
 
 async function SimulateDuel(moves1,moves2,power1,power2,affinity1,affinity2){
     try{
@@ -139,6 +144,7 @@ async function SimulateDuel(moves1,moves2,power1,power2,affinity1,affinity2){
         
         let result =await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract)
         console.log(result)
+        result=web3.eth.abi.decodeParameters(['int256', 'int256'], result);
         return result
 
         }catch(e){
