@@ -10,7 +10,8 @@ const { parse, stringify } = require('svgson')
 // XXX TODO: Figure out a secure way to not share all of this :x
 const apiToken = 'PFJKqO5Hv9RJmrnoX_QMDRdUK1I7IwKwnewRDq58';
 const apiUser = 'drew@infiniteinternet.ca';
-const apiBaseUrl = 'cheezewizards.alchemyapi.io';
+const apiMainnetBaseUrl = 'cheezewizards-mainnet.alchemyapi.io';
+const apiRinkebyBaseUrl = 'cheezewizards-rinkeby.alchemyapi.io';
 const mainnetTournamentContract = '0xec2203e38116f09e21bc27443e063b623b01345a';
 const mainnetWizardsContract = '0x023C74B67dfCf4c20875A079e59873D8bBE42449';
 const imageStorageUrl = 'https://storage.googleapis.com/cheeze-wizards-production/' + mainnetTournamentContract + '/';
@@ -19,7 +20,7 @@ const openSeaTraits = 'api.opensea.io/collection/cheezewizard/';
 const traitsData = require('./json/wizardTraits.json');
 
 // Utility Functions
-const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://') => {
+const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', mainnet = true) => {
     let options;
     // Nothing to do here...    
     if (!endpoint) {
@@ -37,9 +38,10 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://') =>
             }
         };
     } else {
+        let apiUrl = (mainnet == true) ? scheme + apiMainnetBaseUrl + '/' + endpoint : scheme + apiRinkebyBaseUrl + '/' + endpoint;
         options = {
             method: method,
-            uri: scheme + apiBaseUrl + '/' + endpoint,
+            uri: apiUrl,
             // Headers
             headers: {
                 'Content-Type': 'application/json',
@@ -84,9 +86,18 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://') =>
 /**
  * Loads all Wizards from CW API (Mainnet)
  */
-const getAllWizards = async () => {
-    let wizardsEndpoint = 'wizards';
-    let wizards = await apiQuery(wizardsEndpoint);
+const getAllWizards = async (mainnet = true) => {
+    let wizardsEndpoint = 'wizards',
+        wizards;
+
+    // Choose collection type (Mainnet / Rinkeby)
+    if (mainnet) {
+        wizards = await apiQuery(wizardsEndpoint);
+    } else {
+        wizards = await apiQuery(wizardsEndpoint, 'GET', 'https://', false);
+    }
+
+    // Return Wizards data
     return wizards;
 };
 
@@ -95,19 +106,27 @@ const getAllWizards = async () => {
  * @param {Number} id : The ID of the target Wizard
  * @return {Object} : Returns a Wizard object, or returns an Error object if no Wizard with that ID exists
  */
-const getWizardById = async (id = null) => {
+const getWizardById = async (id = null, mainnet = true) => {
     // Nothing to do here...
     if (!id) {
         return false
     }
 
-    let wizardsEndpoint = 'wizards/' + id;
-    let wizards = await apiQuery(wizardsEndpoint);
+    let wizardsEndpoint = 'wizards/' + id,
+        wizards;
+
+    // Choose collection type (Mainnet / Rinkeby)
+    if (mainnet) {
+        wizards = await apiQuery(wizardsEndpoint);
+    } else {
+        wizards = await apiQuery(wizardsEndpoint, 'GET', 'https://', false);
+    }
+
     return wizards;
 };
 
 /**
- * Gets a link to a particular Wizard's image (Mainnet)
+ * Gets a link to a particular Wizard's image (Mainnet only)
  * @param {Number} id : The ID of the target Wizard you are requesting an image link for
  * @param {Boolean} proxy `{default: false}` : If parsing SVG can set this parameter to `true` to get a proxied instance that side steps CORS problems
  * @return {String} image : Returns the string image URL of the wizard
@@ -1074,9 +1093,17 @@ const getWizardTraitsById = async (id = null) => {
 /**
  * Loads all Duels from CW API (Mainnet)
  */
-const getAllDuels = async () => {
-    let duelsEndpoint = 'duels';
-    let duels = await apiQuery(duelsEndpoint);
+const getAllDuels = async (mainnet = true) => {
+    let duelsEndpoint = 'duels',
+        duels;
+
+    // Choose collection type (Mainnet / Rinkeby)
+    if (mainnet) {
+        duels = await apiQuery(duelsEndpoint);
+    } else {
+        duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
+    }
+
     return duels;
 };
 
@@ -1085,14 +1112,21 @@ const getAllDuels = async () => {
  * @param {Number} id : The ID of the target Duel
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that ID exists
  */
-const getDuelById = async (id = null) => {
+const getDuelById = async (id = null, mainnet = true) => {
     // Nothing to do here...
     if (!id) {
         return false;
     }
 
-    let duelsEndpoint = 'duels/' + id;
-    let duels = await apiQuery(duelsEndpoint);
+    let duelsEndpoint = 'duels/' + id,
+        duels;
+
+    if (mainnet) {
+        duels = await apiQuery(duelsEndpoint);
+    } else {
+        duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
+    }
+
     duels.id = id;
     return duels;
 };
@@ -1102,14 +1136,21 @@ const getDuelById = async (id = null) => {
  * @param {Number} id : The ID of the target Wizard to query for Duel data
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
  */
-const getDuelsByWizardId = async (id = null) => {
+const getDuelsByWizardId = async (id = null, mainnet = true) => {
     // Nothing to do here...
     if (!id) {
         return false;
     }
 
-    let duelsEndpoint = 'duels/?wizardIds=' + id;
-    let duels = await apiQuery(duelsEndpoint);
+    let duelsEndpoint = 'duels/?wizardIds=' + id,
+        duels;
+
+    if (mainnet) {
+        duels = await apiQuery(duelsEndpoint);
+    } else {
+        duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
+    }
+
     duels.wizards = [id];
     return duels;
 };
@@ -1120,14 +1161,21 @@ const getDuelsByWizardId = async (id = null) => {
  * @param {Number} wizard_B : The ID of the second target Wizard to query for Duel data
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
  */
-const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null) => {
+const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet = true) => {
     // Nothing to do here...
     if (!wizard_A || !wizard_B) {
         return false;
     }
 
-    let duelsEndpoint = 'duels/?wizardIds=' + wizard_A + ',' + wizard_B;
-    let duels = await apiQuery(duelsEndpoint);
+    let duelsEndpoint = 'duels/?wizardIds=' + wizard_A + ',' + wizard_B,
+        duels;
+
+    if (mainnet) {
+        duels = await apiQuery(duelsEndpoint);
+    } else {
+        duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
+    }
+
     duels.wizards = [wizard_A, wizard_B];
     return duels;
 };
