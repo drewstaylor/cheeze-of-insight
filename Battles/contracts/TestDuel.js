@@ -139,6 +139,7 @@ async function SimulateDuel(moves1,moves2,power1,power2,affinity1,affinity2){
         
         let result =await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract)
         console.log(result)
+        result=web3.eth.abi.decodeParameters(['int256', 'int256'], result);
         return result
 
         }catch(e){
