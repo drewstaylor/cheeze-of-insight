@@ -118,7 +118,7 @@
                     </ul>
                 </div>
                 <!-- Paging -->
-                <div class="page-controls" v-if="!wizardsPrimaryFilter.length && !wizardsVulnerabilityFilter.length">
+                <div class="page-controls">
                     <button class="btn btn-primary" v-on:click="previousWizardsPage();">Previous</button>
                     <button class="btn btn-inverse" v-on:click="currentWizardsPage = 1;"><<</button>
                     <button class="btn btn-inverse" v-on:click="currentWizardsPage = totalWizardsPages">>></button>

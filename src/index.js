@@ -376,8 +376,9 @@ let vm = new Vue({
                         return wizard;
                     }
                 });
-                if (wizards) {
-                    return wizards;
+                if (wizards && this.currentWizardsPage) {
+                    let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
                 }
@@ -390,8 +391,9 @@ let vm = new Vue({
                         return wizard;
                     }
                 });
-                if (wizards) {
-                    return wizards;
+                if (wizards && this.currentWizardsPage) {
+                    let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
                 }
