@@ -65,6 +65,7 @@ let vm = new Vue({
             rinkeby: null,
             mainnet: null
         },
+        isWeb3Enabled: null,
         wallets: {
             rinkeby: null,
             mainnet: null
@@ -128,6 +129,7 @@ let vm = new Vue({
         // Wallet Instance
         let accounts;
         if (window.hasOwnProperty('ethereum')) {
+            this.isWeb3Enabled = true;
             accounts = await window.ethereum.enable();
             if (accounts[0]) {
                 // Wallets
@@ -139,6 +141,8 @@ let vm = new Vue({
                 console.log('ERC721 Contract', this.contracts.mainnet.wizards);
                 this.fetchUserWizards();
             }
+        } else {
+            this.isWeb3Enabled = false;
         }
     },
     methods: {
@@ -260,10 +264,23 @@ let vm = new Vue({
             if (provider !== MAINNET) {
                 // XXX TODO: Get Rinkeby Wizards
             } else {
-                // Get Mainnet Wizards
-                userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(ownerAddress).call();
-                // If user has Wizards -> get wizards
-                if (userTotalWizards > 0) {
+                if (this.isWeb3Enabled) {
+                    // Get Mainnet Wizards
+                    userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(ownerAddress).call();
+
+                    // If user has Wizards -> get wizards
+                    if (userTotalWizards > 0) {
+                        this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
+
+                        // Add metadata properties
+                        for (let i = 0; i < this.selectedWizardsByAddress.length; i++) {
+                            this.selectedWizardsByAddress[i].image = this.api.getWizardImageUrlById(this.selectedWizardsByAddress[i].id);
+                            this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
+                        }
+
+                        console.log('Wizards of owner =>', this.selectedWizardsByAddress);
+                    }
+                } else {
                     this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
 
                     // Add metadata properties
@@ -274,6 +291,8 @@ let vm = new Vue({
 
                     console.log('Wizards of owner =>', this.selectedWizardsByAddress);
                 }
+                
+                
             }
         },
         // View worker

@@ -187,7 +187,7 @@ p.trait-name {
 
 /* Modal */
 .modal-mask {
-    position: absolute;
+    position: fixed;
     z-index: 9998;
     top: 0;
     left: 0;
@@ -248,4 +248,3 @@ p.trait-name {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
->>>>>>> feature-owner-wizards-modal
