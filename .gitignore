@@ -5,3 +5,4 @@ node_modules/
 dist/
 .~lock.*
 src/svg/
+build/
