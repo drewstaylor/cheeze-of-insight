@@ -137,7 +137,7 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
     if (!id) {
         return false;
     } else if (typeof id !== "number") {
-        return false;
+        id = parseInt(id);
     }
     // Set image path
     if (proxy) {
