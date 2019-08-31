@@ -152,3 +152,20 @@ p.trait-name {
     font-weight: 500;
     color: #333333;
 }
+
+.duels-table-container {
+    overflow: scroll;
+}
+.duels-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.duels-table td {
+    border: 1px solid black;
+    padding: 3px;
+}
+.duels-table th {
+    border: 1px solid gray;
+    padding: 3px;
+    background-color: #CCC;
+}

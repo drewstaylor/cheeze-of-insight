@@ -387,6 +387,55 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Duels -->
+            <div>
+                <h4>Duels</h4>
+                <div class="duels-table-container">
+                    <table class="duels-table">
+                        <thead>
+                            <tr>
+                                <th> id </th>
+                                <th> wizard1Id </th>
+                                <th> wizard2Id </th>
+                                <th> affinity1 </th>
+                                <th> affinity2 </th>
+                                <th> startPower1 </th>
+                                <th> startPower2 </th>
+                                <th> endPower1 </th>
+                                <th> endPower2 </th>
+                                <th> moveSet1 </th>
+                                <th> moveSet2 </th>
+                                <th> startBlock </th>
+                                <th> endBlock </th>
+                                <th> timeoutBlockendBlock </th>
+                                <th> timedOut </th>
+                                <th> isAscensionBattle </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="duel in currentOpposingWizard.duels">
+                                <td>{{ duel.id }}</td>
+                                <td>{{ duel.wizard1Id }}</td>
+                                <td>{{ duel.wizard2Id }}</td>
+                                <td>{{ duel.affinity1 }}</td>
+                                <td>{{ duel.affinity2 }}</td>
+                                <td>{{ duel.startPower1 }}</td>
+                                <td>{{ duel.startPower2 }}</td>
+                                <td>{{ duel.endPower1 }}</td>
+                                <td>{{ duel.endPower2 }}</td>
+                                <td>{{ duel.moveSet1.substring(0,10) }}</td>
+                                <td>{{ duel.moveSet2.substring(0,13) }}</td>
+                                <td>{{ duel.startBlock }}</td>
+                                <td>{{ duel.endBlock }}</td>
+                                <td>{{ duel.timeoutBlockendBlock }}</td>
+                                <td>{{ duel.timedOut }}</td>
+                                <td>{{ duel.isAscensionBattle }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Match Predictor -->

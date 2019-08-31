@@ -264,6 +264,8 @@ let vm = new Vue({
             this.currentOpposingWizard.traits = await this.api.getWizardTraitsById(wizardId);
             // Add metadata
             this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
+            // Add duels
+            this.currentOpposingWizard.duels = await this.api.getDuelsByWizardId(wizardId);
             
             // Disable loading
             this.isLoading = false;

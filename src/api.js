@@ -1137,6 +1137,8 @@ const getDuelById = async (id = null, mainnet = true) => {
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
  */
 const getDuelsByWizardId = async (id = null, mainnet = true) => {
+    return await require('./json/allDuels.json').duels;
+    /*
     // Nothing to do here...
     if (!id) {
         return false;
@@ -1153,6 +1155,7 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
 
     duels.wizards = [id];
     return duels;
+    */
 };
 
 /**
@@ -1162,6 +1165,8 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
  */
 const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet = true) => {
+    return await require('./json/allDuels.json');
+    /*
     // Nothing to do here...
     if (!wizard_A || !wizard_B) {
         return false;
@@ -1178,6 +1183,7 @@ const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet 
 
     duels.wizards = [wizard_A, wizard_B];
     return duels;
+    */
 };
 
 // Tests
