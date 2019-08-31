@@ -29,6 +29,12 @@ const TOTAL_WIZARDS = 4882;
 const MAINNET = 0;
 const RINKEBY = 1;
 
+// Register modal component
+Vue.component('modal', {
+    template: '#modal-template'
+});
+
+// Create application
 let vm = new Vue({
     el: '#cheese-of-insight',
     data: () => ({
@@ -102,6 +108,8 @@ let vm = new Vue({
         userOwnsWizards: 0,
         currentWizard: {},
         currentOpposingWizard: {},
+        selectedWizardsByAddress: {},
+        selectedWizardsByAddressModalShown: false,
         matchPrediction: null,
         predictionType: null,
         wizardsSearchType: PRIMARY_SEARCH,
@@ -113,8 +121,6 @@ let vm = new Vue({
         manualCurrentWizardSelection: false
     }),
     mounted: async function () {
-        //console.log('api', this.api);
-
         // Web3 Instance
         this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
 
@@ -216,10 +222,6 @@ let vm = new Vue({
 
             // Get pagination args.
             this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
-            
-            /*if (this.wizards.length % this.wizardsPageSize !== 0) {
-                ++this.totalWizardsPages;
-            }*/
 
             // Set user Wizards as required
             if (this.userOwnsWizards) {
@@ -246,6 +248,44 @@ let vm = new Vue({
                     this.userOwnsWizards = userTotalWizards;
                 }
             }
+        },
+        // API worker
+        fetchWizardsOwnedByAddress: async function (ownerAddress, provider = MAINNET) {
+            // Nothing to do here...
+            if (!ownerAddress) {
+                return;
+            }
+            let userTotalWizards = null;
+            if (provider !== MAINNET) {
+                // XXX TODO: Get Rinkeby Wizards
+            } else {
+                // Get Mainnet Wizards
+                userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(ownerAddress).call();
+                // If user has Wizards -> get wizards
+                if (userTotalWizards > 0) {
+                    this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
+
+                    // Add metadata properties
+                    for (let i = 0; i < this.selectedWizardsByAddress.length; i++) {
+                        this.selectedWizardsByAddress[i].image = this.api.getWizardImageUrlById(this.selectedWizardsByAddress[i].id);
+                        this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
+                    }
+
+                    console.log('Wizards of owner =>', this.selectedWizardsByAddress);
+                }
+            }
+        },
+        // View worker
+        showAllWizardsOfOwner: async function (ownerAddress) {
+            // Nothing to do here...
+            if (!ownerAddress) {
+                return;
+            }
+            // Fetch Wizards
+            this.fetchWizardsOwnedByAddress(this.currentOpposingWizard.owner);
+
+            // Launch modal
+            this.selectedWizardsByAddressModalShown = true;
         },
         showWizard: async function (wizardId = null) {
             if (wizardId == null) {
