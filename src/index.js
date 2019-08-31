@@ -120,7 +120,7 @@ let vm = new Vue({
         showMyWizardTraits: false,
         showOpponentTraits: false,
         manualCurrentWizardSelection: false,
-        showDuels: false
+        showDuels: true
     }),
     mounted: async function () {
         // Web3 Instance

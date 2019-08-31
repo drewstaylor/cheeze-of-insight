@@ -175,6 +175,92 @@ p.trait-name {
     border: 1px solid black;
     border-collapse: collapse;
 }
+
+
+
+
+.duels-card-container {
+    position: relative;
+
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #DDD;
+
+    width: 100%;
+    height: 160px;
+
+    padding: 3px;
+    margin: 3px;
+}
+.duels-card-left-wizard, .duels-card-right-wizard {
+    position: absolute;
+    top: 6px;
+
+    border: 1px solid #666;
+    border-radius: 3px;
+    background-color: #CCC;
+
+    margin: 3px;
+
+    height: 120px;
+    width: 120px;
+
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+
+    background-image: url(https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/5974.svg);
+
+}
+.duels-card-left-wizard {
+    left: 6px;
+}
+.duels-card-right-wizard {
+    right: 6px;
+}
+.duels-card-left-outcome, .duels-card-right-outcome {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 3px;
+    width: 120px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.duels-card-left-outcome {
+    left: 6px;
+}
+.duels-card-right-outcome {
+    right: 6px;
+}
+.duels-outcome-affinity {
+    /* TODO: this should be affinity icon */
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid black;
+}
+.duels-outcome-base-points {
+    color: black;
+}
+.duels-outcome-loss-points {
+    color: red;
+}
+.duels-outcome-gain-points {
+    color: green;
+}
+.duels-card-rounds {
+    margin: auto;
+    height: 50%;
+    width: 50%;
+
+    border: 1px solid black;
+    background-color: white;
+}
+
+
+
 .duels-table td {
     border: 1px solid black;
     padding: 3px;
