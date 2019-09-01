@@ -49,6 +49,11 @@
                     <!-- Wizards Search -->
                     <div class="search-toggle">
                         <a v-on:click="showSearch = true;" v-if="!showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Seach Wizards</a>
+                        <!-- Show Only My Owned Wizards -->
+                        <span class="search-my-wizards-toggle" v-if="userOwnsWizards"> / 
+                            <a v-on:click="wizardsMineFilter = true;" v-if="!wizardsMineFilter">Show only my Wizards</a>
+                            <a v-on:click="wizardsMineFilter = false;" v-if="wizardsMineFilter">Show all Wizards</a>
+                        </span>
                     </div>
                     
                     <div class="row container search-controls" v-if="showSearch">

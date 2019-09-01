@@ -118,6 +118,7 @@ let vm = new Vue({
         wizardsSearchType: PRIMARY_SEARCH,
         wizardsPrimaryFilter: '',
         wizardsVulnerabilityFilter: '',
+        wizardsMineFilter: false,
         showSearch: false,
         showMyWizardTraits: false,
         showOpponentTraits: false,
@@ -236,7 +237,7 @@ let vm = new Vue({
                 if (this.tokens.mainnet.wizards) {
                     this.currentWizard = this.tokens.mainnet.wizards[0];
                 }
-                //console.log('User Tokens =>', this.tokens);
+                console.log('User Tokens =>', this.tokens);
             }
 
             // Disable loading
@@ -257,7 +258,7 @@ let vm = new Vue({
             }
         },
         // API worker
-        fetchWizardsOwnedByAddress: async function (ownerAddress, provider = MAINNET) {//here
+        fetchWizardsOwnedByAddress: async function (ownerAddress, provider = MAINNET) {
             // Nothing to do here...
             if (!ownerAddress) {
                 return;
@@ -458,8 +459,33 @@ let vm = new Vue({
         wizardsPage: function () {
             let wizards,
                 filter;
+            
+            // Returns Wizards filter => owned by current DApp user
+            if (this.wizardsMineFilter) {
+                if (this.userOwnsWizards) {
+                    // Show requesting user Wizards
+                    wizards = this.tokens.mainnet.wizards;
+                    // Return owned Wizards
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
+                    }
+                } else {
+                    // Defaulting to all Wizards browse
+                    this.wizardsMineFilter = false;
+                    wizards = this.wizards;
+                    // Return all Wizards
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
+                    }
+                }
             // Returns Wizards filtered by ID or by Affinity
-            if (this.wizardsPrimaryFilter.length) {
+            } else if (this.wizardsPrimaryFilter.length) {
                 filter = this.wizardsPrimaryFilter;
                 wizards = this.wizards.filter((wizard) => {
                     if (wizard.id.toString().indexOf(filter) > -1) {
