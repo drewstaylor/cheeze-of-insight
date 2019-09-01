@@ -111,6 +111,7 @@ let vm = new Vue({
         currentOpposingWizard: {},
         selectedWizardsByAddress: {},
         selectedWizardsByAddressModalShown: false,
+        comparisonWizardsByAddressModalShown: false,
         matchPrediction: null,
         predictionType: null,
         wizardsSearchType: PRIMARY_SEARCH,
@@ -296,7 +297,7 @@ let vm = new Vue({
             }
         },
         // View worker
-        showAllWizardsOfOwner: async function (ownerAddress) {
+        showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false) {
             // Nothing to do here...
             if (!ownerAddress) {
                 return;
@@ -305,7 +306,13 @@ let vm = new Vue({
             this.fetchWizardsOwnedByAddress(this.currentOpposingWizard.owner);
 
             // Launch modal
-            this.selectedWizardsByAddressModalShown = true;
+            if (!isComparisonMode) {
+                // Show browse single Wizard modal
+                this.selectedWizardsByAddressModalShown = true;
+            } else {
+                // Show comparison opponent Wizards
+                this.comparisonWizardsByAddressModalShown = true;
+            }
         },
         showWizard: async function (wizardId = null) {
             if (wizardId == null) {
@@ -330,6 +337,15 @@ let vm = new Vue({
             // Disable loading
             this.isLoading = false;
             console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
+        },
+        showComparisonWizard: async function (wizardId = null) {
+            // Nothing to do..
+            if (!wizardId) {
+                return;
+            }
+            // Else
+            this.currentOpposingWizard.selectedId = wizardId;
+            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
         },
         showPredictMatchOutcome: async function () {
             if (!this.wizards) {

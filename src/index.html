@@ -176,7 +176,7 @@
                             </p>
                             <p>
                                 <!-- View Other Wizards By This Owner -->
-                                <a v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner)">View all Wizards from this owner</a>
+                                <a class="real-styled" v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner)">View all Wizards from this owner</a>
                             </p>
                             <modal v-if="selectedWizardsByAddressModalShown" @close="selectedWizardsByAddressModalShown = false">
                                 <!-- Custom Modal Overrides -->
@@ -184,12 +184,16 @@
                                 <div slot="body">
                                     <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
                                         <div class="wizard-card-block-item">
-                                            <div class="wizard-card wizard-card-img">
-                                                <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'"></div>
-                                            </div>
-                                            <div class="wizard-card wizard-card-label">
-                                                <a v-on:click="showWizard(wizard.id);selectedWizardsByAddressModalShown = false;">Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a>
-                                            </div>
+                                            <!-- Wizard Image -->
+                                            <a v-on:click="showWizard(wizard.id); selectedWizardsByAddressModalShown = false;">
+                                                <div class="wizard-card wizard-card-img">
+                                                    <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'"></div>
+                                                    <!-- Card Label (Link Text) -->
+                                                    <div class="wizard-card wizard-card-label">
+                                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -842,11 +846,38 @@
                             -->
                         </div>
 
+                        <!-- Show Other Wizards of Owner -->
+                        <div class="show-opponent-wizards">
+                            <!-- View Other Wizards By This Owner -->
+                            <a v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner, true)">View all Wizards from this owner</a>
+                        </div>
+                        <modal v-if="comparisonWizardsByAddressModalShown" @close="comparisonWizardsByAddressModalShown = false">
+                            <!-- Custom Modal Overrides -->
+                            <h3 slot="header">{{ currentOpposingWizard.owner }}'s Wizards</h3>
+                            <div slot="body">
+                                <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
+                                    <div class="wizard-card-block-item">
+                                        <!-- Wizard Image -->
+                                        <a v-on:click="showComparisonWizard(wizard.id); comparisonWizardsByAddressModalShown = false;">
+                                            <div class="wizard-card wizard-card-img">
+                                                <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'"></div>
+                                                <!-- Card Label (Link Text) -->
+                                                <div class="wizard-card wizard-card-label">
+                                                    <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </modal>
+
                         <!-- Traits -->
                         <div class="show-opponent-traits">
                             <a v-on:click="showOpponentTraits = true" v-if="!showOpponentTraits">Show unique traits</a>
                             <a v-on:click="showOpponentTraits = false" v-if="showOpponentTraits">Hide traits</a>
                         </div>
+
                         <div class="traits traits-container wizards-compare" v-if="currentOpposingWizard.traits && showOpponentTraits">
                             <div class="traits traits-container-inner" v-if="currentOpposingWizard.traits.rarities">
                                 <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentOpposingWizard.traits.rarities.length">
