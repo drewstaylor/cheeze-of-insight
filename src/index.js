@@ -60,6 +60,7 @@ let vm = new Vue({
         Provider: require('./providers'),
         api: require('./api'),
         wizardUtils: require('./wizards'),
+        firebase: require('./firebase'),
         // Web3
         web3Providers: {
             rinkeby: null,
@@ -86,6 +87,7 @@ let vm = new Vue({
         navigation: {
             state: HOME_STATE
         },
+        userIsLoggedIn: false,
         isLoading: false,
         currentWizardsPage: 1,
         wizardsPageSize: 10,
@@ -140,16 +142,43 @@ let vm = new Vue({
                 this.wallets.rinkeby = false;
                 this.wallets.mainnet = accounts[0];
                 console.log('Accounts =>', this.wallets);
-                // ERC721 Instance
+                
+                // ERC721 Instances
                 this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
                 console.log('ERC721 Contract', this.contracts.mainnet.wizards);
-                this.fetchUserWizards();
+                this.fetchUserWizards();                
             }
         } else {
             this.isWeb3Enabled = false;
         }
     },
     methods: {
+        login: async function () {
+            // Process login as required
+            if (this.userIsLoggedIn) {
+                return;
+            }
+            // Twitter Login (Required for Chat / "Live" Testnet Duels)
+            try {
+                await this.firebase.login();
+                this.userIsLoggedIn = true;
+            } catch (e) {
+                console.log('Error logging into Firebase =>', e);
+            }
+        },
+        logout: async function () {
+            // Process logout as required
+            if (!this.userIsLoggedIn) {
+                return;
+            }
+            // Twitter Login (Required for Chat / "Live" Testnet Duels)
+            try {
+                await this.firebase.logout();
+                this.userIsLoggedIn = false;
+            } catch (e) {
+                console.log('Error logging out user from Firebase =>', e);
+            }
+        },
         setNavigation: function (state = null) {
             // Change navigation state as required
             if (this.navigation.state == state) {

@@ -10,10 +10,12 @@
     <!-- CSS Imports -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="node_modules/firechat/dist/firechat.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!-- JS Imports -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/firebase.js"></script>
+    <script type="text/javascript" src="node_modules/firechat/dist/firechat.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
@@ -34,6 +36,10 @@
             </div>
             <div class="row navigation">
                 <ul class="list-group">
+                    <li class="list-group-item view-all-wizards">
+                        <a v-on:click="login();" v-if="!userIsLoggedIn">Login with Twitter</a>
+                        <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
+                    </li>
                     <li class="list-group-item view-all-wizards" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}">
                         <a v-on:click="setNavigation(0);">Browse Wizards</a>
                     </li>
@@ -41,6 +47,9 @@
                         <a v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
                     </li>
                 </ul>
+            </div>
+
+            <div id="firechat-wrapper">
             </div>
 
             <!-- Browse All Wizards -->
