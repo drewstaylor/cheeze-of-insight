@@ -112,6 +112,7 @@ let vm = new Vue({
         selectedWizardsByAddress: {},
         selectedWizardsByAddressModalShown: false,
         comparisonWizardsByAddressModalShown: false,
+        comparisonMyWizardsModalShown: false,
         matchPrediction: null,
         predictionType: null,
         wizardsSearchType: PRIMARY_SEARCH,
@@ -256,7 +257,7 @@ let vm = new Vue({
             }
         },
         // API worker
-        fetchWizardsOwnedByAddress: async function (ownerAddress, provider = MAINNET) {
+        fetchWizardsOwnedByAddress: async function (ownerAddress, provider = MAINNET) {//here
             // Nothing to do here...
             if (!ownerAddress) {
                 return;
@@ -297,21 +298,26 @@ let vm = new Vue({
             }
         },
         // View worker
-        showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false) {
+        showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false, self = false) {
             // Nothing to do here...
             if (!ownerAddress) {
                 return;
             }
             // Fetch Wizards
-            this.fetchWizardsOwnedByAddress(this.currentOpposingWizard.owner);
+            this.fetchWizardsOwnedByAddress(ownerAddress);
 
             // Launch modal
             if (!isComparisonMode) {
                 // Show browse single Wizard modal
                 this.selectedWizardsByAddressModalShown = true;
-            } else {
+            } else if (isComparisonMode && !self)  {
+                console.log('show opponent wizards');
                 // Show comparison opponent Wizards
                 this.comparisonWizardsByAddressModalShown = true;
+            } else {
+                console.log('show my wizards');
+                // Show all my Wizards
+                this.comparisonMyWizardsModalShown = true;
             }
         },
         showWizard: async function (wizardId = null) {
@@ -345,6 +351,15 @@ let vm = new Vue({
             }
             // Else
             this.currentOpposingWizard.selectedId = wizardId;
+            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+        },
+        showMyComparisonWizard: async function (wizardId = null) {
+            // Nothing to do..
+            if (!wizardId) {
+                return;
+            }
+            // Else
+            this.currentWizard.selectedId = wizardId;
             this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
         },
         showPredictMatchOutcome: async function () {

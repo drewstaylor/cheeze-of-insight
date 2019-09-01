@@ -606,11 +606,39 @@
                             </div>
                             -->
                         </div>
+
+                        <!-- Show Other Wizards You Own -->
+                        <div class="show-my-wizards">
+                            <!-- View Your Other Wizards -->
+                            <a v-on:click="showAllWizardsOfOwner(currentWizard.owner, true, true)">View all owned Wizards</a>
+                        </div>
+                        <modal v-if="comparisonMyWizardsModalShown" @close="comparisonMyWizardsModalShown = false">
+                            <!-- Custom Modal Overrides -->
+                            <h3 slot="header">??? {{ currentWizard.owner }}'s Wizards</h3>
+                            <div slot="body">
+                                <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
+                                    <div class="wizard-card-block-item">
+                                        <!-- Wizard Image -->
+                                        <a v-on:click="showMyComparisonWizard(wizard.id); comparisonMyWizardsModalShown = false;">
+                                            <div class="wizard-card wizard-card-img">
+                                                <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'"></div>
+                                                <!-- Card Label (Link Text) -->
+                                                <div class="wizard-card wizard-card-label">
+                                                    <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </modal>
+
                         <!-- Traits -->
                         <div class="show-my-traits">
                             <a v-on:click="showMyWizardTraits = true" v-if="!showMyWizardTraits">Show unique traits</a>
                             <a v-on:click="showMyWizardTraits = false" v-if="showMyWizardTraits">Hide traits</a>
                         </div>
+
                         <div class="traits traits-container wizards-compare" v-if="currentWizard.traits && showMyWizardTraits">
                             <div class="traits traits-container-inner" v-if="currentWizard.traits.rarities">
                                 <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentWizard.traits.rarities.length">
