@@ -281,21 +281,19 @@ let vm = new Vue({
             return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
         },
         getIconUrlForAffinity: function(affinity) {
-            console.log("affinity: "+ affinity);
-            let url = "/img/icons/";
-            if (affinity === 1 || affinity === "01") {
-                url += this.affinities[1].toLowerCase();
-            } else if (affinity === 2 || affinity === "02") {
-                url += this.affinities[2].toLowerCase();
-            } else if (affinity === 3 || affinity === "03") {
-                url += this.affinities[3].toLowerCase();
-            } else if (affinity === 4 || affinity === "04") {
-                url += this.affinities[4].toLowerCase();
-            } else {
-                url += "UNKNOWN";
+            let index = affinity;
+            if (typeof(affinity) === 'string') {
+                index = parseInt(affinity);
             }
-            url += ".svg";
-            return url;
+
+            if (index < 0 || index > 4) {
+                console.log("Warning: affinity should be an index between 0 and 4");
+                return "";
+            }
+
+            const name = this.affinities[index].toLowerCase();
+
+            return "/img/icons/" + name + ".svg";
         },
         // Getters
         getAllWizards: async function () {
