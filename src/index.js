@@ -59,6 +59,7 @@ let vm = new Vue({
         // Dependencies
         Provider: require('./providers'),
         api: require('./api'),
+        duelUtils: require('./duels'),
         wizardUtils: require('./wizards'),
         // Web3
         web3Providers: {
@@ -217,6 +218,23 @@ let vm = new Vue({
             }
             return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
         },
+        getIconUrlForAffinity: function(affinity) {
+            console.log("affinity: "+ affinity);
+            let url = "/img/icons/";
+            if (affinity === 1 || affinity === "01") {
+                url += this.affinities[1].toLowerCase();
+            } else if (affinity === 2 || affinity === "02") {
+                url += this.affinities[2].toLowerCase();
+            } else if (affinity === 3 || affinity === "03") {
+                url += this.affinities[3].toLowerCase();
+            } else if (affinity === 4 || affinity === "04") {
+                url += this.affinities[4].toLowerCase();
+            } else {
+                url += "UNKNOWN";
+            }
+            url += ".svg";
+            return url;
+        },
         // Getters
         getAllWizards: async function () {
             // Loading state
@@ -341,7 +359,8 @@ let vm = new Vue({
             // Add metadata
             this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
             // Add duels
-            this.currentOpposingWizard.duels = await this.api.getDuelsByWizardId(wizardId);
+            const duels = await this.api.getDuelsByWizardId(wizardId);
+            this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels);
             
             // Disable loading
             this.isLoading = false;
