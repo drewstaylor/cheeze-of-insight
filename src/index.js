@@ -237,7 +237,7 @@ let vm = new Vue({
                 if (this.tokens.mainnet.wizards) {
                     this.currentWizard = this.tokens.mainnet.wizards[0];
                 }
-                console.log('User Tokens =>', this.tokens);
+                //console.log('User Tokens =>', this.tokens);
             }
 
             // Disable loading
