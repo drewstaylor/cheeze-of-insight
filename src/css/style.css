@@ -180,9 +180,11 @@ p.trait-name {
 
 
 .duels-card-container {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    border: 1px solid black;
+    border: 1.5px solid black;
     border-radius: 5px;
     background-color: #DDD;
 
@@ -192,10 +194,10 @@ p.trait-name {
     padding: 3px;
     margin: 3px;
 }
+.duels-card-left-container, .duels-card-right-container {
+    height: 100%;
+}
 .duels-card-left-wizard, .duels-card-right-wizard {
-    position: absolute;
-    top: 6px;
-
     border: 1px solid #666;
     border-radius: 3px;
     background-color: #CCC;
@@ -219,12 +221,12 @@ p.trait-name {
     right: 6px;
 }
 .duels-card-left-outcome, .duels-card-right-outcome {
-    position: absolute;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    bottom: 3px;
+
     width: 120px;
+
     padding-left: 6px;
     padding-right: 6px;
 }
@@ -234,31 +236,66 @@ p.trait-name {
 .duels-card-right-outcome {
     right: 6px;
 }
-.duels-outcome-affinity {
-    /* TODO: this should be affinity icon */
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 1px solid black;
-}
 .duels-outcome-base-points {
     color: black;
 }
 .duels-outcome-loss-points {
     color: red;
+    font-weight: 600;
 }
 .duels-outcome-gain-points {
     color: green;
+    font-weight: 600;
 }
+
 .duels-card-rounds {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
     margin: auto;
-    height: 50%;
-    width: 50%;
+    height: 100%;
+    width: 60%;
 
-    border: 1px solid black;
-    background-color: white;
 }
+.duels-card-round {
+    display: inline-block;
+    position: relative;
 
+    width: 84px;
+    height: 84px;
+}
+.duels-card-round-p1, .duels-card-round-p2 {
+    position: absolute;
+    display: flex;
+
+    width: 60%;
+    height: 60%;
+    border: 1px solid red;
+}
+.duels-card-round-p1 {
+    left: 0px;
+    top: 0px;
+}
+.duels-card-round-p2 {
+    right: 0px;
+    bottom: 0px;
+}
+.duels-card-round-winner {
+    z-index: +1;
+}
+.duels-card-round-icon {
+    margin: auto;
+    height: 90%;
+    width: 90%;
+}
+.duels-winner {
+    border: 2px solid green;
+    background-color: #CFC;
+}
+.duels-loser {
+    border: 1px solid red;
+}
 
 
 .duels-table td {
