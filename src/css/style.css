@@ -2,6 +2,10 @@
     min-width: 100%;
 }
 
+.hidden {
+    display: none !important;
+}
+
 input[type=number],
 select {
     min-width: 300px;
