@@ -13,4 +13,18 @@ config.imageStorageUrl = 'https://storage.googleapis.com/cheeze-wizards-producti
 config.proxyImageStorageUrl = 'https://cheezeofinsight.infiniteinternet.ca/svg/';
 config.openSeaTraits = 'api.opensea.io/collection/cheezewizard/';
 
+// Your web app's Firebase configuration
+// XXX TODO: Remove this security vulnerability from repo
+const firebaseConfig = {
+    apiKey: "AIzaSyBzUQmzf_kHpO_lU7FneB1xinVJifHfiUM",
+    authDomain: "cheeze-of-insight.firebaseapp.com",
+    databaseURL: "https://cheeze-of-insight.firebaseio.com",
+    projectId: "cheeze-of-insight",
+    storageBucket: "",
+    messagingSenderId: "84005637289",
+    appId: "1:84005637289:web:9252aa55eb5cf70b"
+};
+
+config.firebaseConfig = firebaseConfig;
+
 module.exports = config;
