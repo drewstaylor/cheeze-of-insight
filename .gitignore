@@ -8,3 +8,4 @@ src/svg/
 src/policy/
 build/
 *.bak
+src/config.js
