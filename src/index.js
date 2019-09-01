@@ -60,7 +60,10 @@ let vm = new Vue({
         Provider: require('./providers'),
         api: require('./api'),
         wizardUtils: require('./wizards'),
+        // Firebase
         firebase: require('./firebase'),
+        chat: null,
+        chatUser: null,
         // Web3
         web3Providers: {
             rinkeby: null,
@@ -160,8 +163,38 @@ let vm = new Vue({
             }
             // Twitter Login (Required for Chat / "Live" Testnet Duels)
             try {
-                await this.firebase.login();
-                this.userIsLoggedIn = true;
+                let chatUser = await this.firebase.listenForChatUser();
+                let chatAvailable = await this.firebase.login();
+                if (chatAvailable) {
+                    this.userIsLoggedIn = true;
+                    
+                    // Get Wizards if not fetched
+                    if (!this.wizards) {
+                        await this.getAllWizards();
+                        // Set user Wizards as required
+                        if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
+                            this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                            if (this.tokens.mainnet.wizards) {
+                                this.currentWizard = this.tokens.mainnet.wizards[0];
+                            }
+                            //console.log('User Tokens =>', this.tokens);
+                        }
+
+                        this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
+                    } else {
+                        // Set user Wizards as required
+                        if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
+                            this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                            if (this.tokens.mainnet.wizards) {
+                                this.currentWizard = this.tokens.mainnet.wizards[0];
+                            }
+                            //console.log('User Tokens =>', this.tokens);
+                        }
+
+                        this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
+                    }
+                    console.log('Chat =>', this.chat);
+                }
             } catch (e) {
                 console.log('Error logging into Firebase =>', e);
             }
@@ -263,7 +296,7 @@ let vm = new Vue({
             this.totalAllWizardsPages = this.totalWizardsPages;
 
             // Set user Wizards as required
-            if (this.userOwnsWizards) {
+            if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
                 this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
                 if (this.tokens.mainnet.wizards) {
                     this.currentWizard = this.tokens.mainnet.wizards[0];

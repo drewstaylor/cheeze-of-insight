@@ -49,8 +49,8 @@
                 </ul>
             </div>
 
-            <div id="firechat-wrapper">
-            </div>
+            <!-- Chat UI -->
+            <div id="firechat-wrapper" v-bind:class="{hidden: !userIsLoggedIn}"></div>
 
             <!-- Browse All Wizards -->
             <div class="row view-all-wizards" v-if="navigation.state == VIEW_ALL_WIZARDS">
