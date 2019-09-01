@@ -614,7 +614,7 @@
                         </div>
                         <modal v-if="comparisonMyWizardsModalShown" @close="comparisonMyWizardsModalShown = false">
                             <!-- Custom Modal Overrides -->
-                            <h3 slot="header">??? {{ currentWizard.owner }}'s Wizards</h3>
+                            <h3 slot="header">{{ currentWizard.owner }}'s Wizards</h3>
                             <div slot="body">
                                 <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
                                     <div class="wizard-card-block-item">
