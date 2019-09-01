@@ -48,6 +48,10 @@ ul.wizards-list {
     list-style: none;
 }
 
+div.page-controls {
+    margin-bottom: 1.75rem;
+}
+
 div.predict-btn,
 div.prediction-data {
     margin-top: 1.5rem;

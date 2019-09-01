@@ -126,10 +126,10 @@
                     </div>
                     <!-- Paging -->
                     <div class="page-controls">
-                        <button class="btn btn-primary" v-on:click="previousWizardsPage();">Previous</button>
-                        <button class="btn btn-inverse" v-on:click="currentWizardsPage = 1;"><<</button>
-                        <button class="btn btn-inverse" v-on:click="currentWizardsPage = totalWizardsPages">>></button>
-                        <button class="btn btn-primary" v-on:click="nextWizardsPage();">Next</button>
+                        <button class="btn btn-primary" v-on:click="previousWizardsPage();" :disabled="currentWizardsPage <= 1">Previous</button>
+                        <button class="btn btn-inverse" v-on:click="currentWizardsPage = 1;" :disabled="currentWizardsPage <= 1"><<</button>
+                        <button class="btn btn-inverse" v-on:click="currentWizardsPage = totalWizardsPages" :disabled="currentWizardsPage >= totalWizardsPages">>></button>
+                        <button class="btn btn-primary" v-on:click="nextWizardsPage();" :disabled="currentWizardsPage >= totalWizardsPages">Next</button>
                     </div>
                 </div>
             </div>

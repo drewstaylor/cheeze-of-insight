@@ -90,6 +90,7 @@ let vm = new Vue({
         currentWizardsPage: 1,
         wizardsPageSize: 10,
         totalWizardsPages: null,
+        totalAllWizardsPages: null,
         wizards: null,
         wizardsSortedBy: null,
         sortedBy: [
@@ -230,6 +231,7 @@ let vm = new Vue({
 
             // Get pagination args.
             this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
+            this.totalAllWizardsPages = this.totalWizardsPages;
 
             // Set user Wizards as required
             if (this.userOwnsWizards) {
@@ -466,8 +468,10 @@ let vm = new Vue({
                     // Show requesting user Wizards
                     wizards = this.tokens.mainnet.wizards;
                     // Return owned Wizards
-                    if (wizards && this.currentWizardsPage) {
+                    if (wizards && this.currentWizardsPage) {//
                         let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        let wizardsLength = wizards.length;
+                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                     } else {
                         return [];
@@ -479,6 +483,7 @@ let vm = new Vue({
                     // Return all Wizards
                     if (wizards && this.currentWizardsPage) {
                         let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        this.totalWizardsPages = this.totalAllWizardsPages;
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                     } else {
                         return [];
@@ -486,7 +491,7 @@ let vm = new Vue({
                 }
             // Returns Wizards filtered by ID or by Affinity
             } else if (this.wizardsPrimaryFilter.length) {
-                filter = this.wizardsPrimaryFilter;
+                filter = this.wizardsPrimaryFilter.toLowerCase();
                 wizards = this.wizards.filter((wizard) => {
                     if (wizard.id.toString().indexOf(filter) > -1) {
                             return wizard;
@@ -497,13 +502,15 @@ let vm = new Vue({
                 });
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    let wizardsLength = wizards.length;
+                    this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
                 }
             // Returns Wizards filtered by Vulnerability
             } else if (this.wizardsVulnerabilityFilter.length > 2) {
-                filter = this.wizardsVulnerabilityFilter;
+                filter = this.wizardsVulnerabilityFilter.toLowerCase();
                 wizards = this.wizards.filter((wizard) => {
                     let weakness = this.wizardUtils.getVulnerability(parseInt(wizard.affinity));
                     if (weakness.indexOf(filter) > -1) {
@@ -512,6 +519,8 @@ let vm = new Vue({
                 });
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    let wizardsLength = wizards.length;
+                    this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
@@ -522,6 +531,7 @@ let vm = new Vue({
                 //return wizards;
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    this.totalWizardsPages = this.totalAllWizardsPages;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
