@@ -73,9 +73,9 @@ div.traits.traits-container {
     margin: auto;
 }
 
-div.block-item.block-item-outer {
+/*div.block-item.block-item-outer {
     margin: 0.5rem;
-}
+}*/
 
 div.block-item.block-item-inner {
     background-color: aliceblue;
