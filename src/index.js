@@ -90,6 +90,7 @@ let vm = new Vue({
         currentWizardsPage: 1,
         wizardsPageSize: 10,
         totalWizardsPages: null,
+        totalAllWizardsPages: null,
         wizards: null,
         wizardsSortedBy: null,
         sortedBy: [
@@ -111,11 +112,14 @@ let vm = new Vue({
         currentOpposingWizard: {},
         selectedWizardsByAddress: {},
         selectedWizardsByAddressModalShown: false,
+        comparisonWizardsByAddressModalShown: false,
+        comparisonMyWizardsModalShown: false,
         matchPrediction: null,
         predictionType: null,
         wizardsSearchType: PRIMARY_SEARCH,
         wizardsPrimaryFilter: '',
         wizardsVulnerabilityFilter: '',
+        wizardsMineFilter: false,
         showSearch: false,
         showMyWizardTraits: false,
         showOpponentTraits: false,
@@ -227,6 +231,7 @@ let vm = new Vue({
 
             // Get pagination args.
             this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
+            this.totalAllWizardsPages = this.totalWizardsPages;
 
             // Set user Wizards as required
             if (this.userOwnsWizards) {
@@ -296,16 +301,27 @@ let vm = new Vue({
             }
         },
         // View worker
-        showAllWizardsOfOwner: async function (ownerAddress) {
+        showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false, self = false) {
             // Nothing to do here...
             if (!ownerAddress) {
                 return;
             }
             // Fetch Wizards
-            this.fetchWizardsOwnedByAddress(this.currentOpposingWizard.owner);
+            this.fetchWizardsOwnedByAddress(ownerAddress);
 
             // Launch modal
-            this.selectedWizardsByAddressModalShown = true;
+            if (!isComparisonMode) {
+                // Show browse single Wizard modal
+                this.selectedWizardsByAddressModalShown = true;
+            } else if (isComparisonMode && !self)  {
+                console.log('show opponent wizards');
+                // Show comparison opponent Wizards
+                this.comparisonWizardsByAddressModalShown = true;
+            } else {
+                console.log('show my wizards');
+                // Show all my Wizards
+                this.comparisonMyWizardsModalShown = true;
+            }
         },
         showWizard: async function (wizardId = null) {
             if (wizardId == null) {
@@ -330,6 +346,24 @@ let vm = new Vue({
             // Disable loading
             this.isLoading = false;
             console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
+        },
+        showComparisonWizard: async function (wizardId = null) {
+            // Nothing to do..
+            if (!wizardId) {
+                return;
+            }
+            // Else
+            this.currentOpposingWizard.selectedId = wizardId;
+            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+        },
+        showMyComparisonWizard: async function (wizardId = null) {
+            // Nothing to do..
+            if (!wizardId) {
+                return;
+            }
+            // Else
+            this.currentWizard.selectedId = wizardId;
+            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
         },
         showPredictMatchOutcome: async function () {
             if (!this.wizards) {
@@ -427,9 +461,37 @@ let vm = new Vue({
         wizardsPage: function () {
             let wizards,
                 filter;
+            
+            // Returns Wizards filter => owned by current DApp user
+            if (this.wizardsMineFilter) {
+                if (this.userOwnsWizards) {
+                    // Show requesting user Wizards
+                    wizards = this.tokens.mainnet.wizards;
+                    // Return owned Wizards
+                    if (wizards && this.currentWizardsPage) {//
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        let wizardsLength = wizards.length;
+                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
+                    }
+                } else {
+                    // Defaulting to all Wizards browse
+                    this.wizardsMineFilter = false;
+                    wizards = this.wizards;
+                    // Return all Wizards
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        this.totalWizardsPages = this.totalAllWizardsPages;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
+                    }
+                }
             // Returns Wizards filtered by ID or by Affinity
-            if (this.wizardsPrimaryFilter.length) {
-                filter = this.wizardsPrimaryFilter;
+            } else if (this.wizardsPrimaryFilter.length) {
+                filter = this.wizardsPrimaryFilter.toLowerCase();
                 wizards = this.wizards.filter((wizard) => {
                     if (wizard.id.toString().indexOf(filter) > -1) {
                             return wizard;
@@ -440,13 +502,15 @@ let vm = new Vue({
                 });
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    let wizardsLength = wizards.length;
+                    this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
                 }
             // Returns Wizards filtered by Vulnerability
             } else if (this.wizardsVulnerabilityFilter.length > 2) {
-                filter = this.wizardsVulnerabilityFilter;
+                filter = this.wizardsVulnerabilityFilter.toLowerCase();
                 wizards = this.wizards.filter((wizard) => {
                     let weakness = this.wizardUtils.getVulnerability(parseInt(wizard.affinity));
                     if (weakness.indexOf(filter) > -1) {
@@ -455,6 +519,8 @@ let vm = new Vue({
                 });
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    let wizardsLength = wizards.length;
+                    this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];
@@ -465,6 +531,7 @@ let vm = new Vue({
                 //return wizards;
                 if (wizards && this.currentWizardsPage) {
                     let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                    this.totalWizardsPages = this.totalAllWizardsPages;
                     return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                 } else {
                     return [];

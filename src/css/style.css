@@ -22,9 +22,18 @@ a {
     cursor: pointer;
 }
 
+a.real-styled {
+    color: #007bff !important;
+}
+
 a:hover,
 a:active {
     text-decoration: underline !important;
+}
+
+a.real-styled:hover,
+a.real-styled:active {
+    color: #0056B3 !important;
 }
 
 ul.list-group {
@@ -37,6 +46,10 @@ ul.list-group li:hover {
 
 ul.wizards-list {
     list-style: none;
+}
+
+div.page-controls {
+    margin-bottom: 1.75rem;
 }
 
 div.predict-btn,
@@ -63,6 +76,10 @@ div.search-controls {
 div.traits.traits-container {
     margin: auto;
 }
+
+/*div.block-item.block-item-outer {
+    margin: 0.5rem;
+}*/
 
 div.block-item.block-item-inner {
     background-color: aliceblue;
@@ -107,6 +124,18 @@ div.wizard-card-block-item {
     display: inline-block;
     width: 220px;
     height: 220px;
+}
+
+div.wizard-card-block-item-outer {
+    margin: 0.25rem;
+}
+
+div.wizard-card-img {
+    padding: 0.5rem;
+}
+
+div.wizard-card-img:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 div.selected-wizard-left,
@@ -329,12 +358,15 @@ p.trait-name {
 .modal-container {
     width: auto;
     max-width: 90vw;
+    max-height: 90vh;
     margin: 0px auto;
     padding: 20px 30px;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     font-family: Helvetica, Arial, sans-serif;
     background: #ffffff;
+    overflow-y: auto;
+    height: 100%;
 }
   
 .modal-header h3 {
