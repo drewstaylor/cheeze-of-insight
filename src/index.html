@@ -48,7 +48,8 @@
 
                     <!-- Wizards Search -->
                     <div class="search-toggle">
-                        <a v-on:click="showSearch = true;" v-if="!showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Seach Wizards</a>
+                        <a v-on:click="showSearch = true;" v-if="!showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Search Wizards</a>
+                        <a v-on:click="showSearch = false;" v-if="showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Hide Search Options</a>
                         <!-- Show Only My Owned Wizards -->
                         <span class="search-my-wizards-toggle" v-if="userOwnsWizards"> / 
                             <a v-on:click="wizardsMineFilter = true;" v-if="!wizardsMineFilter">Show only my Wizards</a>
@@ -74,7 +75,7 @@
                                     <a v-on:click="wizardsSearchType = VULNERABILITY_SEARCH;">Switch to weaklings search mode</a>
                                 </p>
                                 <p>
-                                    <a v-on:click="showSearch = false;">Hide Search</a>
+                                    <a v-on:click="showSearch = false;">Hide Search Options</a>
                                 </p>
                             </div>
                         </div>
