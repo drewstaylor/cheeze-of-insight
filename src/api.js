@@ -4,20 +4,10 @@
 //require('dotenv').config({path: __dirname + '/.env'}); // <- Won't work in a browser extension
 const request = require('request-promise');
 const { parse, stringify } = require('svgson')
+const config = require('./config');
+const traitsData = require('./json/wizardTraits.json');
 
 // Environment
-
-// XXX TODO: Figure out a secure way to not share all of this :x
-const apiToken = 'PFJKqO5Hv9RJmrnoX_QMDRdUK1I7IwKwnewRDq58';
-const apiUser = 'drew@infiniteinternet.ca';
-const apiMainnetBaseUrl = 'cheezewizards-mainnet.alchemyapi.io';
-const apiRinkebyBaseUrl = 'cheezewizards-rinkeby.alchemyapi.io';
-const mainnetTournamentContract = '0xec2203e38116f09e21bc27443e063b623b01345a';
-const mainnetWizardsContract = '0x023C74B67dfCf4c20875A079e59873D8bBE42449';
-const imageStorageUrl = 'https://storage.googleapis.com/cheeze-wizards-production/' + mainnetTournamentContract + '/';
-const proxyImageStorageUrl = 'https://cheezeofinsight.infiniteinternet.ca/svg/';
-const openSeaTraits = 'api.opensea.io/collection/cheezewizard/';
-const traitsData = require('./json/wizardTraits.json');
 
 // Utility Functions
 const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', mainnet = true) => {
@@ -38,15 +28,15 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
             }
         };
     } else {
-        let apiUrl = (mainnet == true) ? scheme + apiMainnetBaseUrl + '/' + endpoint : scheme + apiRinkebyBaseUrl + '/' + endpoint;
+        let apiUrl = (mainnet == true) ? scheme + config.apiMainnetBaseUrl + '/' + endpoint : scheme + config.apiRinkebyBaseUrl + '/' + endpoint;
         options = {
             method: method,
             uri: apiUrl,
             // Headers
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-token': apiToken,
-                'x-email': apiUser
+                'x-api-token': config.apiToken,
+                'x-email': config.apiUser
             }
         };
     }
@@ -141,9 +131,9 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
     }
     // Set image path
     if (proxy) {
-        imageUrl = proxyImageStorageUrl + '?id=' + id;
+        imageUrl = config.proxyImageStorageUrl + '?id=' + id;
     } else {
-        imageUrl = imageStorageUrl + id + '.svg';
+        imageUrl = config.imageStorageUrl + id + '.svg';
     }
     return imageUrl;
 };
@@ -163,7 +153,7 @@ const getWizardTraitsById = async (id = null) => {
 
     // Fetch data
     let wizardSvgUrl = getWizardImageUrlById(id, true);
-    //let traitsData = await apiQuery(openSeaTraits + '?format=json');
+    //let traitsData = await apiQuery(config.openSeaTraits + '?format=json');
     let wizardSvg = await apiQuery(wizardSvgUrl);
     wizardSvg = wizardSvg.children;
 
