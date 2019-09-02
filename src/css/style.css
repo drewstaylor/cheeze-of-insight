@@ -293,6 +293,12 @@ p.trait-name {
     cursor: pointer;
 }
 
+div.menu.login-items {
+    position: absolute;
+    top: 1.5rem;
+    left: 0.5rem;
+}
+
 .vs-sidebar--background {
     height: 0;
     width: 0;
