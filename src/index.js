@@ -216,6 +216,7 @@ let vm = new Vue({
                         }
 
                         this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
+                        await this.chat.enterRoom(config.firechatConfig.generalRoom);
                     }
 
                     // Get general room and list of online users
