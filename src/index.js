@@ -276,7 +276,7 @@ let vm = new Vue({
         },
         // Context Menu Worker
         contextMenuResolver: function (event) {
-            console.log('Option Selected =>', JSON.stringify(event));
+            console.log('Option Selected =>', event);
         },
 
         // UI
