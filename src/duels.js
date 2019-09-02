@@ -44,6 +44,8 @@ const addDuelDisplayData = (duel) => {
     duelDisplayObj.wizard1DidWin = (gain1 >= 0);
     duelDisplayObj.wizard2DidWin = (gain2 >= 0);
 
+    duelDisplayObj.moveResults = getMovesetResults(duel.moveSet1, duel.moveSet2);
+
     return duelDisplayObj;
 }
 
@@ -61,8 +63,91 @@ const addDuelDisplayDataArray = (arr) => {
     return displayArray;
 };
 
+/**
+ * Utility to convert a "moveset" into an array of integers.
+ *
+ * A moveset is a series of moves (forecast spells, in Cheeze Wizards parlance)
+ * crammed into a hex string, like so:
+ *
+ * "0x0203040302000000000000000000000000000000000000000000000000000000"
+ *
+ * In this case, the spells cast are [2, 3, 4, 3, 2]
+ */
+const convertMovesetToIntArray = (moveset) => {
+    if (! moveset || typeof(moveset) !== 'string') {
+        return [];
+    }
+
+    const arr = [];
+    for (let i=0; i<5; i++) {
+        const index = 2 + (i*2);
+        const str = moveset.substring(index, index+2);
+        arr[i] = parseInt(str);
+    }
+
+    return arr;
+}
+
+/**
+ * Convert two "moves" (identified by ints) into an object describing
+ * the match.
+ *
+ * The object returned has the structure:
+ *
+ * const results = {
+ *     p1 = <index of player 1's move>
+ *     p2 = <index of player 2's move>
+ *     winner = <"tie", "p1, or "p2">
+ * };
+ */
+const getMoveResults = (move1, move2) => {
+    const results = {};
+    results.p1 = move1;
+    results.p2 = move2;
+
+    // indices correspond to:
+    const fire = 2;
+    const wind = 3
+    const water = 4;
+    if (move1 == move2) {
+        results.winner = "tie";
+    } else if (move1 == fire) {
+        if (move2 == wind) results.winner = "p1";
+        if (move2 == water) results.winner = "p2";
+    } else if (move1 == wind) {
+        if (move2 == water) results.winner = "p1";
+        if (move2 == fire) results.winner = "p2";
+    } else if (move1 == water) {
+        if (move2 == fire) results.winner = "p1";
+        if (move2 == wind) results.winner = "p2";
+    }
+
+    return results;
+}
+
+/**
+ * Returns an array of "move" objects (see getMoveResults()).
+ *
+ * @param moveset1 should be a hex-represented moveset (see convertMovesetToIntArray())
+ * @param moveset2 should be a hex-represented moveset (see convertMovesetToIntArray())
+ */
+const getMovesetResults = (moveset1, moveset2) => {
+    const moves1 = convertMovesetToIntArray(moveset1);
+    const moves2 = convertMovesetToIntArray(moveset2);
+
+    const arr = [];
+    for (let i=0; i<5; i++) {
+        arr[i] = getMoveResults(moves1[i], moves2[i]);
+    }
+
+    return arr;
+}
+
 module.exports = {
     addDuelDisplayData,
     addDuelDisplayDataArray,
+    convertMovesetToIntArray,
+    getMovesetResults,
+    getMoveResults,
 };
 
