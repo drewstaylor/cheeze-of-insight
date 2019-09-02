@@ -63,7 +63,6 @@ let vm = new Vue({
         // Firebase
         firebase: require('./firebase'),
         chat: null,
-        chatUser: null,
         // Web3
         web3Providers: {
             rinkeby: null,

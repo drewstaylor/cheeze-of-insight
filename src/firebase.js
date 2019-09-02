@@ -81,27 +81,41 @@ const getChat = function (user, wizards = []) {
  * @param {Object} : The target Firebase chat `Object` to be queried for rooms
  * @return {Object} : Returns an `Array` of currently available chat rooms
  */
-const getRooms = async function getRooms(chat) {
-    /*chat.createRoom('public', 'public', function (roomId) {
-        console.log('Created Room =>', roomId);
-    });*/
-
+const getRooms = async function (chat) {
+    if (!chat) {
+        return;
+    }
     let rooms;
-    chat.getRoomList((roomArray) => {
+    await chat.getRoomList((roomArray) => {
         rooms = roomArray;
         console.log('Chat Rooms =>', rooms);
     });
     return rooms;
 };
 
-/**
- * Gets a list of chat rooms enabled in Firebase / Firechat
- * @param {Object} : The target Firebase chat `Object` to be queried for rooms
- * @return {Object} : Returns an `Array` of currently available chat rooms
- */
-const createRoom = async function (chat) {
 
-}
+/**
+ * Creates a new chat channel
+ * @param {Object} chat: The target Firebase chat `Object`
+ * @param {String} roomName: The name of the room to be created
+ * @param {String} type: The type of room to be created. Either 'public' or 'private'. 
+ * @return {String} : Returns the ID of the created room
+ */
+const createRoom = async function (chat, roomName, type) {
+    let room = '';
+    if (!chat || !roomName || !type) {
+        return;
+    } else if (type !== 'private' && type !== 'public') {
+        // Room type must be either 'private' or 'public'
+        return;
+    }
+    await chat.createRoom(roomName, type, (roomId) => {
+        room = roomId;
+        console.log('Created Room =>', room);
+    });
+    // Return ID of created room
+    return room;
+};
 
 // Release Exports
 module.exports = {
@@ -111,5 +125,6 @@ module.exports = {
     logout: logout,
     getChat: getChat,
     listenForChatUser: listenForChatUser,
-    getRooms: getRooms
+    getRooms: getRooms,
+    createRoom: createRoom
 };
