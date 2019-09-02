@@ -47,10 +47,11 @@
                         </p>
                     </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
+                        <!-- Twitter Username -->
                         <span class="label-wrapper" v-if="chat">
-                            <h5 v-if="chat.userData">{{ chat.userData.name }}</h5>
+                            <h5 v-if="userIsLoggedIn && usersOnline && chat.userData">{{ chat.userData.name }} - </h5>
                         </span>
-                        <h5 v-else-if="wallets.mainnet">{{ wallets.mainnet }}</h5>
+                        <h5 v-if="wallets.mainnet">{{ wallets.mainnet }}</h5>
                     </div>
                 </div>
 
@@ -66,15 +67,17 @@
                     <div class="select-duel-partner" v-else-if="userIsLoggedIn && chatState == 'browsing'">
                         <h5>Summoners Online:</h5>
 
-                        <!-- Online Users -->
-                        <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)">
-                            <!-- Yourself / Current User -->
-                            <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
-                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
-                            </div>
-                            <!-- Other Users -->
-                            <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name">
-                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
+                        <!-- Online Users List -->
+                        <div v-if="usersOnline && chat">
+                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)">
+                                <!-- Yourself / Current User -->
+                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
+                                    <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
+                                </div>
+                                <!-- Other Users -->
+                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name">
+                                    <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
+                                </div>
                             </div>
                         </div>
 
