@@ -284,3 +284,25 @@ p.trait-name {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
+
+/* Sidebar */
+.chat-icon.sidebar-ctrlr {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    cursor: pointer;
+}
+
+.vs-sidebar--background {
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+.sidebar-wrapper, 
+.sidebar-wrapper h5 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+}

@@ -93,7 +93,6 @@ const getRooms = async function (chat) {
     return rooms;
 };
 
-
 /**
  * Creates a new chat channel
  * @param {Object} chat: The target Firebase chat `Object`

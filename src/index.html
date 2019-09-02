@@ -10,6 +10,8 @@
     <!-- CSS Imports -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+    
     <link href="node_modules/firechat/dist/firechat.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!-- JS Imports -->
@@ -17,10 +19,55 @@
     <script type="text/javascript" src="js/firebase.js"></script>
     <script type="text/javascript" src="node_modules/firechat/dist/firechat.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/vuefire.js"></script>
+    <script type="text/javascript" src="js/vuesax.js"></script>
 </head>
 <body>
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
+            <!-- Chat Sidebar -->
+            <sidebar>
+                <div class="menu login-items" slot="menu-items">
+                    <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
+                    <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
+                </div>
+
+                <!-- Header -->
+                <div class="header-sidebar" slot="header">
+                    <div class="wrapper" v-if="!userIsLoggedIn">
+                        <p>
+                            <a v-on:click="login();">Login</a>
+                        </p>
+                    </div>
+                    <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
+                        <h5 v-if="wallets.mainnet">{{ wallets.mainnet }}</h4>
+                        <h5 v-else-if="chat">{{ chat._userName }}</h4>
+                    </div>
+                </div>
+
+                <!-- Body - Select Opponent / Active Chat Window -->
+                <div class="chat-pane" slot="body">
+
+                    <!-- Chat not connected -->
+                    <div class="chat-invalid" v-if="!userIsLoggedIn">
+                        <p>Please login to find online partners for test duels</p>
+                    </div>
+
+                    <!-- Select Opponent From Online Users -->
+                    <div class="select-duel-partner" v-else-if="userIsLoggedIn && chatState == 'browsing'">
+                        <h5>Summoners Online:</h5>
+                        <div v-for="user in usersOnline">
+                            <div>{{ user['.key'] }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Active Chat Window -->
+                    <div class="select-duel-partner"></div>
+                </div>
+
+                <!-- Footer - Chat Box Input -->
+            </sidebar>
+
             <h3>Welcome to the Holy Cheeze of Insight!</h3>
             <div class="img-main" v-if="navigation.state < 0">
                 <img class="img-fluid" src="img/holiness.jpg">
@@ -36,10 +83,6 @@
             </div>
             <div class="row navigation">
                 <ul class="list-group">
-                    <li class="list-group-item view-all-wizards">
-                        <a v-on:click="login();" v-if="!userIsLoggedIn">Login with Twitter</a>
-                        <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
-                    </li>
                     <li class="list-group-item view-all-wizards" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}">
                         <a v-on:click="setNavigation(0);">Browse Wizards</a>
                     </li>
@@ -48,9 +91,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Chat UI -->
-            <div id="firechat-wrapper" v-bind:class="{hidden: !userIsLoggedIn}"></div>
 
             <!-- Browse All Wizards -->
             <div class="row view-all-wizards" v-if="navigation.state == VIEW_ALL_WIZARDS">
@@ -1118,6 +1158,38 @@
 
         </div>
     </div>
+
+    <!-- Template For Sidebar Component -->
+    <script type="text/x-template" id="sidebar-template">
+        <div id="parentx">
+            <slot name="menu-items"></slot>
+            <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar">
+            <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
+            
+                <!-- Close Sidebar -->
+                <div class="close-sidebar">
+                    <a class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
+                </div>
+
+                <!-- Sidebar Header -->
+                <slot class="header-sidebar" name="header">
+                    <vs-avatar  size="70px" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+                    <h4>Title</h4>
+                </slot>
+
+                <!-- Main Content -->
+                <slot name="body">Body</slot>
+
+                <!-- Footer -->
+                <div class="footer-sidebar" slot="footer">
+                    <p>Footer</p>
+                </div>
+            
+            </vs-sidebar>
+        </div>
+    </script>
+    <!-- End Sidebar Template -->
+    
     <!-- Template For Modal Component -->
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
@@ -1146,6 +1218,7 @@
         </transition>
     </script>
     <!-- End Modal Template -->
+
     <script type="text/javascript" src="build/app.js"></script>
 </body>
 </html>
