@@ -46,6 +46,22 @@ Vue.component('sidebar', {
     })
 });
 
+// Context menus (right-click) component
+const contextMenuOptions = [
+    {
+        action: 'challenge',
+        name: 'Challenge to testnet duel',
+        isValid: null,
+        wizardChallenged: null,
+        wizardChallenging: null
+    },
+    {
+        action: 'message',
+        name: 'Invite this user to chat'
+    }
+];
+Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
+
 // Online users ref.
 const FIREBASE = require('./firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
@@ -133,6 +149,11 @@ let vm = new Vue({
         chatState: 'browsing',
         usersOnline: [],
 
+        // Chat interface menu and options
+        testnetContextMenuOptions: contextMenuOptions,
+        //testnetContextMenuId: 'testnet_challenge_menu',
+
+
         userOwnsWizards: 0,
         currentWizard: {},
         currentOpposingWizard: {},
@@ -180,6 +201,7 @@ let vm = new Vue({
         }
     },
     methods: {
+        // Chat / Login
         login: async function () {
             // Process login as required
             if (this.userIsLoggedIn) {
@@ -246,6 +268,18 @@ let vm = new Vue({
                 console.log('Error logging out user from Firebase =>', e);
             }
         },
+        // Context Menu Handler
+        contextMenuHandler: function (event, item) {
+            //console.log('contextMenuHandler =>', [event, item]);
+            console.log('this.$refs =>', this.$refs);
+            this.$refs.chatContextMenu.showMenu(event, item);
+        },
+        // Context Menu Worker
+        contextMenuResolver: function (event) {
+            console.log('Option Selected =>', JSON.stringify(event));
+        },
+
+        // UI
         setNavigation: function (state = null) {
             // Change navigation state as required
             if (this.navigation.state == state) {

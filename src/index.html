@@ -21,11 +21,17 @@
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/vuefire.js"></script>
     <script type="text/javascript" src="js/vuesax.js"></script>
+
+
+    <!-- Sidebar Menu Items Context Menu -->
+    <script src="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.css">
 </head>
 <body>
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
-            <!-- Chat Sidebar -->
+
+            <!-- Chat Component (Sidebar) -->
             <sidebar>
                 <div class="menu login-items" slot="menu-items">
                     <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
@@ -40,8 +46,10 @@
                         </p>
                     </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
-                        <h5 v-if="wallets.mainnet">{{ wallets.mainnet }}</h4>
-                        <h5 v-else-if="chat">{{ chat._userName }}</h4>
+                        <span class="label-wrapper" v-if="chat">
+                            <h5 v-if="chat.userData">{{ chat.userData.name }}</h5>
+                        </span>
+                        <h5 v-else-if="wallets.mainnet">{{ wallets.mainnet }}</h5>
                     </div>
                 </div>
 
@@ -56,9 +64,53 @@
                     <!-- Select Opponent From Online Users -->
                     <div class="select-duel-partner" v-else-if="userIsLoggedIn && chatState == 'browsing'">
                         <h5>Summoners Online:</h5>
-                        <div v-for="user in usersOnline">
-                            <div>{{ user['.key'] }}</div>
+
+                        <!-- Online Users -->
+                        <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)">
+                            <!-- Yourself / Current User -->
+                            <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
+                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
+                            </div>
+                            <!-- Other Users -->
+                            <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name">
+                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
+                            </div>
                         </div>
+
+                        <!-- Context Menu Pop-over -->
+                        <vue-simple-context-menu
+                            :element-id="'testnet_challenge_menu'"
+                            :options="testnetContextMenuOptions"
+                            :ref="'chatContextMenu'"
+                            @option-clicked="contextMenuResolver"
+                        >
+                        </vue-simple-context-menu>
+
+
+                        <!--
+                        <div class="item-wrapper">
+                            <div v-for="item in items" @click.prevent.stop="handleClick($event, item)" class="item-wrapper__item">
+                                {{item.name}}
+                            </div>
+                        </div>
+
+                        <vue-simple-context-menu
+                            :elementId="'myUniqueId'"
+                            :options="options"
+                            :ref="'vueSimpleContextMenu'"
+                            @option-clicked="optionClicked">
+                        </vue-simple-context-menu>
+
+                        handleClick (event, item) {
+                            this.$refs.vueSimpleContextMenu.showMenu(event, item)
+                        }
+
+                        optionClicked (event) {
+                            window.alert(JSON.stringify(event))
+                        }
+                        -->
+
+
                     </div>
 
                     <!-- Active Chat Window -->
@@ -67,6 +119,7 @@
 
                 <!-- Footer - Chat Box Input -->
             </sidebar>
+            <!-- End Chat Component (Sidebar) -->
 
             <h3>Welcome to the Holy Cheeze of Insight!</h3>
             <div class="img-main" v-if="navigation.state < 0">
