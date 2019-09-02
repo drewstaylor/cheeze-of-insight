@@ -316,3 +316,7 @@ div.menu.login-items {
 span.you {
     font-style: italic;
 }
+
+#testnet_challenge_menu {
+    left: 0 !important;
+}
