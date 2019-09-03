@@ -115,7 +115,7 @@
                 <!-- Custom Modal Overrides -->
                 <h3 slot="header">Which opponent Wizard would you like to challenge?</h3>
                 <div slot="body">
-                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
+                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress" v-if="selectedWizardsByAddress.length">
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, true); chatChallengeModal_step1 = false;">
@@ -129,6 +129,9 @@
                             </a>
                         </div>
                     </div>
+                    <div v-if="!selectedWizardsByAddress.length">
+                        <p>This user doesn't own any wizards, sorry!</p>
+                    </div>
                 </div>
             </modal>
 
@@ -137,7 +140,7 @@
                 <!-- Custom Modal Overrides -->
                 <h3 slot="header">Which Wizard would you like to send into battle?</h3>
                 <div slot="body">
-                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in tokens.mainnet.wizards">
+                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in tokens.mainnet.wizards" v-if="tokens.mainnet.wizards.length">
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, false); chatChallengeModal_step2 = false;">
@@ -150,6 +153,9 @@
                                 </div>
                             </a>
                         </div>
+                    </div>
+                    <div v-if="!tokens.mainnet.wizards.length">
+                        <p>You don't own any wizards, sorry!</p>
                     </div>
                 </div>
             </modal>
