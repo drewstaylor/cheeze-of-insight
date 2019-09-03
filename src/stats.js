@@ -2,6 +2,11 @@
 
 const duelUtils = require('./duels');
 
+const Constants = require('./constants');
+
+const { ADVANTAGED, DISADVANTAGED, EQUAL } = Constants.AffinityRelationships;
+const { FIRE, WIND, WATER, NEUTRAL } = Constants.AffinityIndexes;
+
 /**
  * Given an array of duels for a given wizard, calculates some stats about overall
  * duel outcomes.
@@ -86,7 +91,113 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
     return stats;
 }
 
+/**
+ * Calculates stats for the moves made by one wizard against another. These stats fall
+ * into different categories:
+ *
+ *   // a move that play's to the wizard's affinity
+ *   usesOwnAffinityVsNeutral: 0,
+ *   usesOwnAffinityVsSame: 0,
+ *   usesOwnAffinityWhileAdvantaged: 0,
+ *   usesOwnAffinityWhileDisadvantaged: 0,
+ *
+ *   // a move that play's to the opponent's weakness
+ *   usesOpponentsWeaknessVsSame: 0,
+ *   usesOpponentsWeaknessWhileAdvantaged: 0,
+ *   usesOpponentsWeaknessWhileDisadvantaged: 0,
+ *
+ *   // a move that play's against the wizard's affinity
+ *   usesOwnWeaknessVsSame: 0,
+ *   usesOwnWeaknessWhileAdvantaged: 0,
+ *   usesOwnWeaknessWhileDisadvantaged: 0,
+ *
+ * @param wizardAffinity is the affinity index of the wizard for which we are generating stats
+ * @param opponentAffinity is the affinity index of the opposing wizard
+ * @param move is the wizard's move against its opponent
+ *
+ * @return an object with stats for the given match
+ */
+const calculateWizardMoveStats = (wizardAffinity, opponentAffinity, move) => {
+    const stats = {
+        usesOwnAffinityVsNeutral: 0,
+        usesOwnAffinityVsSame: 0,
+        usesOwnAffinityWhileAdvantaged: 0,
+        usesOwnAffinityWhileDisadvantaged: 0,
+
+        usesOpponentsWeaknessVsSame: 0,
+        usesOpponentsWeaknessWhileAdvantaged: 0,
+        usesOpponentsWeaknessWhileDisadvantaged: 0,
+
+        usesOwnWeaknessVsSame: 0,
+        usesOwnWeaknessWhileAdvantaged: 0,
+        usesOwnWeaknessWhileDisadvantaged: 0,
+    };
+
+    const matchRelationship = duelUtils.calculateAffinityRelationship(wizardAffinity, opponentAffinity);
+    const moveRelationship = duelUtils.calculateAffinityRelationship(move, opponentAffinity);
+    let relationship = null;
+
+    // calculate "own affinity" stats
+    if (wizardAffinity == move) {
+        if (opponentAffinity == NEUTRAL) {
+            stats.usesOwnAffinityVsNeutral++;
+        } else {
+            switch (matchRelationship) {
+                case ADVANTAGED:
+                    stats.usesOwnAffinityWhileAdvantaged++;
+                    break;
+                case DISADVANTAGED:
+                    stats.usesOwnAffinityWhileDisadvantaged++;
+                    break;
+                case EQUAL:
+                    stats.usesOwnAffinityVsSame++;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // calculate "uses-opponent's-weakness" stats
+    if (opponentAffinity != NEUTRAL && moveRelationship == ADVANTAGED) {
+        switch (matchRelationship) {
+            case ADVANTAGED:
+                stats.usesOpponentsWeaknessWhileAdvantaged++;
+                break;
+            case DISADVANTAGED:
+                stats.usesOpponentsWeaknessWhileDisadvantaged++;
+                break;
+            case EQUAL:
+                stats.usesOpponentsWeaknessVsSame++;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // calculate uses-own-weakness stats (think of this is as "as if we attacked ourselves")
+    const ownRelationship = duelUtils.calculateAffinityRelationship(move, wizardAffinity);
+    if (ownRelationship == ADVANTAGED) { 
+        switch(matchRelationship) {
+            case ADVANTAGED:
+                stats.usesOwnWeaknessWhileAdvantaged++;
+                break;
+            case DISADVANTAGED:
+                stats.usesOwnWeaknessWhileDisadvantaged++;
+                break;
+            case EQUAL:
+                stats.usesOwnWeaknessVsSame++;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return stats;
+}
+
 module.exports = {
     calculateDuelStatsOverall,
+    calculateWizardMoveStats,
 };
 

@@ -3,6 +3,9 @@
 const assert = require('assert');
 
 const statsUtils = require('./stats');
+const Constants = require('./constants');
+
+const { NEUTRAL, FIRE, WIND, WATER } = Constants.AffinityIndexes;
 
 const emptyOverallStats = {
   totalMatches: 0,
@@ -11,6 +14,19 @@ const emptyOverallStats = {
   winRate: 0.0,
   powerHigh: 0,
   powerLow: 0,
+};
+
+const emptyWizardMoveStats = {
+  usesOwnAffinityVsNeutral: 0,
+  usesOwnAffinityVsSame: 0,
+  usesOwnAffinityWhileAdvantaged: 0,
+  usesOwnAffinityWhileDisadvantaged: 0,
+  usesOpponentsWeaknessVsSame: 0,
+  usesOpponentsWeaknessWhileAdvantaged: 0,
+  usesOpponentsWeaknessWhileDisadvantaged: 0,
+  usesOwnWeaknessVsSame: 0,
+  usesOwnWeaknessWhileAdvantaged: 0,
+  usesOwnWeaknessWhileDisadvantaged: 0,
 };
 
 const emptyDuel = {
@@ -98,5 +114,140 @@ describe("stats", () => {
       );
     });
 
+  });
+
+  describe("calculateWizardMoveStats", () => {
+
+    let stats = null;
+
+    describe("calculate own affinity setups properly", () => {
+
+      it("should calculate own affinity vs neutral properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, NEUTRAL, FIRE);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityVsNeutral: 1,
+            }
+          });
+      });
+
+      it("should calculate own affinity vs same properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, FIRE, FIRE);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityVsSame: 1,
+            }
+          });
+      });
+
+      it("should calculate own affinity while advantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WIND, FIRE);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityWhileAdvantaged: 1,
+              usesOpponentsWeaknessWhileAdvantaged: 1,
+            }
+          });
+      });
+
+      it("should calculate own affinity while disadvantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, FIRE);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityWhileDisadvantaged: 1,
+            }
+          });
+      });
+
+    });
+
+    describe("calculate opponent weakness setups properly", () => {
+
+      it("should calculate opponent weakness vs same properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, WATER, WIND);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOpponentsWeaknessVsSame: 1,
+              usesOwnWeaknessVsSame: 1,
+            }
+          });
+      });
+
+      it("should calculate opponent weakness while advantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, FIRE, WATER);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityWhileAdvantaged: 1,
+              usesOpponentsWeaknessWhileAdvantaged: 1,
+            }
+          });
+      });
+
+      it("should calculate opponent weakness while disadvantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, WIND, WATER);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnAffinityWhileDisadvantaged: 1,
+            }
+          });
+      });
+
+    });
+
+    describe("calculate 'own' weakness setups properly", () => {
+
+      it("should calculate opponent weakness vs same properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, WATER, WIND);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessVsSame: 1,
+              usesOpponentsWeaknessVsSame: 1,
+            }
+          });
+      });
+
+      it("should calculate opponent weakness while advantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, FIRE, WIND);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileAdvantaged: 1,
+            }
+          });
+      });
+
+      it("should calculate opponent weakness while disadvantaged properly", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, WATER);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileDisadvantaged: 1,
+            }
+          });
+      });
+
+    });
+
+    describe("not detect any stats when there are none", () => {
+
+      it("shouldn't detect any stats when WATER, FIRE, FIRE", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, FIRE, FIRE);
+        expect(stats).toEqual(emptyWizardMoveStats);
+      });
+
+      it("shouldn't detect any stats when WATER, NEUTRAL, FIRE", () => {
+        stats = statsUtils.calculateWizardMoveStats(WATER, NEUTRAL, FIRE);
+        expect(stats).toEqual(emptyWizardMoveStats);
+      });
+
+    });
   });
 });

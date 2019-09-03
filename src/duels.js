@@ -4,6 +4,8 @@ const config = require('./config');
 const wizardUtils = require('./wizards');
 const Constants = require('./constants');
 
+const { AffinityIndexes, AffinityRelationships } = Constants;
+
 /*
  * Example duel JSON from Alchemy API:
 {
@@ -144,11 +146,36 @@ const getMovesetResults = (moveset1, moveset2) => {
     return arr;
 }
 
+/**
+ * Calculate the affinity relationship between a move and an
+ * opponent's affinity.
+ *
+ * @param move is the move's affinity
+ * @param opponent is the oponnent's affinity
+ */
+const calculateAffinityRelationship = (move, opponent) => {
+    if (opponent == AffinityIndexes.NEUTRAL || move == opponent) {
+        return AffinityRelationships.EQUAL;
+    } else if (move == AffinityIndexes.FIRE) {
+        if (opponent == AffinityIndexes.WIND) return AffinityRelationships.ADVANTAGED;
+        if (opponent == AffinityIndexes.WATER) return AffinityRelationships.DISADVANTAGED;
+    } else if (move == AffinityIndexes.WIND) {
+        if (opponent == AffinityIndexes.WATER) return AffinityRelationships.ADVANTAGED;
+        if (opponent == AffinityIndexes.FIRE) return AffinityRelationships.DISADVANTAGED;
+    } else if (move == AffinityIndexes.WATER) {
+        if (opponent == AffinityIndexes.FIRE) return AffinityRelationships.ADVANTAGED;
+        if (opponent == AffinityIndexes.WIND) return AffinityRelationships.DISADVANTAGED;
+    } else {
+        return "UNKNOWN"; // should only happen with bad input?
+    }
+}
+
 module.exports = {
     addDuelDisplayData,
     addDuelDisplayDataArray,
     convertMovesetToIntArray,
     getMovesetResults,
     getMoveResults,
+    calculateAffinityRelationship,
 };
 

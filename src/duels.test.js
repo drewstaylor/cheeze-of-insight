@@ -5,12 +5,13 @@ const assert = require('assert');
 const duelUtils = require('./duels');
 const Constants = require('./constants');
 
+const { AffinityIndexes, AffinityRelationships } = Constants;
 
 
 describe("duels", () => {
   describe("getMoveResults", () => {
 
-    it("it should affinity rules", () => {
+    it("it should respect affinity rules", () => {
       let results = duelUtils.getMoveResults(
         Constants.AffinityIndexes.FIRE,
         Constants.AffinityIndexes.WIND);
@@ -48,5 +49,58 @@ describe("duels", () => {
 
     });
 
+  });
+
+  describe("calculateAffinityRelationship", () => {
+
+    it("it should respect affinity rules", () => {
+      // fire vs.
+      let relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.FIRE,
+        AffinityIndexes.WIND);
+      expect(relationship).toEqual(AffinityRelationships.ADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.FIRE,
+        AffinityIndexes.WATER);
+      expect(relationship).toEqual(AffinityRelationships.DISADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.FIRE,
+        AffinityIndexes.FIRE);
+      expect(relationship).toEqual(AffinityRelationships.EQUAL);
+
+      // wind vs.
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WIND,
+        AffinityIndexes.WATER);
+      expect(relationship).toEqual(AffinityRelationships.ADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WIND,
+        AffinityIndexes.FIRE);
+      expect(relationship).toEqual(AffinityRelationships.DISADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WIND,
+        AffinityIndexes.WIND);
+      expect(relationship).toEqual(AffinityRelationships.EQUAL);
+
+      // water vs.
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WATER,
+        AffinityIndexes.FIRE);
+      expect(relationship).toEqual(AffinityRelationships.ADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WATER,
+        AffinityIndexes.WIND);
+      expect(relationship).toEqual(AffinityRelationships.DISADVANTAGED);
+
+      relationship = duelUtils.calculateAffinityRelationship(
+        AffinityIndexes.WATER,
+        AffinityIndexes.WATER);
+      expect(relationship).toEqual(AffinityRelationships.EQUAL);
+    });
   });
 });
