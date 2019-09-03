@@ -46,6 +46,10 @@
                             <a v-on:click="login();">Login</a>
                         </p>
                     </div>
+                    <div class="wrapper sidebar-wrapper avatar" v-if="isWeb3Enabled && tokens.mainnet.wizards.length">
+                        <!-- Wizard Avatar -->
+                        <vs-avatar  size="70px" :src="tokens.mainnet.wizards[0].image"/>
+                    </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
                         <!-- Twitter Username -->
                         <span class="label-wrapper" v-if="chat">
@@ -89,31 +93,6 @@
                             @option-clicked="contextMenuResolver"
                         >
                         </vue-simple-context-menu>
-
-
-                        <!--
-                        <div class="item-wrapper">
-                            <div v-for="item in items" @click.prevent.stop="handleClick($event, item)" class="item-wrapper__item">
-                                {{item.name}}
-                            </div>
-                        </div>
-
-                        <vue-simple-context-menu
-                            :elementId="'myUniqueId'"
-                            :options="options"
-                            :ref="'vueSimpleContextMenu'"
-                            @option-clicked="optionClicked">
-                        </vue-simple-context-menu>
-
-                        handleClick (event, item) {
-                            this.$refs.vueSimpleContextMenu.showMenu(event, item)
-                        }
-
-                        optionClicked (event) {
-                            window.alert(JSON.stringify(event))
-                        }
-                        -->
-
 
                     </div>
 

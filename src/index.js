@@ -50,15 +50,15 @@ Vue.component('sidebar', {
 const contextMenuOptions = [
     {
         action: 'challenge',
-        name: 'Challenge to testnet duel',
-        isValid: null,
+        name: 'Challenge to a duel simulation',
+        isValidPartner: null,
         wizardChallenged: null,
         wizardChallenging: null
-    },
+    }/*,
     {
         action: 'message',
         name: 'Invite this user to chat'
-    }
+    }*/
 ];
 Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
 
@@ -151,8 +151,11 @@ let vm = new Vue({
 
         // Chat interface menu and options
         testnetContextMenuOptions: contextMenuOptions,
-        //testnetContextMenuId: 'testnet_challenge_menu',
 
+        // Chat Duel config
+        chatDuelChallengeConfig: null,
+        chatChallengeModal_step1: false, // Show / Hide challenge configurator modals
+        chatChallengeModal_step2: false, // Show / Hide challenge configurator modals
 
         userOwnsWizards: 0,
         currentWizard: {},
@@ -225,8 +228,6 @@ let vm = new Vue({
                             }
                             //console.log('User Tokens =>', this.tokens);
                         }
-
-                        this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
                     } else {
                         // Set user Wizards as required
                         if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
@@ -236,20 +237,30 @@ let vm = new Vue({
                             }
                             //console.log('User Tokens =>', this.tokens);
                         }
-
-                        this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
-                        await this.chat.enterRoom(config.firechatConfig.generalRoom);
                     }
+
+                    // Add meta properties to owned wizards
+                    if (this.tokens.mainnet.wizards.length) {
+                        for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
+                            this.tokens.mainnet.wizards[i].image = this.api.getWizardImageUrlById(this.tokens.mainnet.wizards[i].id);
+                            this.tokens.mainnet.wizards[i] = this.wizardUtils.getWizardMetadata(this.tokens.mainnet.wizards[i]);
+                        }
+                    }
+
+                    // Bootstrap chat instance
+                    this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards, this.wallets.mainnet);
 
                     // Get general room and list of online users
                     await this.chat.getRoom(config.firechatConfig.generalRoom, (roomData) => {
                         this.chat.generalRoom = roomData;
                     });
 
-                    // Join general room
+                    // Join general chat channel (all users)
+                    await this.chat.enterRoom(config.firechatConfig.generalRoom);
 
                     console.log('Chat =>', this.chat);
                     console.log('Users =>', this.usersOnline);
+                    console.log('User Wizards =>', this.tokens.mainnet.wizards);
                 }
             } catch (e) {
                 console.log('Error logging into Firebase =>', e);
@@ -277,6 +288,36 @@ let vm = new Vue({
         // Context Menu Worker
         contextMenuResolver: function (event) {
             console.log('Option Selected =>', event);
+            // Hop out if `event` is invalid
+            if (!event) {
+                return;
+            } else if (!event.option) {
+                return;
+            } else if (!event.option.action) {
+                return;
+            } else if (!event.item) {
+                return;
+            } else if (!event.item['.key']) {
+                return;
+            }
+
+            console.log('get wallet?', [this.usersOnline, event.item]);//here
+
+            /*
+            // Or, process event
+            switch (event.option.action) {
+                case 'challenge':
+                    // Begin config
+                    this.chatDuelChallengeConfig = event.option;
+                    // Launch modal to finalize challenger config
+                    
+                    this.fetchWizardsOwnedByAddress();
+
+                    this.chatChallengeModal_step1 = true;
+                    break;
+                default:
+                    return;
+            }*/
         },
 
         // UI
@@ -366,6 +407,15 @@ let vm = new Vue({
             // Set user Wizards as required
             if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
                 this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+
+                // Add meta properties to owned wizards
+                if (this.tokens.mainnet.wizards.length) {
+                    for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
+                        this.tokens.mainnet.wizards[i].image = this.api.getWizardImageUrlById(this.tokens.mainnet.wizards[i].id);
+                        this.tokens.mainnet.wizards[i] = this.wizardUtils.getWizardMetadata(this.tokens.mainnet.wizards[i]);
+                    }
+                }
+
                 if (this.tokens.mainnet.wizards) {
                     this.currentWizard = this.tokens.mainnet.wizards[0];
                 }

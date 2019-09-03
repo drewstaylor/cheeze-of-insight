@@ -58,7 +58,7 @@ const listenForChatUser = async function () {
  * @param {Object} wizards : An `Array` of Wizards to be set on the requesting chat user
  * @see this.listenForChatUser
  */
-const getChat = function (user, wizards = []) {
+const getChat = async function (user, wizards = [], wallet = null) {
     // Get a Firebase Database ref
     let chatRef = firebase.database().ref('firechat-general');
 
@@ -71,6 +71,13 @@ const getChat = function (user, wizards = []) {
         chat.userData = user;
         chat.userData.wizards = wizards;
         chat.resumeSession();
+
+        // Update Firebase with wallet address
+        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
+        userRef.update({
+            wallet: wallet,
+            wizards: wizards
+        });
     });
 
     return chat;
