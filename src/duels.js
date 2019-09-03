@@ -2,6 +2,7 @@
 
 const config = require('./config');
 const wizardUtils = require('./wizards');
+const Constants = require('./constants');
 
 /*
  * Example duel JSON from Alchemy API:
@@ -92,11 +93,14 @@ const convertMovesetToIntArray = (moveset) => {
  * Convert two "moves" (identified by ints) into an object describing
  * the match.
  *
+ * @param move1: the affinity-index of p1's move
+ * @param move2: the affinity-index of p2's move
+ *
  * The object returned has the structure:
  *
  * const results = {
- *     p1 = <index of player 1's move>
- *     p2 = <index of player 2's move>
+ *     p1 = <affinity index of player 1's move>
+ *     p2 = <affinity index of player 2's move>
  *     winner = <"tie", "p1, or "p2">
  * };
  */
@@ -106,20 +110,17 @@ const getMoveResults = (move1, move2) => {
     results.p2 = move2;
 
     // indices correspond to:
-    const fire = 2;
-    const wind = 3
-    const water = 4;
     if (move1 == move2) {
         results.winner = "tie";
-    } else if (move1 == fire) {
-        if (move2 == wind) results.winner = "p1";
-        if (move2 == water) results.winner = "p2";
-    } else if (move1 == wind) {
-        if (move2 == water) results.winner = "p1";
-        if (move2 == fire) results.winner = "p2";
-    } else if (move1 == water) {
-        if (move2 == fire) results.winner = "p1";
-        if (move2 == wind) results.winner = "p2";
+    } else if (move1 == Constants.AffinityIndexes.FIRE) {
+        if (move2 == Constants.AffinityIndexes.WIND) results.winner = "p1";
+        if (move2 == Constants.AffinityIndexes.WATER) results.winner = "p2";
+    } else if (move1 == Constants.AffinityIndexes.WIND) {
+        if (move2 == Constants.AffinityIndexes.WATER) results.winner = "p1";
+        if (move2 == Constants.AffinityIndexes.FIRE) results.winner = "p2";
+    } else if (move1 == Constants.AffinityIndexes.WATER) {
+        if (move2 == Constants.AffinityIndexes.FIRE) results.winner = "p1";
+        if (move2 == Constants.AffinityIndexes.WIND) results.winner = "p2";
     }
 
     return results;
