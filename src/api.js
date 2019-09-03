@@ -1124,11 +1124,13 @@ const getDuelById = async (id = null, mainnet = true) => {
 /**
  * Gets all Duels for a particular Wizard by Wizard ID (Mainnet)
  * @param {Number} id : The ID of the target Wizard to query for Duel data
- * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
+ * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists. Example:
+ * 
+ * {
+ *   duels: [{duel 1}, {duel 2}],
+ * }
  */
 const getDuelsByWizardId = async (id = null, mainnet = true) => {
-    return await require('./json/allDuels.json').duels;
-    /*
     // Nothing to do here...
     if (!id) {
         return false;
@@ -1143,9 +1145,8 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
         duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
     }
 
-    duels.wizards = [id];
+    // duels.wizards = [id]; // TODO: why was this here?
     return duels;
-    */
 };
 
 /**
@@ -1155,8 +1156,6 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
  * @return {Object} : Returns a Duel object, or returns an Error object if no duel with that Wizard ID exists
  */
 const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet = true) => {
-    return await require('./json/allDuels.json');
-    /*
     // Nothing to do here...
     if (!wizard_A || !wizard_B) {
         return false;
@@ -1173,7 +1172,6 @@ const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet 
 
     duels.wizards = [wizard_A, wizard_B];
     return duels;
-    */
 };
 
 // Tests

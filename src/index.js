@@ -488,7 +488,7 @@ let vm = new Vue({
             this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
             // Add duels
             const duels = await this.api.getDuelsByWizardId(wizardId);
-            this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels);
+            this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
             
             // Disable loading
             this.isLoading = false;
