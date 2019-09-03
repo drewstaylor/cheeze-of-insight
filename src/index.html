@@ -30,6 +30,11 @@
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
+            <!-- Notifications Component (top right) -->
+            <notification>
+                <vs-button id="notifier" slot="notification" @click="$vs.notify(notification)" type="flat"></vs-button>
+            </notification>
+
             <!-- Chat Component (Sidebar) -->
             <sidebar>
                 <div class="menu login-items" slot="menu-items">
@@ -194,9 +199,10 @@
                     </div>
 
                     <!-- Submit Challenge -->
-                    <div class="row">
+                    <div class="row" v-if="!this.chatDuelChallengeConfig.isSending">
                         <button class="modal-default-button btn btn-primary submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
                     </div>
+                    
                 </div>
 
             </modal>
@@ -1353,6 +1359,14 @@
         </transition>
     </script>
     <!-- End Modal Template -->
+
+    <!-- Begin Notifications Template -->
+    <script type="text/x-template" id="notification-template">
+        <div class="con-notifications-position">
+            <slot name="notification" @click="$vs.notify({title:'Position top-right',text:'Lorem ipsum dolor sit amet, consectetur',color:'success',position:'top-right'})" color="success" type="flat">Notification</slot>
+        </div>
+    </script>
+    <!-- End Notifications Template -->
 
     <script type="text/javascript" src="build/app.js"></script>
 </body>

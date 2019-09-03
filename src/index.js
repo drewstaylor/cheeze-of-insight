@@ -38,6 +38,11 @@ Vue.component('modal', {
     template: '#modal-template'
 });
 
+// Notification component
+Vue.component('notification', {
+    template: '#notification-template'
+});
+
 // Sidebar component
 Vue.component('sidebar', {
     template: '#sidebar-template',
@@ -143,6 +148,14 @@ let vm = new Vue({
             'Wind',
             'Water'
         ],
+
+        // Notifications
+        notification: {
+            title: null,
+            text: null,
+            color: null,
+            position:'top-right'
+        },
 
         // Chat
         chatStates: ['browsing', 'chatting'],
@@ -305,7 +318,7 @@ let vm = new Vue({
             }
 
             // Or, process event
-            switch (event.option.action) {//here
+            switch (event.option.action) {
                 case 'challenge':
                     // Close chat pane hack :(
                     let chatCloseCtrl = document.getElementById('close_sidebar_a');
@@ -325,16 +338,6 @@ let vm = new Vue({
                 default:
                     return;
             }
-        },
-        clickEvent: function (elem) {
-            // Create our event (with options)
-            let evt = new MouseEvent('click', {
-                bubbles: true,
-                cancelable: true,
-                view: window
-            });
-            // If cancelled, don't dispatch our event
-            let canceled = !elem.dispatchEvent(evt);
         },
         // Select challenge Wizards (chat Duels)
         selectChallengeWizard: async function (wizardId, isOpponent) {
@@ -380,12 +383,47 @@ let vm = new Vue({
             console.log('Challenge config =>', this.chatDuelChallengeConfig);
         },
         submitChallenge: async function () {
-            alert('TODO: Send challenge request to challenged user ' + this.currentOpposingWizard.owner);
+            // Hide challenge configuration modal
             let closeModalBtn = document.getElementById('modal_close');
             this.clickEvent(closeModalBtn);
+
+            // Create duel channel and invite remote user
+            let timestamp = new Date().getTime();
+            let roomId = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + timestamp;
+            // Create room
+            await this.firebase.createRoom(this.chat, roomId);
+            // Send Challenge
+            this.usersOnline.filter((user) => {
+                // Find user in online user list
+                if (user.hasOwnProperty('wallet')) {
+                    if (user.wallet.toLowerCase() == this.chatDuelChallengeConfig.wizardChallenged.owner.toLowerCase()) {
+                        // Send challenge
+                        if (this.chatDuelChallengeConfig.isValidPartner) {
+                            this.chat.inviteUser(user.id, roomId);
+                        }
+                        // Notify challenge sent
+                        this.notification.title = 'Challenge sent';
+                        this.notification.text = 'Your challenge has been sent to ' + user.wallet;
+                        this.notification.color = 'success';
+                        // Release notification
+                        let notifier = document.getElementById('notifier');
+                        this.clickEvent(notifier);
+                    }
+                }
+            });
         },
 
         // UI
+        clickEvent: function (elem) {
+            // Create our event (with options)
+            let evt = new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            // If cancelled, don't dispatch our event
+            let canceled = !elem.dispatchEvent(evt);
+        },
         setNavigation: function (state = null) {
             // Change navigation state as required
             if (this.navigation.state == state) {

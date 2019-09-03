@@ -70,14 +70,34 @@ const getChat = async function (user, wizards = [], wallet = null) {
         //console.log('New chat User =>', user);
         chat.userData = user;
         chat.userData.wizards = wizards;
-        chat.resumeSession();
+        
+        // Probably don't need this:
+        //chat.resumeSession();
 
         // Update Firebase with wallet address
         let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
         userRef.update({
             wallet: wallet,
-            wizards: wizards
+            wizards: wizards,
+            id: user.id
         });
+    });
+
+    // Listeners for chat events
+    chat.on('room-invite', (invite) => {
+        console.log('invite', invite);
+    });
+    chat.on('room-invite-response', (inviteResponse) => {
+        console.log('inviteResponse', inviteResponse);
+    });
+    chat.on('room-enter', (roomEntered) => {
+        console.log('roomEntered', roomEntered);
+    });
+    chat.on('room-exit', (roomExited) => {
+        console.log('roomExited', roomExited);
+    });
+    chat.on('message-add', (message) => {
+        console.log('Message Received =>', message);
     });
 
     return chat;
@@ -107,7 +127,7 @@ const getRooms = async function (chat) {
  * @param {String} type: The type of room to be created. Either 'public' or 'private'. 
  * @return {String} : Returns the ID of the created room
  */
-const createRoom = async function (chat, roomName, type) {
+const createRoom = async function (chat, roomName, type = 'private') {
     let room = '';
     if (!chat || !roomName || !type) {
         return;
