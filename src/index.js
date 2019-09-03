@@ -404,27 +404,31 @@ let vm = new Vue({
 
             // Create duel channel and invite remote user
             let timestamp = new Date().getTime();
-            let roomId = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + timestamp;
-            // Create room
-            await this.firebase.createRoom(this.chat, roomId);
-            // Send Challenge
-            this.usersOnline.filter((user) => {
-                // Find user in online user list
-                if (user.hasOwnProperty('wallet')) {
-                    if (user.wallet.toLowerCase() == this.chatDuelChallengeConfig.wizardChallenged.owner.toLowerCase()) {
-                        // Send challenge
-                        if (this.chatDuelChallengeConfig.isValidPartner) {
-                            this.chat.inviteUser(user.id, roomId);
+            let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + timestamp;
+            
+            // Create duel room
+            this.chat.createRoom(roomName, 'private', (roomId) => {
+                console.log('Created Room =>', roomId);
+                this.chatDuelChallengeConfig.roomId = roomId;
+                // Find partner in online user list
+                this.usersOnline.filter((user) => {
+                    // Only valid user objects need apply
+                    if (user.hasOwnProperty('wallet')) {
+                        if (user.wallet.toLowerCase() == this.chatDuelChallengeConfig.wizardChallenged.owner.toLowerCase()) {
+                            // Send challenge
+                            if (this.chatDuelChallengeConfig.isValidPartner) {
+                                this.chat.inviteUser(user.id, roomId);
+                            }
+                            // Notify challenge sent
+                            this.notification.title = 'Challenge sent';
+                            this.notification.text = 'Your challenge has been sent to ' + user.wallet;
+                            this.notification.color = 'success';
+                            // Release notification
+                            let notifier = document.getElementById('notifier');
+                            this.clickEvent(notifier);
                         }
-                        // Notify challenge sent
-                        this.notification.title = 'Challenge sent';
-                        this.notification.text = 'Your challenge has been sent to ' + user.wallet;
-                        this.notification.color = 'success';
-                        // Release notification
-                        let notifier = document.getElementById('notifier');
-                        this.clickEvent(notifier);
                     }
-                }
+                });
             });
         },
 
