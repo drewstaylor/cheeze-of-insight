@@ -4,7 +4,7 @@
   "description": "Proof of concept code stems for getting Cheeze Wizards data and analytics",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "develop": "nodemon server.js"
   },
   "repository": {
@@ -37,6 +37,8 @@
     "web3": "^1.2.0"
   },
   "devDependencies": {
+    "assert": "^2.0.0",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.1"
   }
 }
