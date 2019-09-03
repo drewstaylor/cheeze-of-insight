@@ -249,5 +249,47 @@ describe("stats", () => {
       });
 
     });
+
+    describe("allow reusing stats object", () => {
+
+      it("should properly return fresh results when null is passed", () => {
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, WATER, null);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileDisadvantaged: 1,
+            }
+          });
+
+        // repeat; should get identical results
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, WATER, null);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileDisadvantaged: 1,
+            }
+          });
+
+        // this type pass results back in; should accumulate
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, WATER, stats);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileDisadvantaged: 2,
+            }
+          });
+
+        // ...and should give fresh results again when null is passed
+        stats = statsUtils.calculateWizardMoveStats(FIRE, WATER, WATER, null);
+        expect(stats).toEqual(
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileDisadvantaged: 1,
+            }
+          });
+
+
+      });
+    });
   });
 });

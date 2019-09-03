@@ -7,6 +7,21 @@ const Constants = require('./constants');
 const { ADVANTAGED, DISADVANTAGED, EQUAL } = Constants.AffinityRelationships;
 const { FIRE, WIND, WATER, NEUTRAL } = Constants.AffinityIndexes;
 
+const emptyStats = {
+    usesOwnAffinityVsNeutral: 0,
+    usesOwnAffinityVsSame: 0,
+    usesOwnAffinityWhileAdvantaged: 0,
+    usesOwnAffinityWhileDisadvantaged: 0,
+
+    usesOpponentsWeaknessVsSame: 0,
+    usesOpponentsWeaknessWhileAdvantaged: 0,
+    usesOpponentsWeaknessWhileDisadvantaged: 0,
+
+    usesOwnWeaknessVsSame: 0,
+    usesOwnWeaknessWhileAdvantaged: 0,
+    usesOwnWeaknessWhileDisadvantaged: 0,
+};
+
 /**
  * Given an array of duels for a given wizard, calculates some stats about overall
  * duel outcomes.
@@ -114,24 +129,15 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
  * @param wizardAffinity is the affinity index of the wizard for which we are generating stats
  * @param opponentAffinity is the affinity index of the opposing wizard
  * @param move is the wizard's move against its opponent
+ * @param stats should be an existing stats object to accumulate results into, or null for a fresh one
  *
  * @return an object with stats for the given match
  */
-const calculateWizardMoveStats = (wizardAffinity, opponentAffinity, move) => {
-    const stats = {
-        usesOwnAffinityVsNeutral: 0,
-        usesOwnAffinityVsSame: 0,
-        usesOwnAffinityWhileAdvantaged: 0,
-        usesOwnAffinityWhileDisadvantaged: 0,
+const calculateWizardMoveStats = (wizardAffinity, opponentAffinity, move, stats=null) => {
 
-        usesOpponentsWeaknessVsSame: 0,
-        usesOpponentsWeaknessWhileAdvantaged: 0,
-        usesOpponentsWeaknessWhileDisadvantaged: 0,
-
-        usesOwnWeaknessVsSame: 0,
-        usesOwnWeaknessWhileAdvantaged: 0,
-        usesOwnWeaknessWhileDisadvantaged: 0,
-    };
+    if (! stats) {
+        stats = {...emptyStats};
+    }
 
     const matchRelationship = duelUtils.calculateAffinityRelationship(wizardAffinity, opponentAffinity);
     const moveRelationship = duelUtils.calculateAffinityRelationship(move, opponentAffinity);
