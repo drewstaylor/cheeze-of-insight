@@ -773,9 +773,14 @@ let vm = new Vue({
     },
     computed: {
         // Get list of online users (Twitter login)
+        // That have a web3 wallet
         onlineUsers: function () {
-            // TODO: Filter user list to exclude own name?
-            return [];
+            return this.usersOnline.filter((user) => {
+                // Find user in online user list
+                if (user.hasOwnProperty('wallet')) {
+                    return user;
+                }
+            });
         },
         // Get paginated list of all or filtered Wizards
         wizardsPage: function () {

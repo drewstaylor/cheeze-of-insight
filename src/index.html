@@ -82,7 +82,7 @@
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
                                 </div>
                                 <!-- Other Users -->
-                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name">
+                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
                                 </div>
                             </div>
