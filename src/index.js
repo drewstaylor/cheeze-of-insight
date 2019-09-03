@@ -96,6 +96,7 @@ let vm = new Vue({
         // Dependencies
         Provider: require('./providers'),
         api: require('./api'),
+        duelUtils: require('./duels'),
         wizardUtils: require('./wizards'),
         // Firebase
         firebase: FIREBASE,
@@ -188,7 +189,7 @@ let vm = new Vue({
         showMyWizardTraits: false,
         showOpponentTraits: false,
         manualCurrentWizardSelection: false,
-        showDuels: false
+        showDuels: true
     }),
     firebase: {
         usersOnline: usersOnline
@@ -491,6 +492,21 @@ let vm = new Vue({
             }
             return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
         },
+        getIconUrlForAffinity: function(affinity) {
+            let index = affinity;
+            if (typeof(affinity) === 'string') {
+                index = parseInt(affinity);
+            }
+
+            if (index < 0 || index > 4) {
+                console.log("Warning: affinity should be an index between 0 and 4");
+                return "";
+            }
+
+            const name = this.affinities[index].toLowerCase();
+
+            return "/img/icons/" + name + ".svg";
+        },
         // Getters
         getAllWizards: async function () {
             // Loading state
@@ -624,7 +640,8 @@ let vm = new Vue({
             // Add metadata
             this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
             // Add duels
-            this.currentOpposingWizard.duels = await this.api.getDuelsByWizardId(wizardId);
+            const duels = await this.api.getDuelsByWizardId(wizardId);
+            this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
             
             // Disable loading
             this.isLoading = false;

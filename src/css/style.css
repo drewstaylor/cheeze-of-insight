@@ -209,6 +209,123 @@ p.trait-name {
     border: 1px solid black;
     border-collapse: collapse;
 }
+
+
+
+
+.duels-card-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1.5px solid black;
+    border-radius: 5px;
+    background-color: #DDD;
+
+    width: 100%;
+    height: 160px;
+
+    padding: 3px;
+    margin: 3px;
+}
+.duels-card-left-container, .duels-card-right-container {
+    height: 100%;
+}
+.duels-card-left-wizard, .duels-card-right-wizard {
+    border: 1px solid #666;
+    border-radius: 3px;
+    background-color: #CCC;
+
+    margin: 3px;
+
+    height: 120px;
+    width: 120px;
+
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+.duels-card-left-wizard {
+    left: 6px;
+}
+.duels-card-right-wizard {
+    right: 6px;
+}
+.duels-card-left-outcome, .duels-card-right-outcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 120px;
+
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.duels-card-left-outcome {
+    left: 6px;
+}
+.duels-card-right-outcome {
+    right: 6px;
+}
+.duels-outcome-base-points {
+    color: black;
+}
+.duels-outcome-loss-points {
+    color: red;
+    font-weight: 600;
+}
+.duels-outcome-gain-points {
+    color: green;
+    font-weight: 600;
+}
+
+.duels-card-rounds {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin: auto;
+    height: 100%;
+    width: 60%;
+
+}
+.duels-card-round {
+    display: inline-block;
+    position: relative;
+
+    width: 84px;
+    height: 84px;
+}
+.duels-card-round-p1, .duels-card-round-p2 {
+    position: absolute;
+    display: flex;
+
+    width: 60%;
+    height: 60%;
+}
+.duels-card-round-p1 {
+    left: 0px;
+    top: 0px;
+}
+.duels-card-round-p2 {
+    right: 0px;
+    bottom: 0px;
+}
+.duels-card-round-icon {
+    margin: auto;
+    height: 90%;
+    width: 90%;
+}
+.duels-winner {
+    border: 2px solid green;
+    background-color: #CFC;
+    z-index: +1;
+}
+.duels-loser {
+    border: 1px solid red;
+}
+
+
 .duels-table td {
     border: 1px solid black;
     padding: 3px;
