@@ -535,51 +535,55 @@
             </div>
 
             <!-- Duels -->
-            <div v-if="showDuels">
+            <div v-if="showDuels && currentOpposingWizard.duels">
                 <h4>Duels</h4>
-                <div class="duels-table-container">
-                    <table class="duels-table">
-                        <thead>
-                            <tr>
-                                <th> id </th>
-                                <th> wizard1Id </th>
-                                <th> wizard2Id </th>
-                                <th> affinity1 </th>
-                                <th> affinity2 </th>
-                                <th> startPower1 </th>
-                                <th> startPower2 </th>
-                                <th> endPower1 </th>
-                                <th> endPower2 </th>
-                                <th> moveSet1 </th>
-                                <th> moveSet2 </th>
-                                <th> startBlock </th>
-                                <th> endBlock </th>
-                                <th> timeoutBlockendBlock </th>
-                                <th> timedOut </th>
-                                <th> isAscensionBattle </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="duel in currentOpposingWizard.duels">
-                                <td>{{ duel.id }}</td>
-                                <td>{{ duel.wizard1Id }}</td>
-                                <td>{{ duel.wizard2Id }}</td>
-                                <td>{{ duel.affinity1 }}</td>
-                                <td>{{ duel.affinity2 }}</td>
-                                <td>{{ duel.startPower1 }}</td>
-                                <td>{{ duel.startPower2 }}</td>
-                                <td>{{ duel.endPower1 }}</td>
-                                <td>{{ duel.endPower2 }}</td>
-                                <td>{{ duel.moveSet1.substring(0,10) }}</td>
-                                <td>{{ duel.moveSet2.substring(0,13) }}</td>
-                                <td>{{ duel.startBlock }}</td>
-                                <td>{{ duel.endBlock }}</td>
-                                <td>{{ duel.timeoutBlockendBlock }}</td>
-                                <td>{{ duel.timedOut }}</td>
-                                <td>{{ duel.isAscensionBattle }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels">
+
+                    <div class="duels-card-left-container">
+                        <div 
+                            :class="'duels-card-left-wizard '+ (duel.wizard1DidWin ? 'duels-winner' : 'duels-loser')"
+                            :style="'background-image: url('+duel.wizard1SvgUrl+')'"
+                        >
+                        </div>
+                        <div class="duels-card-left-outcome">
+                            <img class="icon" :src="getIconUrlForAffinity(duel.affinity1)"></img>
+                            <span class="duels-outcome-base-points">
+                                {{ getPrettyPowerLevel(duel.startPower1) }}
+                            </span>
+                            <span :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">
+                                {{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="duels-card-rounds">
+                        <div class="duels-card-round" v-for="move in duel.moveResults">
+                            <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
+                                <img :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
+                            </div>
+                            <div :class="'duels-card-round-p2 '+ (move.winner == 'p2' ? 'duels-winner' : (move.winner == 'p1' ? 'duels-loser' : ''))">
+                                <img :src="getIconUrlForAffinity(move.p2)" class="duels-card-round-icon"></img>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="duels-card-right-container">
+                        <div 
+                            :class="'duels-card-left-wizard '+ (duel.wizard2DidWin ? 'duels-winner' : 'duels-loser')"
+                            :style="'background-image: url('+duel.wizard2SvgUrl+')'"
+                        >
+                        </div>
+                        <div class="duels-card-right-outcome">
+                            <img class="icon" :src="getIconUrlForAffinity(duel.affinity2)"></img>
+                            <span class="duels-outcome-base-points">
+                                {{ getPrettyPowerLevel(duel.startPower2) }}
+                            </span>
+                            <span :class="duel.wizard2DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">
+                                {{ (duel.wizard2Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard2Gain) }}
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
