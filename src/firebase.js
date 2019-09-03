@@ -35,6 +35,16 @@ const logout = async function () {
 };
 
 /**
+ * Get current user and auth state (used to check if already logged in
+ * when changing router states or refreshing the page)
+ * @return {Mixed} : Returns a User `Object` when logged in or `Boolean` false if not logged in
+ */
+const getCurrentUser = async function () {
+    let currentUser = await firebase.auth().currentUser;
+    return currentUser;
+};
+
+/**
  * Listens for changes to applicatin Auth State and returns the Firebase User Object of the requesting User
  */
 const listenForChatUser = async function () {
@@ -44,7 +54,7 @@ const listenForChatUser = async function () {
         // Once authenticated, instantiate Firechat with the logged in user
         if (user) {
             chatUser = user;
-            //console.log('Auth state changed =>', chatUser);
+            console.log('Auth state changed =>', chatUser);
         } else {
             chatUser = false;
         }
@@ -147,8 +157,10 @@ const createRoom = async function (chat, roomName, type = 'private') {
 module.exports = {
     firebaseApp: firebaseApp,
     firebaseDb: firebaseDb,
+    firebaseInstance: firebase,
     login: login,
     logout: logout,
+    getCurrentUser: getCurrentUser,
     getChat: getChat,
     listenForChatUser: listenForChatUser,
     getRooms: getRooms,

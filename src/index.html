@@ -619,8 +619,8 @@
             </div>
 
             <!-- Duels -->
-            <div v-if="showDuels && currentOpposingWizard.duels">
-                <h4>Duels</h4>
+            <div v-if="currentOpposingWizard.duels">
+                <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
                 <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels">
 
                     <div class="duels-card-left-container">
@@ -634,9 +634,7 @@
                             <span class="duels-outcome-base-points">
                                 {{ getPrettyPowerLevel(duel.startPower1) }}
                             </span>
-                            <span :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">
-                                {{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}
-                            </span>
+                            <span :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}</span>
                         </div>
                     </div>
 

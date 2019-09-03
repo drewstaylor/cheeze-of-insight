@@ -159,6 +159,7 @@ let vm = new Vue({
         },
 
         // Chat
+        chatUser: null,
         chatStates: ['browsing', 'chatting'],
         chatState: 'browsing',
         usersOnline: [],
@@ -188,8 +189,7 @@ let vm = new Vue({
         showSearch: false,
         showMyWizardTraits: false,
         showOpponentTraits: false,
-        manualCurrentWizardSelection: false,
-        showDuels: true
+        manualCurrentWizardSelection: false
     }),
     firebase: {
         usersOnline: usersOnline
@@ -217,6 +217,18 @@ let vm = new Vue({
         } else {
             this.isWeb3Enabled = false;
         }
+
+        // Handle login state (returning users)
+        await this.firebase.firebaseInstance.auth().onAuthStateChanged(async (user) => {
+            // Once authenticated, instantiate Firechat with the logged in user
+            if (user) {
+                this.chatUser = user;
+                //console.log('Auth state changed =>', chatUser);
+                this.userIsLoggedIn = true;
+                await this.setupChat(user);
+            }
+        });
+        
     },
     methods: {
         // Chat / Login
@@ -227,52 +239,9 @@ let vm = new Vue({
             }
             // Twitter Login (Required for Chat / "Live" Testnet Duels)
             try {
-                let chatUser = await this.firebase.listenForChatUser();
                 let chatAvailable = await this.firebase.login();
                 if (chatAvailable) {
                     this.userIsLoggedIn = true;
-                    
-                    // Get Wizards if not fetched
-                    if (!this.wizards) {
-                        await this.getAllWizards();
-                        // Set user Wizards as required
-                        if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
-                            this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
-                            if (this.tokens.mainnet.wizards) {
-                                this.currentWizard = this.tokens.mainnet.wizards[0];
-                            }
-                            //console.log('User Tokens =>', this.tokens);
-                        }
-                    } else {
-                        // Set user Wizards as required
-                        if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
-                            this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
-                            if (this.tokens.mainnet.wizards) {
-                                this.currentWizard = this.tokens.mainnet.wizards[0];
-                            }
-                            //console.log('User Tokens =>', this.tokens);
-                        }
-                    }
-
-                    // Add meta properties to owned wizards
-                    if (this.tokens.mainnet.wizards.length) {
-                        for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
-                            this.tokens.mainnet.wizards[i].image = this.api.getWizardImageUrlById(this.tokens.mainnet.wizards[i].id);
-                            this.tokens.mainnet.wizards[i] = this.wizardUtils.getWizardMetadata(this.tokens.mainnet.wizards[i]);
-                        }
-                    }
-
-                    // Bootstrap chat instance
-                    this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards, this.wallets.mainnet);
-
-                    // Get general room and list of online users
-                    await this.chat.getRoom(config.firechatConfig.generalRoom, (roomData) => {
-                        this.chat.generalRoom = roomData;
-                    });
-
-                    // Join general chat channel (all users)
-                    await this.chat.enterRoom(config.firechatConfig.generalRoom);
-
                     console.log('Chat =>', this.chat);
                     console.log('Users =>', this.usersOnline);
                     console.log('User Wizards =>', this.tokens.mainnet.wizards);
@@ -293,6 +262,51 @@ let vm = new Vue({
             } catch (e) {
                 console.log('Error logging out user from Firebase =>', e);
             }
+        },
+        setupChat: async function (chatUser = null) {
+            if (!chatUser) {
+                return;
+            }
+            // Get Wizards if not fetched
+            if (!this.wizards) {
+                await this.getAllWizards();
+                // Set user Wizards as required
+                if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
+                    this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                    if (this.tokens.mainnet.wizards) {
+                        this.currentWizard = this.tokens.mainnet.wizards[0];
+                    }
+                    //console.log('User Tokens =>', this.tokens);
+                }
+            } else {
+                // Set user Wizards as required
+                if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
+                    this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
+                    if (this.tokens.mainnet.wizards) {
+                        this.currentWizard = this.tokens.mainnet.wizards[0];
+                    }
+                    //console.log('User Tokens =>', this.tokens);
+                }
+            }
+
+            // Add meta properties to owned wizards
+            if (this.tokens.mainnet.wizards.length) {
+                for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
+                    this.tokens.mainnet.wizards[i].image = this.api.getWizardImageUrlById(this.tokens.mainnet.wizards[i].id);
+                    this.tokens.mainnet.wizards[i] = this.wizardUtils.getWizardMetadata(this.tokens.mainnet.wizards[i]);
+                }
+            }
+
+            // Bootstrap chat instance
+            this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards, this.wallets.mainnet);
+
+            // Get general room and list of online users
+            await this.chat.getRoom(config.firechatConfig.generalRoom, (roomData) => {
+                this.chat.generalRoom = roomData;
+            });
+
+            // Join general chat channel (all users)
+            await this.chat.enterRoom(config.firechatConfig.generalRoom);
         },
         // Context Menu Handler
         contextMenuHandler: function (event, item) {
