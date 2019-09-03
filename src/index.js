@@ -22,17 +22,49 @@ const PREDICTION_TYPE_MIXED_REVIEWS = 2;
 const PRIMARY_SEARCH = 1;
 const VULNERABILITY_SEARCH = 2;
 
-// Total Wizarsd
+// Total Wizards
 const TOTAL_WIZARDS = 4882;
 
 // Contract constants
 const MAINNET = 0;
 const RINKEBY = 1;
 
-// Register modal component
+// Config 
+const config = require('./config');
+const firebaseConfig = config.firebaseConfig;
+
+// Modal component
 Vue.component('modal', {
     template: '#modal-template'
 });
+
+// Sidebar component
+Vue.component('sidebar', {
+    template: '#sidebar-template',
+    data: () => ({
+        showSidebar: false
+    })
+});
+
+// Context menus (right-click) component
+const contextMenuOptions = [
+    {
+        action: 'challenge',
+        name: 'Challenge to testnet duel',
+        isValid: null,
+        wizardChallenged: null,
+        wizardChallenging: null
+    },
+    {
+        action: 'message',
+        name: 'Invite this user to chat'
+    }
+];
+Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
+
+// Online users ref.
+const FIREBASE = require('./firebase');
+let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
 let vm = new Vue({
@@ -62,9 +94,8 @@ let vm = new Vue({
         duelUtils: require('./duels'),
         wizardUtils: require('./wizards'),
         // Firebase
-        firebase: require('./firebase'),
+        firebase: FIREBASE,
         chat: null,
-        chatUser: null,
         // Web3
         web3Providers: {
             rinkeby: null,
@@ -113,6 +144,17 @@ let vm = new Vue({
             'Wind',
             'Water'
         ],
+
+        // Chat
+        chatStates: ['browsing', 'chatting'],
+        chatState: 'browsing',
+        usersOnline: [],
+
+        // Chat interface menu and options
+        testnetContextMenuOptions: contextMenuOptions,
+        //testnetContextMenuId: 'testnet_challenge_menu',
+
+
         userOwnsWizards: 0,
         currentWizard: {},
         currentOpposingWizard: {},
@@ -132,6 +174,9 @@ let vm = new Vue({
         manualCurrentWizardSelection: false,
         showDuels: true
     }),
+    firebase: {
+        usersOnline: usersOnline
+    },
     mounted: async function () {
         // Web3 Instance
         this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -157,6 +202,7 @@ let vm = new Vue({
         }
     },
     methods: {
+        // Chat / Login
         login: async function () {
             // Process login as required
             if (this.userIsLoggedIn) {
@@ -193,8 +239,18 @@ let vm = new Vue({
                         }
 
                         this.chat = await this.firebase.getChat(chatUser, this.tokens.mainnet.wizards);
+                        await this.chat.enterRoom(config.firechatConfig.generalRoom);
                     }
+
+                    // Get general room and list of online users
+                    await this.chat.getRoom(config.firechatConfig.generalRoom, (roomData) => {
+                        this.chat.generalRoom = roomData;
+                    });
+
+                    // Join general room
+
                     console.log('Chat =>', this.chat);
+                    console.log('Users =>', this.usersOnline);
                 }
             } catch (e) {
                 console.log('Error logging into Firebase =>', e);
@@ -213,6 +269,18 @@ let vm = new Vue({
                 console.log('Error logging out user from Firebase =>', e);
             }
         },
+        // Context Menu Handler
+        contextMenuHandler: function (event, item) {
+            //console.log('contextMenuHandler =>', [event, item]);
+            console.log('this.$refs =>', this.$refs);
+            this.$refs.chatContextMenu.showMenu(event, item);
+        },
+        // Context Menu Worker
+        contextMenuResolver: function (event) {
+            console.log('Option Selected =>', event);
+        },
+
+        // UI
         setNavigation: function (state = null) {
             // Change navigation state as required
             if (this.navigation.state == state) {
@@ -537,6 +605,12 @@ let vm = new Vue({
         }
     },
     computed: {
+        // Get list of online users (Twitter login)
+        onlineUsers: function () {
+            // TODO: Filter user list to exclude own name?
+            return [];
+        },
+        // Get paginated list of all or filtered Wizards
         wizardsPage: function () {
             let wizards,
                 filter;
