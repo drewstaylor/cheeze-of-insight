@@ -12,8 +12,6 @@
     <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
     <link href="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.css" rel="stylesheet" type="text/css">
-    
-    <link href="node_modules/firechat/dist/firechat.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
@@ -73,7 +71,7 @@
 
                         <!-- Online Users List -->
                         <div v-if="usersOnline && chat">
-                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)">
+                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
                                 <!-- Yourself / Current User -->
                                 <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
@@ -103,6 +101,107 @@
                 <!-- Footer - Chat Box Input -->
             </sidebar>
             <!-- End Chat Component (Sidebar) -->
+
+            
+            <!-- Setup Chat Wizard Challenge Modals -->
+            <!---->
+            <!-- 1 : Choose From Opponent Wizards-->
+            <modal v-if="chatChallengeModal_step1" @close="chatChallengeModal_step1 = false">
+                <!-- Custom Modal Overrides -->
+                <h3 slot="header">Which opponent Wizard would you like to challenge?</h3>
+                <div slot="body">
+                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
+                        <div class="wizard-card-block-item">
+                            <!-- Wizard Image -->
+                            <a v-on:click="selectChallengeWizard(wizard.id, true); chatChallengeModal_step1 = false;">
+                                <div class="wizard-card wizard-card-img">
+                                    <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
+                                    <!-- Card Label (Link Text) -->
+                                    <div class="wizard-card wizard-card-label">
+                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </modal>
+
+            <!-- 2 : Choose From Opponent Wizards-->
+            <modal v-if="chatChallengeModal_step2" @close="chatChallengeModal_step2 = false">
+                <!-- Custom Modal Overrides -->
+                <h3 slot="header">Which Wizard would you like to send into battle?</h3>
+                <div slot="body">
+                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in tokens.mainnet.wizards">
+                        <div class="wizard-card-block-item">
+                            <!-- Wizard Image -->
+                            <a v-on:click="selectChallengeWizard(wizard.id, false); chatChallengeModal_step2 = false;">
+                                <div class="wizard-card wizard-card-img">
+                                    <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
+                                    <!-- Card Label (Link Text) -->
+                                    <div class="wizard-card wizard-card-label">
+                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </modal>
+
+            <!-- 3 : Review and Send Challenge -->
+            <modal v-if="chatChallengeModal_step3" @close="chatChallengeModal_step3 = false">
+                <!-- Custom Modal Overrides -->
+                <h3 slot="header">Review your challenge</h3>
+                <div slot="body">
+                    <div class="wizard-card-block-item wizard-card-block-item-outer">
+                        
+                        <!-- Your Wizard -->
+                        <div class="wizard-card-block-item">
+                            <!-- Wizard Image -->
+                            <h5>Your Wizard</h5>
+                            <div class="wizard-card wizard-card-img">
+                                <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
+                                <!-- Card Label (Link Text) -->
+                                <div class="wizard-card wizard-card-label">
+                                    <p>Cheeze Wizard #{{ currentWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VS. -->
+                        <div style="display: inline;">
+                            <div class="duel-review-vs">
+                                <p>
+                                    <strong>VS.</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Challenged Wizard -->
+                        <div class="wizard-card-block-item">
+                            <!-- Wizard Image -->
+                            <h5>Challenged Wizard</h5>
+                            <div class="wizard-card wizard-card-img">
+                                <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
+                                <!-- Card Label (Link Text) -->
+                                <div class="wizard-card wizard-card-label">
+                                    <p>Cheeze Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+
+                    <!-- Submit Challenge -->
+                    <div class="row">
+                        <button class="modal-default-button btn btn-primary submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
+                    </div>
+                </div>
+
+            </modal>
+            <!---->
+            <!-- End Wizard Challenge Modals -->
 
             <h3>Welcome to the Holy Cheeze of Insight!</h3>
             <div class="img-main" v-if="navigation.state < 0">
@@ -1204,7 +1303,7 @@
             
                 <!-- Close Sidebar -->
                 <div class="close-sidebar">
-                    <a class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
+                    <a id="close_sidebar_a" class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
                 </div>
 
                 <!-- Sidebar Header -->
@@ -1243,7 +1342,7 @@
                         <!-- Footer Slot -->
                         <div class="modal-footer">
                             <slot name="footer">
-                                <button class="modal-default-button btn btn-primary" @click="$emit('close')">
+                                <button id="modal_close" class="modal-default-button btn btn-primary" @click="$emit('close')">
                                     <slot name="footer">Close</slot>
                                 </button>
                             </slot>

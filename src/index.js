@@ -155,7 +155,8 @@ let vm = new Vue({
         // Chat Duel config
         chatDuelChallengeConfig: null,
         chatChallengeModal_step1: false, // Show / Hide challenge configurator modals
-        chatChallengeModal_step2: false, // Show / Hide challenge configurator modals
+        chatChallengeModal_step2: false,
+        chatChallengeModal_step3: false,
 
         userOwnsWizards: 0,
         currentWizard: {},
@@ -287,7 +288,9 @@ let vm = new Vue({
         },
         // Context Menu Worker
         contextMenuResolver: function (event) {
+
             console.log('Option Selected =>', event);
+
             // Hop out if `event` is invalid
             if (!event) {
                 return;
@@ -301,23 +304,85 @@ let vm = new Vue({
                 return;
             }
 
-            console.log('get wallet?', [this.usersOnline, event.item]);//here
-
-            /*
             // Or, process event
-            switch (event.option.action) {
+            switch (event.option.action) {//here
                 case 'challenge':
+                    // Close chat pane hack :(
+                    let chatCloseCtrl = document.getElementById('close_sidebar_a');
+                    this.clickEvent(chatCloseCtrl);
+
                     // Begin config
                     this.chatDuelChallengeConfig = event.option;
                     // Launch modal to finalize challenger config
-                    
-                    this.fetchWizardsOwnedByAddress();
-
+                    if (!event.item.wallet) {
+                        console.log('No wallet was found for the user you wish to challenge :(');
+                        event.item.wallet = false;
+                    }
+                    // Load Wizards of the Duelist you want to challenge
+                    this.fetchWizardsOwnedByAddress(event.item.wallet);
                     this.chatChallengeModal_step1 = true;
                     break;
                 default:
                     return;
-            }*/
+            }
+        },
+        clickEvent: function (elem) {
+            // Create our event (with options)
+            let evt = new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            // If cancelled, don't dispatch our event
+            let canceled = !elem.dispatchEvent(evt);
+        },
+        // Select challenge Wizards (chat Duels)
+        selectChallengeWizard: async function (wizardId, isOpponent) {
+            if (!wizardId) {
+                return;
+            } else {
+                wizardId = parseInt(wizardId);
+            }
+            
+            if (isOpponent) {
+                // Check if challenged has been issued to yourself
+                if (this.userOwnsWizards) {
+                    this.chatDuelChallengeConfig.isValidPartner = true;
+                    for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
+                        if (wizardId == parseInt(this.tokens.mainnet.wizards[i].id)) {
+                            this.chatDuelChallengeConfig.isValidPartner = false;
+                            break;
+                        }
+                    }
+                }
+                // Load wizard
+                this.currentOpposingWizard = await this.api.getWizardById(wizardId);
+                // Add the wizard's image url
+                this.currentOpposingWizard.image = this.api.getWizardImageUrlById(wizardId);
+                // Add metadata
+                this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
+                // Set opponent's wizard in challenge config
+                this.chatDuelChallengeConfig.wizardChallenged = this.currentOpposingWizard;
+                // Proceed to choose own wizard (Step 2)
+                this.chatChallengeModal_step2 = true;
+            } else {
+                // Load wizard
+                this.currentWizard = await this.api.getWizardById(wizardId);
+                // Add the wizard's image url
+                this.currentWizard.image = this.api.getWizardImageUrlById(wizardId);
+                // Add metadata
+                this.currentWizard = this.wizardUtils.getWizardMetadata(this.currentWizard);
+                // Set opponent's wizard in challenge config
+                this.chatDuelChallengeConfig.wizardChallenging = this.currentWizard;
+                // Proceed to review and submit challenge (Step 3)
+                this.chatChallengeModal_step3 = true;
+            }
+            console.log('Challenge config =>', this.chatDuelChallengeConfig);
+        },
+        submitChallenge: async function () {
+            alert('TODO: Send challenge request to challenged user ' + this.currentOpposingWizard.owner);
+            let closeModalBtn = document.getElementById('modal_close');
+            this.clickEvent(closeModalBtn);
         },
 
         // UI
