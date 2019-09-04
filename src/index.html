@@ -194,59 +194,58 @@
                             </div>
 
                         </pending-duel>
+                    </div>
 
-                        <div class="duel-requests unresolved" v-if="activeDuelSimulation">
+                    <div class="duel-requests unresolved" v-if="activeDuelSimulation">
                         
-                            <h5 class="pending-duel-requests title">Active Duel:</h5>
-    
-                            <!-- List Pending Duels -->
-                            <pending-duel class="pending-duel-card unresolved">
-    
-                                <div slot="header">
-                                    <h5>Let's Duel!</h5>
-                                </div>
-                                <div slot="body">
-                                    <vs-row>
-                                        <!-- Challenger Wizard -->
-                                        <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="activeDuelSimulation.wizardChallenging">
-                                            <vs-row class="pending-type-label">Challenger:</vs-row>
-                                            
-                                            <vs-row>
-                                                <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
-                                            </vs-row>
-    
-                                            <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
-                                        </vs-col>
-                                        
-                                        <!-- VS. -->
-                                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                                            <span class="pending-vs">
-                                                <strong>VS.</strong>
-                                            </span>
-                                        </vs-col>
-    
-                                        <!-- Challenged Wizard -->
-                                        <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="activeDuelSimulation.wizardChallenged">
-                                            <vs-row class="pending-type-label">You:</vs-row>
-                                            
-                                            <vs-row>
-                                                <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
-                                            </vs-row>
-    
-                                            <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
-                                        </vs-col>
-    
-                                    </vs-row>
-                                </div>
-                                <div slot="footer">
-                                    <div class="pending-challenge-footer unresolved">
-                                        <button class="btn btn-primary btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
-                                    </div>
-                                </div>
-    
-                            </pending-duel>
-                        </div>
+                        <h5 class="pending-duel-requests title">Active Duel:</h5>
 
+                        <!-- List Pending Duels -->
+                        <pending-duel class="pending-duel-card unresolved">
+
+                            <div slot="header">
+                                <h5>Let's Duel!</h5>
+                            </div>
+                            <div slot="body">
+                                <vs-row>
+                                    <!-- Challenger Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="activeDuelSimulation.wizardChallenging">
+                                        <vs-row class="pending-type-label">Challenger:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
+                                    </vs-col>
+                                    
+                                    <!-- VS. -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                                        <span class="pending-vs">
+                                            <strong>VS.</strong>
+                                        </span>
+                                    </vs-col>
+
+                                    <!-- Challenged Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="activeDuelSimulation.wizardChallenged">
+                                        <vs-row class="pending-type-label">You:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
+                                    </vs-col>
+
+                                </vs-row>
+                            </div>
+                            <div slot="footer">
+                                <div class="pending-challenge-footer unresolved">
+                                    <button class="btn btn-primary btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
+                                </div>
+                            </div>
+
+                        </pending-duel>
                     </div>
                 </div>
 

@@ -426,6 +426,7 @@ let vm = new Vue({
                             }
                             // Create active Duel from Duel config
                             this.activeDuelSimulation = this.chatDuelChallengeConfig;
+                            console.log('this.activeDuelSimulation', this.activeDuelSimulation);
                             break;
                     }
 
@@ -612,9 +613,9 @@ let vm = new Vue({
             let pendingDuel = this.pendingDuelRequests[pendingIndex];
             console.log('Accepting duel request =>', pendingDuel);
             this.chat.acceptInvite(pendingDuel.inviteId, () => {
-                delete this.pendingDuelRequests[pendingIndex];
                 let newActiveDuel = this.pendingDuelRequests.splice(pendingIndex, 1);
-                this.activeDuelSimulation = newActiveDuel;
+                this.activeDuelSimulation = newActiveDuel[0];
+                console.log('this.activeDuelSimulation', this.activeDuelSimulation);
                 // Remove alert and handle notifications count
                 // If user has not closed the active alert
                 if (this.notification.type) {
@@ -628,7 +629,6 @@ let vm = new Vue({
             let pendingDuel = this.pendingDuelRequests[pendingIndex];
             console.log('Declining duel request =>', pendingDuel);
             this.chat.declineInvite(pendingDuel.inviteId, () => {
-                delete this.pendingDuelRequests[pendingIndex];
                 this.pendingDuelRequests.splice(pendingIndex, 1);
                 // Remove alert and handle notifications count
                 // If user has not closed the active alert
