@@ -38,6 +38,9 @@
             <!-- Chat Component (Sidebar) -->
             <sidebar>
                 <div class="menu login-items" slot="menu-items">
+                    <span class="notification-count" v-if="notificationsCount > 0">
+                        <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
+                    </span>
                     <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
                     <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
                 </div>
@@ -51,7 +54,7 @@
                     </div>
                     <div class="wrapper sidebar-wrapper avatar" v-if="isWeb3Enabled && tokens.mainnet.wizards.length">
                         <!-- Wizard Avatar -->
-                        <vs-avatar  size="70px" :src="tokens.mainnet.wizards[0].image"/>
+                        <vs-avatar size="70px" :src="tokens.mainnet.wizards[0].image"/>
                     </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
                         <!-- Twitter Username -->
@@ -1365,7 +1368,7 @@
     <script type="text/x-template" id="sidebar-template">
         <div id="parentx">
             <slot name="menu-items"></slot>
-            <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar">
+            <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
             <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
             
                 <!-- Close Sidebar -->

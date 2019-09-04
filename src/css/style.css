@@ -416,6 +416,12 @@ div.duel-review-vs {
 }
 
 /* Chat & Sidebar */
+.notification-count .vs-icon.small {
+    font-size: 15px;
+    position: relative;
+    top: -25px;
+    left: 15px;
+}
 .vs-sidebar.vs-sidebar-primary.vs-sidebar-position-right {
     padding: 0.5rem;
 }

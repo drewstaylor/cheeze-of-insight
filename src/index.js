@@ -168,6 +168,7 @@ let vm = new Vue({
         chatStates: ['browsing', 'chatting'],
         chatState: 'browsing',
         usersOnline: [],
+        notificationsCount: 0,
 
         // Chat interface menu and options
         testnetContextMenuOptions: contextMenuOptions,
@@ -319,6 +320,7 @@ let vm = new Vue({
             ///////////////////////////////////
             // A new challenger approaches!
             this.chat.on('room-invite', async (invite) => {
+                ++this.notificationsCount;
                 /*
                 {
                     fromUserId: "jAAxDMcaALZzicxcXDfOFQBYjT52",
@@ -358,17 +360,17 @@ let vm = new Vue({
                     this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
                     this.notification.color = 'primary';
                     // Release notification
-                    let notifier = document.getElementById('notifier');
-                    if (notifier)
-                        this.clickEvent(notifier);
+                    //let notifier = document.getElementById('notifier');
+                    //this.clickEvent(notifier);
 
                     // Add to pending duels
                     this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
                     //console.log('Pending Duels =>', this.pendingDuelRequests);
                }
             });
-            // Challenge accepted!
+            // Challenge accepted / declined
             this.chat.on('room-invite-response', (inviteResponse) => {
+                ++this.notificationsCount;
                 /*
                 {
                     fromUserId: "kCHBUdEBs6N9Gsz46iy935e44Kf1",
@@ -387,9 +389,8 @@ let vm = new Vue({
                             this.notification.text = inviteResponse.fromUserName + ' has declined your challenge.';
                             this.notification.color = 'danger';
                             // Release notification
-                            notifier = document.getElementById('notifier');
-                            if (notifier)
-                                this.clickEvent(notifier);
+                            //notifier = document.getElementById('notifier');
+                            //this.clickEvent(notifier);
                             break;
                         case 'accepted':
                             // Notify user of incoming challenge
@@ -397,9 +398,8 @@ let vm = new Vue({
                             this.notification.text = inviteResponse.fromUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
                             this.notification.color = 'success';
                             // Release notification
-                            notifier = document.getElementById('notifier');
-                            if (notifier)
-                                this.clickEvent(notifier);
+                            //notifier = document.getElementById('notifier');
+                            //this.clickEvent(notifier);
                             break;
                     }
 
@@ -578,6 +578,7 @@ let vm = new Vue({
             this.chat.acceptInvite(pendingDuel.inviteId, () => {
                 delete this.pendingDuelRequests[pendingIndex];
                 this.pendingDuelRequests.splice(pendingIndex, 1);
+                --this.notificationsCount;
             });
         },
         declineChallenge: async function (pendingIndex) {
@@ -586,6 +587,7 @@ let vm = new Vue({
             this.chat.declineInvite(pendingDuel.inviteId, () => {
                 delete this.pendingDuelRequests[pendingIndex];
                 this.pendingDuelRequests.splice(pendingIndex, 1);
+                --this.notificationsCount;
             });
         },
 
