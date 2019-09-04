@@ -89,7 +89,8 @@ const getChat = async function (user, wizards = [], wallet = null) {
     let chat = new Firechat(chatRef);
 
     // Set the Firechat user
-    chat.setUser(user.uid, user.displayName, (user) => {
+    let userRef;
+    chat.setUser(user.uid, user.displayName, async (user) => {
         //console.log('New chat User =>', user);
         chat.userData = user;
         chat.userData.wizards = wizards;
@@ -98,18 +99,23 @@ const getChat = async function (user, wizards = [], wallet = null) {
         //chat.resumeSession();
 
         // Update Firebase with wallet address
-        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
-        userRef.update({
+        let userName = user.name.toLowerCase();
+        let userRef = firebaseDb.ref('firechat-general/user-names-online/' + userName);
+        
+        if (!wallet || !wizards) {
+            return;
+        }
+
+        await userRef.update({
             wallet: wallet,
             wizards: wizards,
             id: user.id,
             isOnline: true
         });
 
-        userRef.onDisconnect().update({
-            isOnline: false
-        });
-        //userRef.onDisconnect().cancel();
+        let onlineRef = firebaseDb.ref('firechat-general/user-names-online/' + userName + "/isOnline");
+        onlineRef.onDisconnect().set(false);
+        //onlineRef.onDisconnect().cancel()*/
     });
 
     // Listeners for chat events

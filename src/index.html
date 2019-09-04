@@ -119,7 +119,7 @@
 
                         <!-- Online Users List -->
                         <div v-if="usersOnline && chat">
-                            <div v-for="(user, index) in onlineUsers" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
+                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
                                 <!-- Yourself / Current User -->
                                 <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
