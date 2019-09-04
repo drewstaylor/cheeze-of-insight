@@ -416,6 +416,10 @@ div.duel-review-vs {
 }
 
 /* Chat & Sidebar */
+.vs-sidebar.vs-sidebar-primary.vs-sidebar-position-right {
+    padding: 0.5rem;
+}
+
 .chat-icon.sidebar-ctrlr {
     position: absolute;
     top: 0.5rem;
@@ -449,4 +453,21 @@ span.you {
 
 #testnet_challenge_menu {
     left: 0 !important;
+}
+
+div.duel-requests {
+    margin-top: 1.25rem;
+}
+
+.btn-accept-challenge {
+    margin: 1.25rem;
+}
+
+.con-vs-avatar.pending-opponnent,
+.con-vs-avatar.pending-wizard {
+    margin: auto;
+}
+
+.pending-type-label {
+    margin-left: 1rem;
 }

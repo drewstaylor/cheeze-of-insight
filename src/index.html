@@ -105,7 +105,7 @@
                         <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
 
                         <!-- List Pending Duels -->
-                        <pending-duel v-for="(pending, index) in pendingDuelRequests">
+                        <pending-duel class="pending-duel-card" v-for="(pending, index) in pendingDuelRequests">
 
                             <div slot="header">
                                 <h5>You've been challenged!</h5>
@@ -113,10 +113,14 @@
                             <div slot="body">
                                 <vs-row>
                                     <!-- Challenger Wizard -->
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" v-if="pending.wizardChallenging">
-                                        <span>Opponent: </span>
-                                        <vs-avatar class="pending-opponnent" size="45px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
-                                        <p>Cheeze Wizard #{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</p>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="pending.wizardChallenging">
+                                        <vs-row class="pending-type-label">Challenger:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-opponnent" size="35px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</vs-row>
                                     </vs-col>
                                     
                                     <!-- VS. -->
@@ -127,16 +131,22 @@
                                     </vs-col>
 
                                     <!-- Challenged Wizard -->
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" v-if="pending.wizardChallenged">
-                                        <span>Opponent: </span>
-                                        <vs-avatar class="pending-opponnent" size="45px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
-                                        <p>Cheeze Wizard #{{ pending.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</p>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="pending.wizardChallenged">
+                                        <vs-row class="pending-type-label">You:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-wizard" size="35px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ pending.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</vs-row>
                                     </vs-col>
 
                                 </vs-row>
                             </div>
                             <div slot="footer">
-                                <vs-row vs-justify="flex-end">Footer</vs-row>
+                                <vs-row vs-justify="center">
+                                    <button class="btn btn-primary btn-accept-challenge" @click="acceptChallenge(index)">Accept</button>
+                                </vs-row>
                             </div>
 
                         </pending-duel>
@@ -1373,7 +1383,7 @@
 
                 <!-- Footer -->
                 <div class="footer-sidebar" slot="footer">
-                    <p>Footer</p>
+                    <p></p>
                 </div>
             
             </vs-sidebar>
@@ -1421,7 +1431,7 @@
     <!-- Begin Duel Request Template -->
     <script type="text/x-template" id="duel-request-template">
         <vs-row vs-justify="center">
-            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
                 <vs-card>
                     <slot name="header">
                         <h3>Title</h3>

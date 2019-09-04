@@ -354,14 +354,15 @@ let vm = new Vue({
 
                     // Notify user of incoming challenge
                     this.notification.title = 'Incoming challenge!';
-                    this.notification.text = invite.fromUserName + '(' + roomArgs[0] + ')' + ' has challenged you to a duel simulation. Open chat to accept.';
+                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
                     this.notification.color = 'primary';
                     // Release notification
                     let notifier = document.getElementById('notifier');
                     this.clickEvent(notifier);
 
+                    // Add to pending duels
                     this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
-                    console.log('Pending Duels =>', this.pendingDuelRequests);
+                    //console.log('Pending Duels =>', this.pendingDuelRequests);
                }
             });
             // Challenge accepted!
@@ -507,15 +508,6 @@ let vm = new Vue({
             // Create duel channel and invite remote user
             let timestamp = new Date().getTime();
             let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + this.chatDuelChallengeConfig.wizardChallenging.id + '-' + '-' + this.chatDuelChallengeConfig.wizardChallenged.id + '-' + timestamp;
-            
-            /*
-            roomName args:
-                - challenging player wallet
-                - challenged player wallet
-                - challenging wizard id
-                - challenged wizard id
-                - timestamp
-            */
 
             // Create duel room
             this.chat.createRoom(roomName, 'private', (roomId) => {
@@ -541,6 +533,10 @@ let vm = new Vue({
                     }
                 });
             });
+        },
+        acceptChallenge: async function (pendingIndex) {
+            let pendingDuel = this.pendingDuelRequests[pendingIndex];
+            console.log('Accepting duel request =>', pendingDuel);
         },
 
         // UI
