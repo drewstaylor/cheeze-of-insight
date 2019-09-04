@@ -418,6 +418,7 @@ div.duel-review-vs {
 /* Chat & Sidebar */
 .notification-count .vs-icon.small {
     font-size: 15px;
+    font-weight: bold;
     position: relative;
     top: -25px;
     left: 15px;

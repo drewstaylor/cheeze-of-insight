@@ -176,6 +176,7 @@ let vm = new Vue({
         // Chat Duel config
         chatDuelChallengeConfig: {},
         pendingDuelRequests: [],
+        activeDuelSimulation: null,
         chatChallengeModal_step1: false, // Show / Hide challenge configurator modals
         chatChallengeModal_step2: false,
         chatChallengeModal_step3: false,
@@ -320,7 +321,6 @@ let vm = new Vue({
             ///////////////////////////////////
             // A new challenger approaches!
             this.chat.on('room-invite', async (invite) => {
-                ++this.notificationsCount;
                 /*
                 {
                     fromUserId: "jAAxDMcaALZzicxcXDfOFQBYjT52",
@@ -338,37 +338,51 @@ let vm = new Vue({
                     - timestamp
                 */
                if (invite.hasOwnProperty('toRoomName')) {
-                    // Parse room name
-                    let roomArgs = invite.toRoomName.split('-');
-                    let challengingOwner = roomArgs[0];
-                    let challengingWizardId = roomArgs[2];
-                    let challengedWizardId = roomArgs[3];
-                    // Create duel configuration object
-                    this.chatDuelChallengeConfig = {
-                        action: "challenge-request",
-                        isValidPartner: true,
-                        name: "Challenge to a duel simulation",
-                        roomId: invite.roomId,
-                        inviteId: invite.id
-                    };
-                    // Fetch wizards associated with duel
-                    let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
-                    let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
-
                     // Notify user of incoming challenge
                     this.notification.title = 'Incoming challenge!';
                     this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
                     this.notification.color = 'primary';
                     this.notification.type = 'alert';
 
-                    // Add to pending duels
-                    this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
-                    //console.log('Pending Duels =>', this.pendingDuelRequests);
+                    let found = false;
+                    for (let i = 0; i < this.pendingDuelRequests.length; i++) {
+                        if (this.pendingDuelRequests[i].hasOwnProperty('roomId')) {
+                            if (this.pendingDuelRequests[i].roomId == invite.roomId) {
+                                found = true;
+                            }
+                        }
+                    }
+
+                    if (!found) {
+                        // Parse room name
+                        let roomArgs = invite.toRoomName.split('-');
+                        let challengingOwner = roomArgs[0];
+                        let challengingWizardId = roomArgs[2];
+                        let challengedWizardId = roomArgs[3];
+                        // Create duel configuration object
+                        this.chatDuelChallengeConfig = {
+                            action: "challenge-request",
+                            isValidPartner: true,
+                            name: "Challenge to a duel simulation",
+                            roomId: invite.roomId,
+                            inviteId: invite.id
+                        };
+                        // Fetch wizards associated with duel
+                        let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
+                        let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
+
+                        // Notifications counter
+                        ++this.notificationsCount;
+
+                        // Add to pending duels
+                        this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
+                        //console.log('Pending Duels =>', this.pendingDuelRequests);
+                    }
+                    
                }
             });
             // Challenge accepted / declined
             this.chat.on('room-invite-response', (inviteResponse) => {
-                ++this.notificationsCount;
                 /*
                 {
                     fromUserId: "kCHBUdEBs6N9Gsz46iy935e44Kf1",
@@ -377,7 +391,17 @@ let vm = new Vue({
                     roomId: "-LnttylSBkcw3fsMuPs1",
                     status: "declined",
                     toUserName: "hacking myself,
+                }
                 */
+                let found = false;
+                for (let i = 0; i < this.pendingDuelRequests.length; i++) {
+                    if (this.pendingDuelRequests[i].hasOwnProperty('roomId')) {
+                        if (this.pendingDuelRequests[i].roomId == inviteResponse.roomId) {
+                            found = true;
+                        }
+                    }
+                }
+
                 if (inviteResponse.status) {
                     let notifier;
                     switch (inviteResponse.status) {
@@ -387,19 +411,25 @@ let vm = new Vue({
                             this.notification.text = inviteResponse.fromUserName + ' has declined your challenge.';
                             this.notification.color = 'danger';
                             this.notification.type = 'alert';
+                            if (!found) {
+                                ++this.notificationsCount;
+                            }
                             break;
                         case 'accepted':
-                            // Notify user of incoming challenge
+                            // Notify user of incoming Duel acceptance
                             this.notification.title = 'Challenge accepted!';
                             this.notification.text = inviteResponse.fromUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
                             this.notification.color = 'success';
                             this.notification.type = 'alert';
+                            if (!found) {
+                                ++this.notificationsCount;
+                            }
+                            // Create active Duel from Duel config
+                            this.activeDuelSimulation = this.chatDuelChallengeConfig;
                             break;
                     }
 
                 }
-                
-
             });
         },
         // Context Menu Handler
@@ -430,7 +460,7 @@ let vm = new Vue({
             switch (event.option.action) {
                 case 'challenge':
                     // Close chat pane hack :(
-                    let chatCloseCtrl = document.getElementById('close_sidebar_a');
+                    let chatCloseCtrl = document.getElementById('close_sidebar');
                     this.clickEvent(chatCloseCtrl);
 
                     // Begin config
@@ -567,13 +597,31 @@ let vm = new Vue({
             });
         },
         acceptChallenge: async function (pendingIndex) {
+            // Only allow accepting Duels if there are no active
+            // Duel simulations currently in progress
+            if (this.activeDuelSimulation) {
+                // Notify user of incoming challenge
+                this.notification.title = 'Incoming challenge!';
+                this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
+                this.notification.color = 'warning';
+                this.notification.counterInvalid = true;
+                this.notification.type = 'alert';
+                return;
+            }
+            // Else, accept the Duel
             let pendingDuel = this.pendingDuelRequests[pendingIndex];
             console.log('Accepting duel request =>', pendingDuel);
             this.chat.acceptInvite(pendingDuel.inviteId, () => {
                 delete this.pendingDuelRequests[pendingIndex];
                 let newActiveDuel = this.pendingDuelRequests.splice(pendingIndex, 1);
-                //here
-                --this.notificationsCount;
+                this.activeDuelSimulation = newActiveDuel;
+                // Remove alert and handle notifications count
+                // If user has not closed the active alert
+                if (this.notification.type) {
+                    if (this.notification.type == 'alert') {
+                        this.retireAlert();
+                    }
+                }
             });
         },
         declineChallenge: async function (pendingIndex) {
@@ -582,11 +630,35 @@ let vm = new Vue({
             this.chat.declineInvite(pendingDuel.inviteId, () => {
                 delete this.pendingDuelRequests[pendingIndex];
                 this.pendingDuelRequests.splice(pendingIndex, 1);
-                --this.notificationsCount;
+                // Remove alert and handle notifications count
+                // If user has not closed the active alert
+                if (this.notification.type) {
+                    if (this.notification.type == 'alert') {
+                        this.retireAlert();
+                    }
+                }
             });
         },
 
         // UI
+        retireAlert: function () {
+            if (this.notificationsCount > 0 && !this.notification.counterInvalid) {
+                --this.notificationsCount;
+            }
+            // Remove alert and handle notifications count
+            // If user has not closed the active alert
+            if (this.notification.type) {
+                if (this.notification.type == 'alert') {
+                    --this.notificationsCount;
+                    this.notification = {
+                        title: null,
+                        text: null,
+                        color: null,
+                        position:'top-right'
+                    };
+                }
+            }
+        },
         clickEvent: function (elem) {
             // Create our event (with options)
             let evt = new MouseEvent('click', {
@@ -622,6 +694,14 @@ let vm = new Vue({
                     return;
             }
         },
+        // Active Dueling
+        proceedToDuel: function () {
+            // Note, since Duels are a route option
+            // there is no need to update chat counter
+            // as changing routes will clear the chat
+            alert('TODO: Proceed to Duel');
+        },
+
         // Helpers / Utils.
         setWizardsSorting: function (sorting = null) {
             if (sorting == null || !this.wizards) {

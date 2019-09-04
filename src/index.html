@@ -31,9 +31,44 @@
         <div class="wrapper mount-wrapper" v-cloak>
 
             <!-- Notifications - Alert (top ribbon) -->
-            <vs-alert title="notification.title" color="notification.color" v-bind:active="{active: notification.type == 'alert'}" v-if="notification.hasOwnProperty('type')">
-                <span class="notification-alert-body">{{notification.text}}</span>
-            </vs-alert>
+            <div class="row alert-ribbon" v-if="notification.type">
+                <!-- Alert - Primary -->
+                <div class="alert alert-primary" role="alert" v-if="notification.type == 'alert' && notification.color == 'primary'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Success -->
+                <div class="alert alert-success" role="alert" v-if="notification.type == 'alert' && notification.color == 'success'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Warning -->
+                <div class="alert alert-warning" role="alert" v-if="notification.type == 'alert' && notification.color == 'warning'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Danger -->
+                <div class="alert alert-danger" role="alert" v-if="notification.type == 'alert' && notification.color == 'danger'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
 
             <!-- Notifications - Pop-Up (top right) -->
             <notification>
@@ -108,7 +143,7 @@
                     </div>
 
                     <!-- Active Chat Window -->
-                    <div class="duel-requests" v-if="pendingDuelRequests.length">
+                    <div class="duel-requests pending" v-if="pendingDuelRequests.length">
                         
                         <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
 
@@ -160,6 +195,57 @@
 
                         </pending-duel>
 
+                        <div class="duel-requests unresolved" v-if="activeDuelSimulation">
+                        
+                            <h5 class="pending-duel-requests title">Active Duel:</h5>
+    
+                            <!-- List Pending Duels -->
+                            <pending-duel class="pending-duel-card unresolved">
+    
+                                <div slot="header">
+                                    <h5>Let's Duel!</h5>
+                                </div>
+                                <div slot="body">
+                                    <vs-row>
+                                        <!-- Challenger Wizard -->
+                                        <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="activeDuelSimulation.wizardChallenging">
+                                            <vs-row class="pending-type-label">Challenger:</vs-row>
+                                            
+                                            <vs-row>
+                                                <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
+                                            </vs-row>
+    
+                                            <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
+                                        </vs-col>
+                                        
+                                        <!-- VS. -->
+                                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                                            <span class="pending-vs">
+                                                <strong>VS.</strong>
+                                            </span>
+                                        </vs-col>
+    
+                                        <!-- Challenged Wizard -->
+                                        <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="activeDuelSimulation.wizardChallenged">
+                                            <vs-row class="pending-type-label">You:</vs-row>
+                                            
+                                            <vs-row>
+                                                <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
+                                            </vs-row>
+    
+                                            <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
+                                        </vs-col>
+    
+                                    </vs-row>
+                                </div>
+                                <div slot="footer">
+                                    <div class="pending-challenge-footer unresolved">
+                                        <button class="btn btn-primary btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
+                                    </div>
+                                </div>
+    
+                            </pending-duel>
+                        </div>
 
                     </div>
                 </div>
@@ -167,7 +253,6 @@
                 <!-- Footer - Chat Box Input -->
             </sidebar>
             <!-- End Chat Component (Sidebar) -->
-
             
             <!-- Setup Chat Wizard Challenge Modals -->
             <!---->
@@ -1373,7 +1458,7 @@
     <script type="text/x-template" id="sidebar-template">
         <div id="parentx">
             <slot name="menu-items"></slot>
-            <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
+            <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
             <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
 
                 <!-- Sidebar Header -->
