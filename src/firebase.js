@@ -14,12 +14,25 @@ const firebaseDb = firebaseApp.database();
 const login = async function () {
     // Log the user in via Twitter
     let provider = new firebase.auth.TwitterAuthProvider();
-    let response;
+    let response = null;
+
+    // Online persistence
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(function(error) {
+        console.log('Error authenticating user =>', error);
+        response = false;
+    });
+
+    // Create login
     await firebase.auth().signInWithPopup(provider).catch(function(error) {
         console.log('Error authenticating user =>', error);
         response = false;
     });
-    response = true;
+
+    // Response
+    if (response !== false) {
+        response = true;
+    }
+    
     return response;
 };
 
@@ -89,8 +102,14 @@ const getChat = async function (user, wizards = [], wallet = null) {
         userRef.update({
             wallet: wallet,
             wizards: wizards,
-            id: user.id
+            id: user.id,
+            isOnline: true
         });
+
+        userRef.onDisconnect().update({
+            isOnline: false
+        });
+        //userRef.onDisconnect().cancel();
     });
 
     // Listeners for chat events

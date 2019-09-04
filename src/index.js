@@ -359,9 +359,7 @@ let vm = new Vue({
                     this.notification.title = 'Incoming challenge!';
                     this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
                     this.notification.color = 'primary';
-                    // Release notification
-                    //let notifier = document.getElementById('notifier');
-                    //this.clickEvent(notifier);
+                    this.notification.type = 'alert';
 
                     // Add to pending duels
                     this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
@@ -388,18 +386,14 @@ let vm = new Vue({
                             this.notification.title = 'Challenge declined!';
                             this.notification.text = inviteResponse.fromUserName + ' has declined your challenge.';
                             this.notification.color = 'danger';
-                            // Release notification
-                            //notifier = document.getElementById('notifier');
-                            //this.clickEvent(notifier);
+                            this.notification.type = 'alert';
                             break;
                         case 'accepted':
                             // Notify user of incoming challenge
                             this.notification.title = 'Challenge accepted!';
                             this.notification.text = inviteResponse.fromUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
                             this.notification.color = 'success';
-                            // Release notification
-                            //notifier = document.getElementById('notifier');
-                            //this.clickEvent(notifier);
+                            this.notification.type = 'alert';
                             break;
                     }
 
@@ -577,7 +571,8 @@ let vm = new Vue({
             console.log('Accepting duel request =>', pendingDuel);
             this.chat.acceptInvite(pendingDuel.inviteId, () => {
                 delete this.pendingDuelRequests[pendingIndex];
-                this.pendingDuelRequests.splice(pendingIndex, 1);
+                let newActiveDuel = this.pendingDuelRequests.splice(pendingIndex, 1);
+                //here
                 --this.notificationsCount;
             });
         },

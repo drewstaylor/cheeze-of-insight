@@ -30,7 +30,12 @@
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
-            <!-- Notifications Component (top right) -->
+            <!-- Notifications - Alert (top ribbon) -->
+            <vs-alert title="notification.title" color="notification.color" v-bind:active="{active: notification.type == 'alert'}" v-if="notification.hasOwnProperty('type')">
+                <span class="notification-alert-body">{{notification.text}}</span>
+            </vs-alert>
+
+            <!-- Notifications - Pop-Up (top right) -->
             <notification>
                 <vs-button id="notifier" slot="notification" @click="$vs.notify(notification)" type="flat"></vs-button>
             </notification>
@@ -79,13 +84,13 @@
 
                         <!-- Online Users List -->
                         <div v-if="usersOnline && chat">
-                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
+                            <div v-for="(user, index) in onlineUsers" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
                                 <!-- Yourself / Current User -->
-                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
+                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
                                 </div>
                                 <!-- Other Users -->
-                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet">
+                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
                                 </div>
                             </div>
@@ -108,7 +113,7 @@
                         <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
 
                         <!-- List Pending Duels -->
-                        <pending-duel class="pending-duel-card" v-for="(pending, index) in pendingDuelRequests">
+                        <pending-duel class="pending-duel-card" v-for="(pending, index) in pendingDuelRequests" v-bind:key="pending.roomId">
 
                             <div slot="header">
                                 <h5>You've been challenged!</h5>
@@ -1370,11 +1375,6 @@
             <slot name="menu-items"></slot>
             <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
             <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
-            
-                <!-- Close Sidebar -->
-                <div class="close-sidebar">
-                    <a id="close_sidebar_a" class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
-                </div>
 
                 <!-- Sidebar Header -->
                 <slot class="header-sidebar" name="header">
