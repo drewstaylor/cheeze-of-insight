@@ -14,6 +14,7 @@ const emptyOverallStats = {
   winRate: 0.0,
   powerHigh: 0,
   powerLow: 0,
+  moveStats: null,
 };
 
 const emptyWizardMoveStats = {
@@ -99,6 +100,9 @@ describe("stats", () => {
       ];
 
       const stats = statsUtils.calculateDuelStatsOverall(duels, 1);
+
+      // move stats are complicated; we won't test them here
+      stats.moveStats = null;
 
       expect(stats).toEqual(
         {...emptyOverallStats,

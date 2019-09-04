@@ -46,6 +46,7 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         winRate: 0.0,
         powerHigh: 0,
         powerLow: Number.MAX_VALUE,
+        moveStats: null,
     }
 
     for (const duel of duels) {
@@ -56,6 +57,7 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         let startPower = null;
         let endPower = null;
         let moveset = null;
+        let opponentAffinity = null;
 
         // match our desired wizard in this duel or ignore it
         if (wizardId == duel.wizard1Id) {
@@ -63,12 +65,14 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
             startPower = duel.startPower1;
             endPower = duel.endPower1;
             moveset = duel.moveSet1;
+            opponentAffinity = duel.affinity2;
 
         } else if (wizardId == duel.wizard2Id) {
             affinity = duel.affinity2;
             startPower = duel.startPower2;
             endPower = duel.endPower2;
             moveset = duel.moveSet2;
+            opponentAffinity = duel.affinity1;
 
         } else {
             continue;
@@ -79,6 +83,8 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         startPower = parseInt(startPower);
         endPower = parseInt(endPower);
         moveset = duelUtils.convertMovesetToIntArray(moveset);
+
+        stats.moveStats = calculateWizardMovesetStats(affinity, opponentAffinity, moveset);
 
         // TODO: handle tie
         const isWin = (endPower > startPower);
