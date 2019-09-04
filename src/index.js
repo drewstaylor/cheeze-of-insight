@@ -51,6 +51,11 @@ Vue.component('sidebar', {
     })
 });
 
+// Pending duels component
+Vue.component('pending-duel', {
+    template: '#duel-request-template'
+});
+
 // Context menus (right-click) component
 const contextMenuOptions = [
     {
@@ -100,7 +105,6 @@ let vm = new Vue({
         wizardUtils: require('./wizards'),
         // Firebase
         firebase: FIREBASE,
-        chat: null,
         // Web3
         web3Providers: {
             rinkeby: null,
@@ -159,6 +163,7 @@ let vm = new Vue({
         },
 
         // Chat
+        chat: null,
         chatUser: null,
         chatStates: ['browsing', 'chatting'],
         chatState: 'browsing',
@@ -168,7 +173,8 @@ let vm = new Vue({
         testnetContextMenuOptions: contextMenuOptions,
 
         // Chat Duel config
-        chatDuelChallengeConfig: null,
+        chatDuelChallengeConfig: {},
+        pendingDuelRequests: [],
         chatChallengeModal_step1: false, // Show / Hide challenge configurator modals
         chatChallengeModal_step2: false,
         chatChallengeModal_step3: false,
@@ -307,6 +313,61 @@ let vm = new Vue({
 
             // Join general chat channel (all users)
             await this.chat.enterRoom(config.firechatConfig.generalRoom);
+
+            ///////////////////////////////////
+            // Chat event listener callbacks //
+            ///////////////////////////////////
+            // A new challenger approaches!
+            this.chat.on('room-invite', async (invite) => {
+                /*
+                {
+                    fromUserId: "jAAxDMcaALZzicxcXDfOFQBYjT52",
+                    fromUserName: "hacking myself",
+                    id: "-Lnsiv4piIRcLOHq711Z",
+                    roomId: "-Lnsiv2yHoYqojMNPwkx",
+                    toRoomName: "0x33Ec2fEd3E429a515ccDf361554f102eA36e0CEB-0x88b49cA334521BadA40Faa71EF3B416Fb1B161ec-1614-1353-1567541145942"
+                }
+
+                roomName args:
+                    - challenging player wallet
+                    - challenged player wallet
+                    - challenging wizard id
+                    - challenged wizard id
+                    - timestamp
+                */
+               if (invite.hasOwnProperty('toRoomName')) {
+                    // Parse room name
+                    let roomArgs = invite.toRoomName.split('-');
+                    let challengingOwner = roomArgs[0];
+                    let challengingWizardId = roomArgs[2];
+                    let challengedWizardId = roomArgs[3];
+                    // Create duel configuration object
+                    this.chatDuelChallengeConfig = {
+                        action: "challenge-request",
+                        isValidPartner: true,
+                        name: "Challenge to a duel simulation",
+                        roomId: invite.id
+                    };
+                    // Fetch wizards associated with duel
+                    let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
+                    let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
+
+                    // Notify user of incoming challenge
+                    this.notification.title = 'Incoming challenge!';
+                    this.notification.text = invite.fromUserName + '(' + roomArgs[0] + ')' + ' has challenged you to a duel simulation. Open chat to accept.';
+                    this.notification.color = 'primary';
+                    // Release notification
+                    let notifier = document.getElementById('notifier');
+                    this.clickEvent(notifier);
+
+                    this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
+                    console.log('Pending Duels =>', this.pendingDuelRequests);
+               }
+            });
+            // Challenge accepted!
+            this.chat.on('room-invite-response', (inviteResponse) => {
+                // XXX TODO: handle challenge response
+            });
         },
         // Context Menu Handler
         contextMenuHandler: function (event, item) {
@@ -397,6 +458,47 @@ let vm = new Vue({
             }
             console.log('Challenge config =>', this.chatDuelChallengeConfig);
         },
+        selectPendingChallengeWizard: async function (wizardId, isOpponent) {
+            if (!wizardId) {
+                return false;
+            } else {
+                wizardId = parseInt(wizardId);
+            }
+            
+            if (isOpponent) {
+                // Check if challenged has been issued to yourself
+                if (this.userOwnsWizards) {
+                    this.chatDuelChallengeConfig.isValidPartner = true;
+                    for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
+                        if (wizardId == parseInt(this.tokens.mainnet.wizards[i].id)) {
+                            this.chatDuelChallengeConfig.isValidPartner = false;
+                            break;
+                        }
+                    }
+                }
+                // Load wizard
+                this.currentOpposingPendingWizard = await this.api.getWizardById(wizardId);
+                // Add the wizard's image url
+                this.currentOpposingPendingWizard.image = this.api.getWizardImageUrlById(wizardId);
+                // Add metadata
+                this.currentOpposingPendingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingPendingWizard);
+                // Set opponent's wizard in challenge config
+                this.chatDuelChallengeConfig.wizardChallenged = this.currentOpposingPendingWizard;
+                console.log('Challenge config =>', this.chatDuelChallengeConfig);
+                return true;
+            } else {
+                // Load wizard
+                this.currentPendingWizard = await this.api.getWizardById(wizardId);
+                // Add the wizard's image url
+                this.currentPendingWizard.image = this.api.getWizardImageUrlById(wizardId);
+                // Add metadata
+                this.currentPendingWizard = this.wizardUtils.getWizardMetadata(this.currentPendingWizard);
+                // Set opponent's wizard in challenge config
+                this.chatDuelChallengeConfig.wizardChallenging = this.currentPendingWizard;
+                console.log('Challenge config =>', this.chatDuelChallengeConfig);
+                return true;
+            }
+        },
         submitChallenge: async function () {
             // Hide challenge configuration modal
             let closeModalBtn = document.getElementById('modal_close');
@@ -404,8 +506,17 @@ let vm = new Vue({
 
             // Create duel channel and invite remote user
             let timestamp = new Date().getTime();
-            let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + timestamp;
+            let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + this.chatDuelChallengeConfig.wizardChallenging.id + '-' + '-' + this.chatDuelChallengeConfig.wizardChallenged.id + '-' + timestamp;
             
+            /*
+            roomName args:
+                - challenging player wallet
+                - challenged player wallet
+                - challenging wizard id
+                - challenged wizard id
+                - timestamp
+            */
+
             // Create duel room
             this.chat.createRoom(roomName, 'private', (roomId) => {
                 console.log('Created Room =>', roomId);

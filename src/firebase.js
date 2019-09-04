@@ -85,7 +85,7 @@ const getChat = async function (user, wizards = [], wallet = null) {
         //chat.resumeSession();
 
         // Update Firebase with wallet address
-        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
+        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name.toLowerCase()));
         userRef.update({
             wallet: wallet,
             wizards: wizards,

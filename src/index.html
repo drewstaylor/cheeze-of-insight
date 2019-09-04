@@ -100,7 +100,49 @@
                     </div>
 
                     <!-- Active Chat Window -->
-                    <div class="select-duel-partner"></div>
+                    <div class="duel-requests" v-if="pendingDuelRequests.length">
+                        
+                        <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
+
+                        <!-- List Pending Duels -->
+                        <pending-duel v-for="(pending, index) in pendingDuelRequests">
+
+                            <div slot="header">
+                                <h5>You've been challenged!</h5>
+                            </div>
+                            <div slot="body">
+                                <vs-row>
+                                    <!-- Challenger Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" v-if="pending.wizardChallenging">
+                                        <span>Opponent: </span>
+                                        <vs-avatar class="pending-opponnent" size="45px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
+                                        <p>Cheeze Wizard #{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</p>
+                                    </vs-col>
+                                    
+                                    <!-- VS. -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                                        <span class="pending-vs">
+                                            <strong>VS.</strong>
+                                        </span>
+                                    </vs-col>
+
+                                    <!-- Challenged Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" v-if="pending.wizardChallenged">
+                                        <span>Opponent: </span>
+                                        <vs-avatar class="pending-opponnent" size="45px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
+                                        <p>Cheeze Wizard #{{ pending.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</p>
+                                    </vs-col>
+
+                                </vs-row>
+                            </div>
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">Footer</vs-row>
+                            </div>
+
+                        </pending-duel>
+
+
+                    </div>
                 </div>
 
                 <!-- Footer - Chat Box Input -->
@@ -1375,6 +1417,26 @@
         </div>
     </script>
     <!-- End Notifications Template -->
+
+    <!-- Begin Duel Request Template -->
+    <script type="text/x-template" id="duel-request-template">
+        <vs-row vs-justify="center">
+            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                <vs-card>
+                    <slot name="header">
+                        <h3>Title</h3>
+                    </slot>
+                    <slot name="body">
+                        <span>Body</span>
+                    </slot>
+                    <slot name="footer">
+                        <vs-row vs-justify="flex-end">Footer</vs-row>
+                    </slot>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </script>
+    <!-- End Duel Request Template -->
 
     <script type="text/javascript" src="build/app.js"></script>
 </body>
