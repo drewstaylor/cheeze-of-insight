@@ -292,4 +292,83 @@ describe("stats", () => {
       });
     });
   });
+
+  describe("calculateWizardMovesetStats", () => {
+
+    let statsset = null;
+
+    it("should calculate set of moves correctly", () => {
+      const moveset = [FIRE, FIRE, WATER, WIND, WATER];
+      statsset = statsUtils.calculateWizardMovesetStats(FIRE, WIND, moveset);
+
+      expect(statsset).toEqual(
+        [
+          {...emptyWizardMoveStats,
+            ...{
+              usesOpponentsWeaknessWhileAdvantaged: 1,
+              usesOwnAffinityWhileAdvantaged: 1,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOpponentsWeaknessWhileAdvantaged: 1,
+              usesOwnAffinityWhileAdvantaged: 1,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileAdvantaged: 1,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileAdvantaged: 1,
+            }
+          },
+        ]);
+    });
+
+    it("should accumulate stats correctly", () => {
+      let moveset = [FIRE, FIRE, WATER, WIND, WATER];
+      statsset = statsUtils.calculateWizardMovesetStats(FIRE, WIND, moveset);
+
+      moveset = [WIND, FIRE, WATER, WIND, WATER];
+      statsset = statsUtils.calculateWizardMovesetStats(FIRE, WIND, moveset, statsset);
+
+      expect(statsset).toEqual(
+        [
+          {...emptyWizardMoveStats,
+            ...{
+              usesOpponentsWeaknessWhileAdvantaged: 1,
+              usesOwnAffinityWhileAdvantaged: 1,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOpponentsWeaknessWhileAdvantaged: 2,
+              usesOwnAffinityWhileAdvantaged: 2,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileAdvantaged: 2,
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+            }
+          },
+          {...emptyWizardMoveStats,
+            ...{
+              usesOwnWeaknessWhileAdvantaged: 2,
+            }
+          },
+        ]);
+    });
+
+  });
 });

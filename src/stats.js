@@ -202,8 +202,38 @@ const calculateWizardMoveStats = (wizardAffinity, opponentAffinity, move, stats=
     return stats;
 }
 
+
+/**
+ * Calculates stats for each move in the moveset, using calculateWizardMoveStats()
+ *
+ * @param wizardAffinity is the affinity index of the wizard for which we are generating stats
+ * @param opponentAffinity is the affinity index of the opposing wizard
+ * @param moveset should be an array of moves (e.g. standard 5 round moveset)
+ * @param statsset should be an existing stats array of length >= moveset, or a new one will be created if left null
+ *
+ * @return an object with stats for the given match
+ */
+const calculateWizardMovesetStats = (wizardAffinity, opponentAffinity, moveset, statsset=null) => {
+
+    if (! statsset) {
+        statsset = [];
+        for (const i in moveset) {
+            statsset[i] = {...emptyStats};
+        }
+    }
+
+    for (const i in moveset) {
+        const move = moveset[i];
+        let stats = statsset[i];
+        stats = calculateWizardMoveStats(wizardAffinity, opponentAffinity, move, stats);
+    }
+
+    return statsset;
+}
+
 module.exports = {
     calculateDuelStatsOverall,
     calculateWizardMoveStats,
+    calculateWizardMovesetStats,
 };
 
