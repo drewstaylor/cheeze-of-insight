@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
     <link href="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.css" rel="stylesheet" type="text/css">
+    
+    <link href="node_modules/firechat/dist/firechat.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
@@ -30,11 +32,6 @@
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
-            <!-- Notifications Component (top right) -->
-            <notification>
-                <vs-button id="notifier" slot="notification" @click="$vs.notify(notification)" type="flat"></vs-button>
-            </notification>
-
             <!-- Chat Component (Sidebar) -->
             <sidebar>
                 <div class="menu login-items" slot="menu-items">
@@ -49,16 +46,11 @@
                             <a v-on:click="login();">Login</a>
                         </p>
                     </div>
-                    <div class="wrapper sidebar-wrapper avatar" v-if="isWeb3Enabled && tokens.mainnet.wizards.length">
-                        <!-- Wizard Avatar -->
-                        <vs-avatar  size="70px" :src="tokens.mainnet.wizards[0].image"/>
-                    </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
-                        <!-- Twitter Username -->
                         <span class="label-wrapper" v-if="chat">
-                            <h5 v-if="userIsLoggedIn && usersOnline && chat.userData">{{ chat.userData.name }} - </h5>
+                            <h5 v-if="chat.userData">{{ chat.userData.name }}</h5>
                         </span>
-                        <h5 v-if="wallets.mainnet">{{ wallets.mainnet }}</h5>
+                        <h5 v-else-if="wallets.mainnet">{{ wallets.mainnet }}</h5>
                     </div>
                 </div>
 
@@ -74,17 +66,15 @@
                     <div class="select-duel-partner" v-else-if="userIsLoggedIn && chatState == 'browsing'">
                         <h5>Summoners Online:</h5>
 
-                        <!-- Online Users List -->
-                        <div v-if="usersOnline && chat">
-                            <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
-                                <!-- Yourself / Current User -->
-                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
-                                    <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
-                                </div>
-                                <!-- Other Users -->
-                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet">
-                                    <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
-                                </div>
+                        <!-- Online Users -->
+                        <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)">
+                            <!-- Yourself / Current User -->
+                            <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
+                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
+                            </div>
+                            <!-- Other Users -->
+                            <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name">
+                                <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
                             </div>
                         </div>
 
@@ -97,6 +87,31 @@
                         >
                         </vue-simple-context-menu>
 
+
+                        <!--
+                        <div class="item-wrapper">
+                            <div v-for="item in items" @click.prevent.stop="handleClick($event, item)" class="item-wrapper__item">
+                                {{item.name}}
+                            </div>
+                        </div>
+
+                        <vue-simple-context-menu
+                            :elementId="'myUniqueId'"
+                            :options="options"
+                            :ref="'vueSimpleContextMenu'"
+                            @option-clicked="optionClicked">
+                        </vue-simple-context-menu>
+
+                        handleClick (event, item) {
+                            this.$refs.vueSimpleContextMenu.showMenu(event, item)
+                        }
+
+                        optionClicked (event) {
+                            window.alert(JSON.stringify(event))
+                        }
+                        -->
+
+
                     </div>
 
                     <!-- Active Chat Window -->
@@ -106,114 +121,6 @@
                 <!-- Footer - Chat Box Input -->
             </sidebar>
             <!-- End Chat Component (Sidebar) -->
-
-            
-            <!-- Setup Chat Wizard Challenge Modals -->
-            <!---->
-            <!-- 1 : Choose From Opponent Wizards-->
-            <modal v-if="chatChallengeModal_step1" @close="chatChallengeModal_step1 = false">
-                <!-- Custom Modal Overrides -->
-                <h3 slot="header">Which opponent Wizard would you like to challenge?</h3>
-                <div slot="body">
-                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress" v-if="selectedWizardsByAddress.length">
-                        <div class="wizard-card-block-item">
-                            <!-- Wizard Image -->
-                            <a v-on:click="selectChallengeWizard(wizard.id, true); chatChallengeModal_step1 = false;">
-                                <div class="wizard-card wizard-card-img">
-                                    <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
-                                    <!-- Card Label (Link Text) -->
-                                    <div class="wizard-card wizard-card-label">
-                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div v-if="!selectedWizardsByAddress.length">
-                        <p>This user doesn't own any wizards, sorry!</p>
-                    </div>
-                </div>
-            </modal>
-
-            <!-- 2 : Choose From Opponent Wizards-->
-            <modal v-if="chatChallengeModal_step2" @close="chatChallengeModal_step2 = false">
-                <!-- Custom Modal Overrides -->
-                <h3 slot="header">Which Wizard would you like to send into battle?</h3>
-                <div slot="body">
-                    <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in tokens.mainnet.wizards" v-if="tokens.mainnet.wizards.length">
-                        <div class="wizard-card-block-item">
-                            <!-- Wizard Image -->
-                            <a v-on:click="selectChallengeWizard(wizard.id, false); chatChallengeModal_step2 = false;">
-                                <div class="wizard-card wizard-card-img">
-                                    <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
-                                    <!-- Card Label (Link Text) -->
-                                    <div class="wizard-card wizard-card-label">
-                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div v-if="!tokens.mainnet.wizards.length">
-                        <p>You don't own any wizards, sorry!</p>
-                    </div>
-                </div>
-            </modal>
-
-            <!-- 3 : Review and Send Challenge -->
-            <modal v-if="chatChallengeModal_step3" @close="chatChallengeModal_step3 = false">
-                <!-- Custom Modal Overrides -->
-                <h3 slot="header">Review your challenge</h3>
-                <div slot="body">
-                    <div class="wizard-card-block-item wizard-card-block-item-outer">
-                        
-                        <!-- Your Wizard -->
-                        <div class="wizard-card-block-item">
-                            <!-- Wizard Image -->
-                            <h5>Your Wizard</h5>
-                            <div class="wizard-card wizard-card-img">
-                                <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
-                                <!-- Card Label (Link Text) -->
-                                <div class="wizard-card wizard-card-label">
-                                    <p>Cheeze Wizard #{{ currentWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- VS. -->
-                        <div style="display: inline;">
-                            <div class="duel-review-vs">
-                                <p>
-                                    <strong>VS.</strong>
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Challenged Wizard -->
-                        <div class="wizard-card-block-item">
-                            <!-- Wizard Image -->
-                            <h5>Challenged Wizard</h5>
-                            <div class="wizard-card wizard-card-img">
-                                <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
-                                <!-- Card Label (Link Text) -->
-                                <div class="wizard-card wizard-card-label">
-                                    <p>Cheeze Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    
-                    </div>
-
-                    <!-- Submit Challenge -->
-                    <div class="row" v-if="!this.chatDuelChallengeConfig.isSending">
-                        <button class="modal-default-button btn btn-primary submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
-                    </div>
-                    
-                </div>
-
-            </modal>
-            <!---->
-            <!-- End Wizard Challenge Modals -->
 
             <h3>Welcome to the Holy Cheeze of Insight!</h3>
             <div class="img-main" v-if="navigation.state < 0">
@@ -625,53 +532,51 @@
             </div>
 
             <!-- Duels -->
-            <div v-if="currentOpposingWizard.duels">
-                <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
-                <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels">
-
-                    <div class="duels-card-left-container">
-                        <div 
-                            :class="'duels-card-left-wizard '+ (duel.wizard1DidWin ? 'duels-winner' : 'duels-loser')"
-                            :style="'background-image: url('+duel.wizard1SvgUrl+')'"
-                        >
-                        </div>
-                        <div class="duels-card-left-outcome">
-                            <img class="icon" :src="getIconUrlForAffinity(duel.affinity1)"></img>
-                            <span class="duels-outcome-base-points">
-                                {{ getPrettyPowerLevel(duel.startPower1) }}
-                            </span>
-                            <span :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}</span>
-                        </div>
-                    </div>
-
-                    <div class="duels-card-rounds">
-                        <div class="duels-card-round" v-for="move in duel.moveResults">
-                            <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
-                                <img :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
-                            </div>
-                            <div :class="'duels-card-round-p2 '+ (move.winner == 'p2' ? 'duels-winner' : (move.winner == 'p1' ? 'duels-loser' : ''))">
-                                <img :src="getIconUrlForAffinity(move.p2)" class="duels-card-round-icon"></img>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="duels-card-right-container">
-                        <div 
-                            :class="'duels-card-left-wizard '+ (duel.wizard2DidWin ? 'duels-winner' : 'duels-loser')"
-                            :style="'background-image: url('+duel.wizard2SvgUrl+')'"
-                        >
-                        </div>
-                        <div class="duels-card-right-outcome">
-                            <img class="icon" :src="getIconUrlForAffinity(duel.affinity2)"></img>
-                            <span class="duels-outcome-base-points">
-                                {{ getPrettyPowerLevel(duel.startPower2) }}
-                            </span>
-                            <span :class="duel.wizard2DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">
-                                {{ (duel.wizard2Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard2Gain) }}
-                            </span>
-                        </div>
-                    </div>
-
+            <div v-if="showDuels">
+                <h4>Duels</h4>
+                <div class="duels-table-container">
+                    <table class="duels-table">
+                        <thead>
+                            <tr>
+                                <th> id </th>
+                                <th> wizard1Id </th>
+                                <th> wizard2Id </th>
+                                <th> affinity1 </th>
+                                <th> affinity2 </th>
+                                <th> startPower1 </th>
+                                <th> startPower2 </th>
+                                <th> endPower1 </th>
+                                <th> endPower2 </th>
+                                <th> moveSet1 </th>
+                                <th> moveSet2 </th>
+                                <th> startBlock </th>
+                                <th> endBlock </th>
+                                <th> timeoutBlockendBlock </th>
+                                <th> timedOut </th>
+                                <th> isAscensionBattle </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="duel in currentOpposingWizard.duels">
+                                <td>{{ duel.id }}</td>
+                                <td>{{ duel.wizard1Id }}</td>
+                                <td>{{ duel.wizard2Id }}</td>
+                                <td>{{ duel.affinity1 }}</td>
+                                <td>{{ duel.affinity2 }}</td>
+                                <td>{{ duel.startPower1 }}</td>
+                                <td>{{ duel.startPower2 }}</td>
+                                <td>{{ duel.endPower1 }}</td>
+                                <td>{{ duel.endPower2 }}</td>
+                                <td>{{ duel.moveSet1.substring(0,10) }}</td>
+                                <td>{{ duel.moveSet2.substring(0,13) }}</td>
+                                <td>{{ duel.startBlock }}</td>
+                                <td>{{ duel.endBlock }}</td>
+                                <td>{{ duel.timeoutBlockendBlock }}</td>
+                                <td>{{ duel.timedOut }}</td>
+                                <td>{{ duel.isAscensionBattle }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1317,7 +1222,7 @@
             
                 <!-- Close Sidebar -->
                 <div class="close-sidebar">
-                    <a id="close_sidebar_a" class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
+                    <a class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
                 </div>
 
                 <!-- Sidebar Header -->
@@ -1356,7 +1261,7 @@
                         <!-- Footer Slot -->
                         <div class="modal-footer">
                             <slot name="footer">
-                                <button id="modal_close" class="modal-default-button btn btn-primary" @click="$emit('close')">
+                                <button class="modal-default-button btn btn-primary" @click="$emit('close')">
                                     <slot name="footer">Close</slot>
                                 </button>
                             </slot>
@@ -1367,14 +1272,6 @@
         </transition>
     </script>
     <!-- End Modal Template -->
-
-    <!-- Begin Notifications Template -->
-    <script type="text/x-template" id="notification-template">
-        <div class="con-notifications-position">
-            <slot name="notification" @click="$vs.notify({title:'Position top-right',text:'Lorem ipsum dolor sit amet, consectetur',color:'success',position:'top-right'})" color="success" type="flat">Notification</slot>
-        </div>
-    </script>
-    <!-- End Notifications Template -->
 
     <script type="text/javascript" src="build/app.js"></script>
 </body>
