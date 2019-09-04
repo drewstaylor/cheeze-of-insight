@@ -346,7 +346,8 @@ let vm = new Vue({
                         action: "challenge-request",
                         isValidPartner: true,
                         name: "Challenge to a duel simulation",
-                        roomId: invite.id
+                        roomId: invite.roomId,
+                        inviteId: invite.id
                     };
                     // Fetch wizards associated with duel
                     let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
@@ -358,7 +359,8 @@ let vm = new Vue({
                     this.notification.color = 'primary';
                     // Release notification
                     let notifier = document.getElementById('notifier');
-                    this.clickEvent(notifier);
+                    if (notifier)
+                        this.clickEvent(notifier);
 
                     // Add to pending duels
                     this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
@@ -367,7 +369,43 @@ let vm = new Vue({
             });
             // Challenge accepted!
             this.chat.on('room-invite-response', (inviteResponse) => {
-                // XXX TODO: handle challenge response
+                /*
+                {
+                    fromUserId: "kCHBUdEBs6N9Gsz46iy935e44Kf1",
+                    fromUserName: "twitterName",
+                    id: "-LnttynIEwSCkolqwImb",
+                    roomId: "-LnttylSBkcw3fsMuPs1",
+                    status: "declined",
+                    toUserName: "hacking myself,
+                */
+                if (inviteResponse.status) {
+                    let notifier;
+                    switch (inviteResponse.status) {
+                        case 'declined':
+                            // Notify user of incoming challenge
+                            this.notification.title = 'Challenge declined!';
+                            this.notification.text = inviteResponse.fromUserName + ' has declined your challenge.';
+                            this.notification.color = 'danger';
+                            // Release notification
+                            notifier = document.getElementById('notifier');
+                            if (notifier)
+                                this.clickEvent(notifier);
+                            break;
+                        case 'accepted':
+                            // Notify user of incoming challenge
+                            this.notification.title = 'Challenge accepted!';
+                            this.notification.text = inviteResponse.fromUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
+                            this.notification.color = 'success';
+                            // Release notification
+                            notifier = document.getElementById('notifier');
+                            if (notifier)
+                                this.clickEvent(notifier);
+                            break;
+                    }
+
+                }
+                
+
             });
         },
         // Context Menu Handler
@@ -507,7 +545,7 @@ let vm = new Vue({
 
             // Create duel channel and invite remote user
             let timestamp = new Date().getTime();
-            let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + this.chatDuelChallengeConfig.wizardChallenging.id + '-' + '-' + this.chatDuelChallengeConfig.wizardChallenged.id + '-' + timestamp;
+            let roomName = this.chatDuelChallengeConfig.wizardChallenging.owner + '-' + this.chatDuelChallengeConfig.wizardChallenged.owner + '-' + this.chatDuelChallengeConfig.wizardChallenging.id + '-' + this.chatDuelChallengeConfig.wizardChallenged.id + '-' + timestamp;
 
             // Create duel room
             this.chat.createRoom(roomName, 'private', (roomId) => {
@@ -537,6 +575,18 @@ let vm = new Vue({
         acceptChallenge: async function (pendingIndex) {
             let pendingDuel = this.pendingDuelRequests[pendingIndex];
             console.log('Accepting duel request =>', pendingDuel);
+            this.chat.acceptInvite(pendingDuel.inviteId, () => {
+                delete this.pendingDuelRequests[pendingIndex];
+                this.pendingDuelRequests.splice(pendingIndex, 1);
+            });
+        },
+        declineChallenge: async function (pendingIndex) {
+            let pendingDuel = this.pendingDuelRequests[pendingIndex];
+            console.log('Declining duel request =>', pendingDuel);
+            this.chat.declineInvite(pendingDuel.inviteId, () => {
+                delete this.pendingDuelRequests[pendingIndex];
+                this.pendingDuelRequests.splice(pendingIndex, 1);
+            });
         },
 
         // UI

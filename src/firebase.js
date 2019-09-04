@@ -85,7 +85,7 @@ const getChat = async function (user, wizards = [], wallet = null) {
         //chat.resumeSession();
 
         // Update Firebase with wallet address
-        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name.toLowerCase()));
+        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
         userRef.update({
             wallet: wallet,
             wizards: wizards,
@@ -94,12 +94,12 @@ const getChat = async function (user, wizards = [], wallet = null) {
     });
 
     // Listeners for chat events
-    chat.on('room-invite', (invite) => {
+    /*chat.on('room-invite', (invite) => {
         console.log('invite', invite);
     });
     chat.on('room-invite-response', (inviteResponse) => {
         console.log('inviteResponse', inviteResponse);
-    });
+    });*/
     chat.on('room-enter', (roomEntered) => {
         console.log('roomEntered', roomEntered);
     });

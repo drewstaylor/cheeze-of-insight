@@ -144,9 +144,10 @@
                                 </vs-row>
                             </div>
                             <div slot="footer">
-                                <vs-row vs-justify="center">
+                                <div class="pending-challenge-footer">
+                                    <button class="btn btn-danger btn-decline-challenge" @click="declineChallenge(index)">Decline</button>
                                     <button class="btn btn-primary btn-accept-challenge" @click="acceptChallenge(index)">Accept</button>
-                                </vs-row>
+                                </div>
                             </div>
 
                         </pending-duel>
