@@ -1,11 +1,8 @@
-const Web3 = require('web3');
-require('dotenv').config();
-const ropstenUrl = `https://ropsten.infura.io/v3/${process.env.ROPSTENINFURA}`;
-var web3 = new Web3(new Web3.providers.HttpProvider(ropstenUrl), null, { transactionConfirmationBlocks: 1 })
-console.log(web3)
-const Contract='0x744b02E544338D3e9C963f3EF32E9A76925d228E'
 
-let testduel={
+const config = require('../config');
+const Contract = config.duelContracts.rinkeby;
+
+const testduel={
 
     "constant": true,
     "inputs": [
@@ -50,7 +47,7 @@ let testduel={
     "type": "function",
     "signature": "0xb089894c"
   }
-let validAffinity=  {
+const validAffinity=  {
     "constant": true,
     "inputs": [
       {
@@ -69,7 +66,7 @@ let validAffinity=  {
     "stateMutability": "view",
     "type": "function"
   }
-let validMove=  {
+const validMove=  {
     "constant": true,
     "inputs": [
       {
@@ -126,17 +123,17 @@ let validMove=  {
     
 }
 
- function generateMoveSet(move1,move2,move3,move4,move5){
+ const generateMoveSet=(move1,move2,move3,move4,move5)=>{
     return '0x0'+move1+'0'+move2+'0'+move3+'0'+move4+'0'+move5+'000000000000000000000000000000000000000000000000000000'
 }
 
- function decodeMoveSet(Movebytes){
+ const decodeMoveSet=(Movebytes)=>{
   let slice=Movebytes.slice(3,12)
   let moves=[Number(slice[0]),Number(slice[2]),Number(slice[4]),Number(slice[6]),Number(slice[8])]
   return moves
 }
 
- async function SimulateDuel(moves1,moves2,power1,power2,affinity1,affinity2,web3){
+ const SimulateDuel = async (moves1,moves2,power1,power2,affinity1,affinity2,web3)=>{
     try{
         let MS1= generateMoveSet(moves1[0],moves1[1],moves1[2],moves1[2],moves1[3])
         //console.log(MS1)
@@ -152,6 +149,9 @@ let validMove=  {
             console.log(e)
         }
     }
-//SendWeb3Call(moveMask,[],'0x460e03F68656Dfa0D462B59602AD75d78392cE3C')
-//SendWeb3Call(validAffinity,[100],Contract)
-
+    module.exports = {
+        SimulateDuel: SimulateDuel,
+        generateMoveSet: generateMoveSet,
+        decodeMoveSet: decodeMoveSet
+       
+    };

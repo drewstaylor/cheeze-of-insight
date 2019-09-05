@@ -121,11 +121,11 @@
                         <div v-if="usersOnline && chat">
                             <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
                                 <!-- Yourself / Current User -->
-                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name && user.isOnline">
+                                <div class="chat summoner-row self" v-if="(user['.key'] == chat.userData.name || user['.key'].toLowerCase() == chat.userData.name.toLowerCase()) && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
                                 </div>
                                 <!-- Other Users -->
-                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet && user.isOnline">
+                                <div class="chat summoner-row opponent" v-if="(user['.key'] !== chat.userData.name && user['.key'].toLowerCase() !== chat.userData.name.toLowerCase()) && user.wallet && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
                                 </div>
                             </div>
