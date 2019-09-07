@@ -8,16 +8,25 @@ import Header from "src/components/Header";
 import { BrowserRouter, Route } from "react-router-dom";
 import { lighten, colors } from "src/styles";
 
+const bgmelt = require("src/images/bgmelt.svg");
+
 export default function App() {
   return (
     <>
       <BrowserRouter>
         <Global
           styles={css`
+            html {
+              background: #ffc033;
+            }
+
             body {
               margin: 0;
               font-family: system-ui;
-              background-color: #fbfcfd;
+              background-color: #333;
+              background: url(${bgmelt});
+              background-repeat: repeat-x;
+              background-size: 803px 171px;
               font-family: "Inter", system-ui, sans-serif;
             }
 

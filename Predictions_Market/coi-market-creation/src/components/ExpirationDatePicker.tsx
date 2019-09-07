@@ -85,8 +85,15 @@ export default class ExpirationDatePicker extends Component<{
   }
 
   get maxDate() {
-    // Max September 15
-    return new Date("2019-09-15T00:00:00.000Z");
+    // XXX TODO (drew): Date Limit should be set to something like:
+    // tournament end date + 1 week to ensure that all markets have
+    // enough time to be resolved (and then some)
+    //
+    // Current max date:
+    // d = new Date(1577854800000);
+    // Wed Jan 01 2020 00:00:00 GMT-0500 (Eastern Standard Time)
+    let maxDate = new Date(1577854800000);
+    return maxDate;
   }
 
   @computed

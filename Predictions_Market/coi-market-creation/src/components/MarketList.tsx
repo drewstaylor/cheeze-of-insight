@@ -34,7 +34,7 @@ const TrLink = styled(Tr)`
   background-color: ${colors.white};
 
   &:hover {
-    background-color: transparent;
+    opacity: 0.8;
   }
 `.withComponent(Link);
 
@@ -71,17 +71,19 @@ const Table = styled.div`
 const Heading = styled.h1`
   font-size: 22px;
   font-weight: 500;
+  color: #000000;
   & small {
     font-size: 16px;
     font-weight: 400;
-    color: ${colors.darkTextGrey};
+    color: #000000;
+    opacity: 0.8;
   }
 `;
 
 const NoResults = styled.div<{ error?: boolean }>`
   text-align: center;
   font-size: 18px;
-  color: ${props => (props.error ? colors.red : colors.textGrey)};
+  color: ${props => (props.error ? colors.red : colors.yellow)};
 `;
 
 const WalletWarning = styled.div`

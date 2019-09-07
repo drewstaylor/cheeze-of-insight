@@ -1,10 +1,22 @@
+/*
+// CW colours
+// Purple
+#B79AFC
+// Rose
+#FF809B
+// Teal
+#FF809B
+// Light Green
+#35D1E7
+*/
+
 export const colors = {
   red: "#ef3e4a",
   darkRed: "#c23400",
   redditRed: "#FF4500",
-  yellow: "#E7E869",
-  orange: "#ff6a00",
-  green: "#77F8A5",
+  yellow: "#fff240",
+  orange: "#35D1E7",
+  green: "#35D1E7",
   darkGreen: "#09CB87",
   textBlack: "#333",
   textGrey: "#888",
@@ -15,15 +27,15 @@ export const colors = {
   borderGrey: "#dadada",
   lightBorderGrey: "#eee",
   white: "#ffffff",
-  blue: "#4444ee",
+  blue: "#000",
   bgLight: "#312D3D",
-  bgMedium: "#1E1E26",
+  bgMedium: "#fff240",
   bgDark: "#1A1A21",
-  black: "#000",
-  magenta: "#e01792",
+  black: "#333333",
+  magenta: "#B79AFC",
   brown: "#C23400",
-  augurPurple: "#553580",
+  augurPurple: "#B79AFC",
   draftOrange: "#FF8C00",
-  purple: "#8942E8",
-  neonGreen: "#50D9A1"
+  purple: "#B79AFC",
+  neonGreen: "#35D1E7"
 };

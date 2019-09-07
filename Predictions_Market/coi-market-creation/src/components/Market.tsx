@@ -2,11 +2,7 @@ import styled from "@emotion/styled";
 import { colors, basePadding, media } from "src/styles";
 
 export const MarketBackground = styled.div`
-  background-image: linear-gradient(
-    ${colors.blue} 0,
-    ${colors.blue} 300px,
-    transparent 300.01px
-  );
+  
 `;
 
 export const MarketContainer = styled.div`
