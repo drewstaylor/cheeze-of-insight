@@ -1,0 +1,33 @@
+{
+  "presets": [
+    "@babel/react",
+    "@babel/typescript",
+    [
+      "@babel/env",
+      {
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@babel/plugin-syntax-dynamic-import"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        [
+          "emotion",
+          {
+            "autoLabel": true,
+            "labelFormat": "[filename]-[local]"
+          }
+        ]
+      ]
+    },
+    "production": {
+      "plugins": ["emotion"]
+    }
+  }
+}
