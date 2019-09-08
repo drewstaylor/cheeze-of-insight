@@ -52,6 +52,8 @@ export const MarketStatusHeading = styled.div`
 export const MarketStatusText = styled.div`
   color: ${colors.textGrey};
   font-size: 14px;
+  position: relative;
+  padding-right: 2.5rem;
 `;
 
 export function MarketStatusSection({ market }: { market: Market }) {
