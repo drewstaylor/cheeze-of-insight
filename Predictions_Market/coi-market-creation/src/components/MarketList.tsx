@@ -83,7 +83,7 @@ const Heading = styled.h1`
 const NoResults = styled.div<{ error?: boolean }>`
   text-align: center;
   font-size: 18px;
-  color: ${props => (props.error ? colors.red : colors.yellow)};
+  color: ${props => (props.error ? colors.red : '#333333')};
 `;
 
 const WalletWarning = styled.div`

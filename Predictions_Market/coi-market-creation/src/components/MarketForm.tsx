@@ -135,9 +135,9 @@ export class MarketFormStore {
   @observable minPrice: BigNumber | null;
   @observable scalarDenomination: string = "USD";
   @observable timezone: string;
-  @observable tags: string[];
-  @observable category: string;
-  @observable marketCreatorFeeRate: string;
+  @observable tags: string[] = ['CheezeWizards', 'Coinlist', 'Ethereum', 'Dapper Labs', 'Game'];
+  @observable category: string = 'GAMES';
+  @observable marketCreatorFeeRate: string = '1';
   @observable scalarPrecision: BigNumber | null = new BigNumber("0.01");
 
   @computed
@@ -309,22 +309,6 @@ export default function MarketForm(props: Props) {
           <div>
             <Spacer big inline />
           </div>
-          <PositionButton
-            selected={form.type === "scalar"}
-            onClick={() => (form.type = "scalar")}
-          >
-            <h2>Scalar</h2>
-            <h3>Pick a range</h3>
-            <Check in={form.type === "scalar"} />
-          </PositionButton>
-          <div>
-            <Spacer big inline />
-          </div>
-          <PositionButton selected={false} disabled>
-            <h2>Categorical</h2>
-            <h3>😞 Not supported yet</h3>
-            <Check in={false} />
-          </PositionButton>
         </ButtonGroup>
         <Spacer big />
         <Label>
@@ -537,6 +521,7 @@ export default function MarketForm(props: Props) {
             (form.category = newVal ? newVal.value : "")
           }
           noOptionsMessage={() => "Type to create a category"}
+          readOnly
         />
         <Spacer big />
         <Label>
@@ -585,6 +570,7 @@ export default function MarketForm(props: Props) {
                   onChange={e => (form.marketCreatorFeeRate = e.target.value)}
                   value={form.marketCreatorFeeRate}
                   style={{ minWidth: 0 }}
+                  readOnly
                 />
                 <InputUnit>%</InputUnit>
               </InputGroup>
@@ -594,17 +580,7 @@ export default function MarketForm(props: Props) {
           <span style={{ color: colors.textGrey }}>
             <small>Suggested values:</small>
             <br />
-            <TextLink onClick={() => (form.marketCreatorFeeRate = "0")}>
-              0.0%
-            </TextLink>
-            <Spacer inline />
-            <TextLink onClick={() => (form.marketCreatorFeeRate = "0.5")}>
-              0.5%
-            </TextLink>
-            <Spacer inline />
-            <TextLink onClick={() => (form.marketCreatorFeeRate = "1")}>
-              1.0%
-            </TextLink>
+            <TextLink>1.0%</TextLink>
           </span>
         </Flex>
       </div>

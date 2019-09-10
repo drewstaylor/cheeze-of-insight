@@ -26,7 +26,7 @@ export default function App() {
               background-color: #333;
               background: url(${bgmelt});
               background-repeat: repeat-x;
-              background-size: 803px 171px;
+              background-size: 800px 171px;
               font-family: "Inter", system-ui, sans-serif;
             }
 
