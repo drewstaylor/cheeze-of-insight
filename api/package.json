@@ -1,0 +1,24 @@
+{
+  "name": "coi-augur-api",
+  "version": "1.0.0",
+  "description": "Markets component Augur query tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Augur",
+    "Ethereum",
+    "COI",
+    "Dapper Labs",
+    "Cheeze Wizards",
+    "Cheeze of Insight",
+    "0x"
+  ],
+  "author": "drew@infiniteinternet.ca",
+  "license": "MIT",
+  "dependencies": {
+    "augur.js": "^6.7.0-1",
+    "dotenv": "^8.1.0"
+  }
+}
