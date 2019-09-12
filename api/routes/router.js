@@ -113,7 +113,7 @@ router.get('/markets/community', (request, response) => {
           }
         };
         // Send empty data response
-        response.status(200).send(JSON.stringify(res));
+        response.send(JSON.stringify(res));
       } else {
         console.log('Fetching market details for =>', markets);
         // Let's get some markets shall we?
@@ -135,7 +135,7 @@ router.get('/markets/community', (request, response) => {
               }
             };
             // Return owned markets response
-            response.status(200).send(JSON.stringify(res));
+            response.send(JSON.stringify(res));
         });
       }
     });

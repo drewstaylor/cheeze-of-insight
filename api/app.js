@@ -20,7 +20,7 @@ var allowCrossDomain = function(req, res, next) {
 
   // intercept OPTIONS method
   if ('OPTIONS' == req.method) {
-    res.send(200);
+    res.sendStatus(200);
   } else {
     next();
   }
@@ -33,8 +33,8 @@ app.use('/', router);
 
 // View engine setup
 // Not really used though...
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
