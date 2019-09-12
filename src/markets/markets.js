@@ -2,10 +2,6 @@
 
 // Config 
 const config = require('../config');
-const augurNode = config.augur.node;
-
-const Augur = require("augur.js");
-const augur = new Augur();
 
 // Create application
 if (location.href.indexOf('markets') !== -1) {
@@ -14,8 +10,6 @@ if (location.href.indexOf('markets') !== -1) {
         data: () => ({
             // Dependencies
             Provider: require('../providers'),
-            // Augur
-            augur: augur,
             // Web3
             web3Providers: {
                 rinkeby: null,
@@ -60,11 +54,11 @@ if (location.href.indexOf('markets') !== -1) {
             }
         },
         methods: {
-            getMarkets: async function () {
-                let etherumNode = this.web3Providers.rinkeby;
-                await augur.connect({ etherumNode, augurNode }, (err, connectionInfo) => {
-                    console.log('Augur =>'[err, connectionInfo]);
-                });
+            getCoiMarkets: async function () {
+                // TODO: This
+            },
+            getCommunityMarkets: async function () {
+                // TODO: This
             }
         }
     });
