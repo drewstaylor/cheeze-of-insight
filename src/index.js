@@ -704,6 +704,8 @@ if (location.href.indexOf('duels') == -1) {
                 // as changing routes will clear the chat
                 let duel = JSON.stringify(this.activeDuelSimulation);
                 sessionStorage.setItem('duel', duel);
+                // TODO specify the wizardId (or firebase username or ETH addr, etc...)
+                sessionStorage.setItem('currentDuelingWizardId', this.currentWizard.selectedId);
                 // Hard navigate to duel room
                 return window.location.href = '/duels';
             },

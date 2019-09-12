@@ -1,5 +1,8 @@
 'use strict';
 
+const FIREBASE = require('../firebase');
+let duelsRef = FIREBASE.firebaseDb.ref('duel-simulations');
+
 // Config 
 const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
@@ -12,7 +15,29 @@ const firebaseConfig = config.firebaseConfig;
  * 
  * let duelConfig = '{"action":"challenge","name":"Challenge to a duel simulation","isValidPartner":true,"wizardChallenged":{"id":"1353","owner":"0x88b49cA334521BadA40Faa71EF3B416Fb1B161ec","affinity":3,"initialPower":"78071441448856","power":"78071441448856","eliminatedBlockNumber":null,"createdBlockNumber":7780436,"image":"https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1353.svg","specialPower":"Wind","vulnerability":"Fire","optimalOpponent":"Water"},"wizardChallenging":{"id":"1614","owner":"0x33Ec2fEd3E429a515ccDf361554f102eA36e0CEB","affinity":2,"initialPower":"100973404296275","power":"100973404296275","eliminatedBlockNumber":null,"createdBlockNumber":7780479,"image":"https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1614.svg","specialPower":"Fire","vulnerability":"Water","optimalOpponent":"Wind"},"roomId":"-Lo1qhvCJxBy1TS3nCnw"}';
  * sessionStorage.setItem('duel', duelConfig);
+ *
+ * also, set current wizard id:
+ * sessionStorage.setItem('currentDuelingWizardId', '1353');
  */
+
+const randomTurn = () => { return Math.floor(Math.random() * 3) + 2; };
+const randomTurns = () => {
+    return [
+        randomTurn(),
+        randomTurn(),
+        randomTurn(),
+        randomTurn(),
+        randomTurn(),
+    ];
+}
+
+Vue.component('round-picker', {
+    props: ['label'],
+    data: () => ({
+        value: 0,
+    }),
+    template: '#round-picker-template',
+});
 
 // Create application
 if (location.href.indexOf('duels') !== -1) {
@@ -47,9 +72,16 @@ if (location.href.indexOf('duels') !== -1) {
                     wizards: []
                 }
             },
+            firebase: FIREBASE,
             // Duel
-            duel: null
+            duel: null,
+            duelingWizardId: null,
+            turns: [0,0,0,0,0],
+            firebaseDuels: [],
         }),
+        firebase: {
+            firebaseDuels: duelsRef,
+        },
         mounted: async function () {
             // Web3 Instances
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -81,6 +113,21 @@ if (location.href.indexOf('duels') !== -1) {
                 //sessionStorage.removeItem('duel');
                 this.duel = duelConfig;
             }
+
+            const duelingWizardId = sessionStorage.getItem('currentDuelingWizardId');
+            console.log('duelingWizardId', duelingWizardId);
+            if (duelingWizardId) {
+                //sessionStorage.removeItem('duel');
+                this.duelingWizardId = duelingWizardId;
+            }
+        },
+        watch: {
+            firebaseDuels: {
+                immediate: true,
+                handler: function(firebaseDuels) {
+                    // TODO: update our state
+                },
+            },
         },
         methods: {
             /**
@@ -124,7 +171,53 @@ if (location.href.indexOf('duels') !== -1) {
 
                 // Return Duel result
                 return result;
-            }
+            },
+
+            /**
+             * Submit turn
+             */
+            async submitTurn() {
+
+                if (!(this.turns[0] && this.turns[1] && this.turns[2] && this.turns[3] && this.turns[4])) {
+                    console.log("Error: not all turns are set");
+                    return;
+                }
+
+                console.log(`Posting duel data to room ${this.duel.roomId}`, this.duel);
+                console.log("duelingWizardId: "+ this.duelingWizardId);
+
+                /* uncomment to push an empty object to 'duel-simulations', e.g. to clean up
+                await duelsRef
+                        .child(this.duel.roomId)
+                        .set({});
+                */
+
+                // post duel config
+                // TODO: don't want both parties posting this
+                //       also, probably not the ideal time to post it
+                await duelsRef
+                        .child(this.duel.roomId)
+                        .child("duelConfig")
+                        .set(this.duel);
+
+                // post moves object
+                await duelsRef
+                        .child(this.duel.roomId)
+                        .child("moves")
+                        .child(this.duelingWizardId)
+                        .set(this.turns);
+
+
+                // submit fake turns for opponent
+                // TODO: should actually wait for firebase update that includes opponent's submission
+                // post moves object
+                await duelsRef
+                        .child(this.duel.roomId)
+                        .child("moves")
+                        .child(this.duel.wizardChallenging.id)
+                        .set(randomTurns());
+
+            },
         }
     });
 }
