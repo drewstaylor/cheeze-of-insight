@@ -86,19 +86,22 @@ if (process.env.hasOwnProperty('CERT_PATH_PUBLIC')) {
     cert: certificate,
     ca: ca
   };
-}
+  // Start http & https servers
+  const httpsServer = https.createServer(credentials, app);
+  const httpServer = http.createServer(app);
 
-// Start http & https servers
-const httpsServer = (process.env.hasOwnProperty('CERT_PATH_PUBLIC')) ? https.createServer(credentials, app) : false;
-const httpServer = http.createServer(app);
-
-httpServer.listen(80, () => {
-	console.log('HTTP Server running on port 80');
-});
-
-if (httpsServer) {
+  httpServer.listen(80, () => {
+    console.log('HTTP Server running on port 80');
+  });
+  
   httpsServer.listen(443, () => {
     console.log('HTTPS Server running on port 443');
+  });
+} else {
+  // Start http server
+  const httpServer = http.createServer(app);
+  httpServer.listen(80, () => {
+    console.log('HTTP Server running on port 80');
   });
 }
 
