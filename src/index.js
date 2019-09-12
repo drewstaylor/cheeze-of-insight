@@ -31,7 +31,7 @@ const TOTAL_WIZARDS = 4882;
 const MAINNET = 0;
 const RINKEBY = 1;
 
-// Config 
+// Config
 const config = require('./config');
 const firebaseConfig = config.firebaseConfig;
 
@@ -137,7 +137,7 @@ if (location.href.indexOf('duels') == -1) {
             userIsLoggedIn: false,
             isLoading: false,
             currentWizardsPage: 1,
-            wizardsPageSize: 10,
+            wizardsPageSize: 12,
             totalWizardsPages: null,
             totalAllWizardsPages: null,
             wizards: null,
@@ -219,11 +219,11 @@ if (location.href.indexOf('duels') == -1) {
                     this.wallets.rinkeby = false;
                     this.wallets.mainnet = accounts[0];
                     console.log('Accounts =>', this.wallets);
-                    
+
                     // ERC721 Instances
                     this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
                     console.log('ERC721 Contract', this.contracts.mainnet.wizards);
-                    this.fetchUserWizards();                
+                    this.fetchUserWizards();
                 }
             } else {
                 this.isWeb3Enabled = false;
@@ -239,7 +239,7 @@ if (location.href.indexOf('duels') == -1) {
                     await this.setupChat(user);
                 }
             });
-            
+
         },
         methods: {
             // Chat / Login
@@ -381,7 +381,7 @@ if (location.href.indexOf('duels') == -1) {
                             this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
                             //console.log('Pending Duels =>', this.pendingDuelRequests);
                         }
-                        
+
                     }
                 });
                 // Challenge accepted / declined
@@ -489,7 +489,7 @@ if (location.href.indexOf('duels') == -1) {
                 } else {
                     wizardId = parseInt(wizardId);
                 }
-                
+
                 if (isOpponent) {
                     // Check if challenged has been issued to yourself
                     if (this.userOwnsWizards) {
@@ -531,7 +531,7 @@ if (location.href.indexOf('duels') == -1) {
                 } else {
                     wizardId = parseInt(wizardId);
                 }
-                
+
                 if (isOpponent) {
                     // Check if challenged has been issued to yourself
                     if (this.userOwnsWizards) {
@@ -683,7 +683,7 @@ if (location.href.indexOf('duels') == -1) {
                     case VIEW_ALL_WIZARDS:
                         console.log('Wizards browsing mode enabled');
                         this.navigation.state = VIEW_ALL_WIZARDS;
-                        this.getAllWizards();                    
+                        this.getAllWizards();
                         break;
                     case VIEW_SELECTED_WIZARD:
                         this.navigation.state = VIEW_SELECTED_WIZARD;
@@ -733,7 +733,7 @@ if (location.href.indexOf('duels') == -1) {
                         this.wizards = this.wizards.reverse();
                         this.wizardsSortedBy = SORTED_BY_AFFINITY_GROUPINGS;
                         break;
-                    
+
                 }
             },
             getPrettyPowerLevel: function (powerLevel) {
@@ -764,6 +764,9 @@ if (location.href.indexOf('duels') == -1) {
                 const name = this.affinities[index].toLowerCase();
 
                 return "/img/icons/" + name + ".svg";
+            },
+            getWizardImageUrl: function(wizardId) {
+                return this.api.getWizardImageUrlById(wizardId);
             },
             // Getters
             getAllWizards: async function () {
@@ -853,8 +856,8 @@ if (location.href.indexOf('duels') == -1) {
 
                         console.log('Wizards of owner =>', this.selectedWizardsByAddress);
                     }
-                    
-                    
+
+
                 }
             },
             // View worker
@@ -900,7 +903,7 @@ if (location.href.indexOf('duels') == -1) {
                 // Add duels
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
-                
+
                 // Disable loading
                 this.isLoading = false;
                 console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
@@ -983,7 +986,7 @@ if (location.href.indexOf('duels') == -1) {
                 // Retain model properties
                 currentOpposingWizard.selectedId = opposingWizardId;
                 this.currentWizard.selectedId = wizardId;
-                
+
                 // Add the Wizards' image urls and metadata
                 this.currentWizard.image = (this.currentWizard.hasOwnProperty('image')) ? this.currentWizard.image : this.api.getWizardImageUrlById(wizardId);
                 this.currentWizard = this.wizardUtils.getWizardMetadata(this.currentWizard);
@@ -1031,7 +1034,7 @@ if (location.href.indexOf('duels') == -1) {
             wizardsPage: function () {
                 let wizards,
                     filter;
-                
+
                 // Returns Wizards filter => owned by current DApp user
                 if (this.wizardsMineFilter) {
                     if (this.userOwnsWizards) {

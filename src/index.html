@@ -8,6 +8,7 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
+    <link href="https://use.typekit.net/noj2tte.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
@@ -144,7 +145,7 @@
 
                     <!-- Active Chat Window -->
                     <div class="duel-requests pending" v-if="pendingDuelRequests.length">
-                        
+
                         <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
 
                         <!-- List Pending Duels -->
@@ -158,14 +159,14 @@
                                     <!-- Challenger Wizard -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="pending.wizardChallenging">
                                         <vs-row class="pending-type-label">Challenger:</vs-row>
-                                        
+
                                         <vs-row>
                                             <vs-avatar class="pending-opponnent" size="35px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
                                         </vs-row>
 
                                         <vs-row>#{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</vs-row>
                                     </vs-col>
-                                    
+
                                     <!-- VS. -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                                         <span class="pending-vs">
@@ -176,7 +177,7 @@
                                     <!-- Challenged Wizard -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="pending.wizardChallenged">
                                         <vs-row class="pending-type-label">You:</vs-row>
-                                        
+
                                         <vs-row>
                                             <vs-avatar class="pending-wizard" size="35px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
                                         </vs-row>
@@ -197,7 +198,7 @@
                     </div>
 
                     <div class="duel-requests unresolved" v-if="activeDuelSimulation">
-                        
+
                         <h5 class="pending-duel-requests title">Active Duel:</h5>
 
                         <!-- List Pending Duels -->
@@ -211,14 +212,14 @@
                                     <!-- Challenger Wizard -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="activeDuelSimulation.wizardChallenging">
                                         <vs-row class="pending-type-label">Challenger:</vs-row>
-                                        
+
                                         <vs-row>
                                             <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
                                         </vs-row>
 
                                         <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
                                     </vs-col>
-                                    
+
                                     <!-- VS. -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                                         <span class="pending-vs">
@@ -229,7 +230,7 @@
                                     <!-- Challenged Wizard -->
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="activeDuelSimulation.wizardChallenged">
                                         <vs-row class="pending-type-label">You:</vs-row>
-                                        
+
                                         <vs-row>
                                             <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
                                         </vs-row>
@@ -252,7 +253,7 @@
                 <!-- Footer - Chat Box Input -->
             </sidebar>
             <!-- End Chat Component (Sidebar) -->
-            
+
             <!-- Setup Chat Wizard Challenge Modals -->
             <!---->
             <!-- 1 : Choose From Opponent Wizards-->
@@ -311,7 +312,7 @@
                 <h3 slot="header">Review your challenge</h3>
                 <div slot="body">
                     <div class="wizard-card-block-item wizard-card-block-item-outer">
-                        
+
                         <!-- Your Wizard -->
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
@@ -346,14 +347,14 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                     </div>
 
                     <!-- Submit Challenge -->
                     <div class="row" v-if="!this.chatDuelChallengeConfig.isSending">
                         <button class="modal-default-button btn btn-primary submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
                     </div>
-                    
+
                 </div>
 
             </modal>
@@ -394,12 +395,12 @@
                         <a v-on:click="showSearch = true;" v-if="!showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Search Wizards</a>
                         <a v-on:click="showSearch = false;" v-if="showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Hide Search Options</a>
                         <!-- Show Only My Owned Wizards -->
-                        <span class="search-my-wizards-toggle" v-if="userOwnsWizards"> / 
+                        <span class="search-my-wizards-toggle" v-if="userOwnsWizards"> /
                             <a v-on:click="wizardsMineFilter = true;" v-if="!wizardsMineFilter">Show only my Wizards</a>
                             <a v-on:click="wizardsMineFilter = false;" v-if="wizardsMineFilter">Show all Wizards</a>
                         </span>
                     </div>
-                    
+
                     <div class="row container search-controls" v-if="showSearch">
                         <!-- Search Wizards by ID or Affinity -->
                         <div class="search-wizards" v-if="wizardsSearchType == PRIMARY_SEARCH">
@@ -457,16 +458,59 @@
                             </select>
                         </p>
                     </div>
-                    <div class="wizard" v-for="(wizard, index) in wizardsPage">
+
+                    <!-- <div class="wizard" v-for="(wizard, index) in wizardsPage">
                         <ul class="wizards-list">
                             <li v-if="currentWizardsPage !== 1">
                                 <a v-on:click="showWizard(wizard.id);">{{index + (currentWizardsPage * wizardsPageSize) +  1 }}) Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a>
                             </li>
                             <li v-else>
-                                <a v-on:click="showWizard(wizard.id);">{{index +  1 }}) Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a>
+                                <a v-on:click="showWizard(wizard.id);">{{index +  1 }}) Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a> -- image: {{ getWizardImageUrl(wizard.id) }}
                             </li>
                         </ul>
+                    </div> -->
+
+                    <!-- <div class="card" style="width: 18rem;" v-for="(wizard, index) in wizardsPage">
+                      <div class="card-img"
+                        :style="'background-image: url(' + getWizardImageUrl(wizard.id) + '); height: 150px;background-size: 475px;background-repeat: no-repeat;background-position: center -100px;'"
+                      ></div>
+                      <div class="card-img-overlay d-flex justify-content-end"><img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Cheeze Wizard #{{ wizard.id }}</h5>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Affinity: <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"></li>
+                        <li class="list-group-item">Power: {{ getPrettyPowerLevel(wizard.power) }}</li>
+                    </ul>
+                    </div> -->
+
+                    <div class="row">
+
+                        <div class="col-md-4 col-lg-3" v-for="(wizard, index) in wizardsPage">
+                    <div :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase()" v-on:click="showWizard(wizard.id);">
+                        <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
+                            <div class="card-img-overlay d-flex justify-content-end">
+                                <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">
+                            </div>
+                        </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
+                            <dl class="card-text row text-muted">
+                                <dt class="col-sm-4">Power</dt>
+                                <dd class="col-sm-8">{{ getPrettyPowerLevel(wizard.power) }}</dd>
+                                <dt class="col-sm-4">Owner</dt>
+                                <dd class="col-sm-8"><a v-on:click="showAllWizardsOfOwner(wizard.owner)">{{ wizard.owner.substring(0, 12) }}&hellip;</a></dd>
+                            </dl>
+                          </div>
                     </div>
+                </div>
+
+                </div>
+
+
+
+
                     <!-- Paging -->
                     <div class="page-controls">
                         <button class="btn btn-primary" v-on:click="previousWizardsPage();" :disabled="currentWizardsPage <= 1">Previous</button>
@@ -570,7 +614,7 @@
                     <div class="traits traits-container-inner" v-if="currentOpposingWizard.traits.rarities">
                         <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentOpposingWizard.traits.rarities.length">
                             <div class="block-item block-item-outer" v-if="currentOpposingWizard.traits.affinityStats && currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
-                                
+
                                 <!---
                                     ALL CATALOGUED TRAITS:
                                     backneck <= all wizards have "Iridescence" set as this trait
@@ -586,7 +630,7 @@
                                     rightHandFront
                                     wand
                                 -->
-                                
+
                                 <!-- Affinity Trait -->
                                 <div class="block-item block-item-inner affinity">
                                     <p class="affinity label">
@@ -608,7 +652,7 @@
                                     <p class="rarity-percentage">{{ getPrettyRarity(currentOpposingWizard.traits.affinityStats.totalWizardsHavingAffinity) }}% have this trait</p>
                                 </div>
                             </div>
-                            
+
                             <div class="block-item block-item-outer" v-for="(trait, index) in currentOpposingWizard.traits.rarities">
                                 <!-- Backneck Trait -->
                                 <div class="block-item block-item-inner backneck" v-if="trait.backneck">
@@ -775,7 +819,7 @@
                 <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels">
 
                     <div class="duels-card-left-container">
-                        <div 
+                        <div
                             :class="'duels-card-left-wizard '+ (duel.wizard1DidWin ? 'duels-winner' : 'duels-loser')"
                             :style="'background-image: url('+duel.wizard1SvgUrl+')'"
                         >
@@ -801,7 +845,7 @@
                     </div>
 
                     <div class="duels-card-right-container">
-                        <div 
+                        <div
                             :class="'duels-card-left-wizard '+ (duel.wizard2DidWin ? 'duels-winner' : 'duels-loser')"
                             :style="'background-image: url('+duel.wizard2SvgUrl+')'"
                         >
@@ -898,7 +942,7 @@
                     <p v-if="matchPrediction.betterSuitedWizard">
                         <strong>Wizard #{{ matchPrediction.betterSuitedWizard.id }} has an affinity advantage!</strong>
                     </p>
-                    
+
                     <div v-if="matchPrediction[0]">
                         <p v-if="matchPrediction[0].higherPoweredWizard">
                             <strong>Wizard #{{ matchPrediction[0].higherPoweredWizard.id }} is more powerful!</strong>
@@ -915,7 +959,7 @@
             <!-- Your Wizard -->
             <div class="view-wizard-details" v-if="matchPrediction !==  'undefined'">
                 <div class="single-wizard my-wizard jumbotron" v-if="currentWizard">
-                    
+
                     <h1 class="display-4">Your Wizard:</h1>
                     <hr/>
 
@@ -997,7 +1041,7 @@
                         <div class="traits traits-container-inner" v-if="currentWizard.traits.rarities">
                             <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentWizard.traits.rarities.length">
                                 <div class="block-item block-item-outer" v-if="currentWizard.traits.affinityStats && currentWizard.specialPower && currentWizard.specialPower !== 'Unknown'">
-                                    
+
                                     <!-- Affinity Trait -->
                                     <div class="block-item block-item-inner affinity">
                                         <p class="affinity label">
@@ -1008,7 +1052,7 @@
                                         <p class="rarity-percentage">{{ getPrettyRarity(currentWizard.traits.affinityStats[currentWizard.specialPower]) }}% have this trait</p>
                                     </div>
                                 </div>
-        
+
                                 <!-- Elemental Trait -->
                                 <div class="block-item block-item-outer" v-if="currentWizard.traits.affinityStats && currentWizard.specialPower !== 'Neutral' && currentWizard.specialPower !== 'Unknown'">
                                     <div class="block-item block-item-inner elemental">
@@ -1019,7 +1063,7 @@
                                         <p class="rarity-percentage">{{ getPrettyRarity(currentWizard.traits.affinityStats.totalWizardsHavingAffinity) }}% have this trait</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="block-item block-item-outer" v-for="(trait, index) in currentWizard.traits.rarities">
                                     <!-- Backneck Trait -->
                                     <div class="block-item block-item-inner backneck" v-if="trait.backneck">
@@ -1034,7 +1078,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Boots Trait -->
                                     <div class="block-item block-item-inner boots" v-if="trait.boots">
                                         <p class="backneck label">
@@ -1048,7 +1092,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Cape Trait -->
                                     <div class="block-item block-item-inner cape" v-if="trait.cape">
                                         <p class="cape label">
@@ -1062,7 +1106,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Expression Trait -->
                                     <div class="block-item block-item-inner expression" v-if="trait.expression">
                                         <p class="expression label">
@@ -1076,7 +1120,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Head Trait -->
                                     <div class="block-item block-item-inner head" v-if="trait.head">
                                         <p class="head label">
@@ -1090,7 +1134,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Hat Trait -->
                                     <div class="block-item block-item-inner hat" v-if="trait.hat">
                                         <p class="hat label">
@@ -1104,7 +1148,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Left Hand Back Trait -->
                                     <div class="block-item block-item-inner leftHandBack" v-if="trait.leftHandBack">
                                         <p class="leftHandBack label">
@@ -1118,7 +1162,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Left Hand Front Trait -->
                                     <div class="block-item block-item-inner leftHhandFront" v-if="trait.leftHhandFront">
                                         <p class="leftHandBack label">
@@ -1132,7 +1176,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Legs Trait -->
                                     <div class="block-item block-item-inner legs" v-if="trait.legs">
                                         <p class="legs label">
@@ -1146,7 +1190,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Right Hand Front Trait -->
                                     <div class="block-item block-item-inner rightHandFront" v-if="trait.rightHandFront">
                                         <p class="rightHandFront label">
@@ -1160,7 +1204,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-        
+
                                     <!-- Wand Trait -->
                                     <div class="block-item block-item-inner wand" v-if="trait.wand">
                                         <p class="wand label">
@@ -1264,7 +1308,7 @@
                         <div class="traits traits-container-inner" v-if="currentOpposingWizard.traits.rarities">
                             <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentOpposingWizard.traits.rarities.length">
                                 <div class="block-item block-item-outer" v-if="currentOpposingWizard.traits.affinityStats && currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
-                                        
+
                                     <!-- Affinity Trait -->
                                     <div class="block-item block-item-inner affinity">
                                         <p class="affinity label">
@@ -1275,7 +1319,7 @@
                                         <p class="rarity-percentage">{{ getPrettyRarity(currentOpposingWizard.traits.affinityStats[currentOpposingWizard.specialPower]) }}% have this trait</p>
                                     </div>
                                 </div>
-            
+
                                 <!-- Elemental Trait -->
                                 <div class="block-item block-item-outer" v-if="currentOpposingWizard.traits.affinityStats && currentOpposingWizard.specialPower !== 'Neutral' && currentOpposingWizard.specialPower !== 'Unknown'">
                                     <div class="block-item block-item-inner elemental">
@@ -1286,7 +1330,7 @@
                                         <p class="rarity-percentage">{{ getPrettyRarity(currentOpposingWizard.traits.affinityStats.totalWizardsHavingAffinity) }}% have this trait</p>
                                     </div>
                                 </div>
-                                    
+
                                 <div class="block-item block-item-outer" v-for="(trait, index) in currentOpposingWizard.traits.rarities">
                                     <!-- Backneck Trait -->
                                     <div class="block-item block-item-inner backneck" v-if="trait.backneck">
@@ -1301,7 +1345,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Boots Trait -->
                                     <div class="block-item block-item-inner boots" v-if="trait.boots">
                                         <p class="backneck label">
@@ -1315,7 +1359,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Cape Trait -->
                                     <div class="block-item block-item-inner cape" v-if="trait.cape">
                                         <p class="cape label">
@@ -1329,7 +1373,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Expression Trait -->
                                     <div class="block-item block-item-inner expression" v-if="trait.expression">
                                         <p class="expression label">
@@ -1343,7 +1387,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Head Trait -->
                                     <div class="block-item block-item-inner head" v-if="trait.head">
                                         <p class="head label">
@@ -1357,7 +1401,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Hat Trait -->
                                     <div class="block-item block-item-inner hat" v-if="trait.hat">
                                         <p class="hat label">
@@ -1371,7 +1415,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Left Hand Back Trait -->
                                     <div class="block-item block-item-inner leftHandBack" v-if="trait.leftHandBack">
                                         <p class="leftHandBack label">
@@ -1385,7 +1429,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Left Hand Front Trait -->
                                     <div class="block-item block-item-inner leftHhandFront" v-if="trait.leftHhandFront">
                                         <p class="leftHandBack label">
@@ -1399,7 +1443,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Legs Trait -->
                                     <div class="block-item block-item-inner legs" v-if="trait.legs">
                                         <p class="legs label">
@@ -1413,7 +1457,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Right Hand Front Trait -->
                                     <div class="block-item block-item-inner rightHandFront" v-if="trait.rightHandFront">
                                         <p class="rightHandFront label">
@@ -1427,7 +1471,7 @@
                                             <span>Rare trait: {{ trait.extraRare }}</span>
                                         </p>
                                     </div>
-            
+
                                     <!-- Wand Trait -->
                                     <div class="block-item block-item-inner wand" v-if="trait.wand">
                                         <p class="wand label">
@@ -1447,7 +1491,7 @@
                         </div>
                     </div>
                 </div>
-            
+
             </div>
 
         </div>
@@ -1473,12 +1517,12 @@
                 <div class="footer-sidebar" slot="footer">
                     <p></p>
                 </div>
-            
+
             </vs-sidebar>
         </div>
     </script>
     <!-- End Sidebar Template -->
-    
+
     <!-- Template For Modal Component -->
     <script type="text/x-template" id="modal-template">
         <transition name="modal">

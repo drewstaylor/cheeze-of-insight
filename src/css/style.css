@@ -1,3 +1,7 @@
+body {
+    font-family: code-saver, sans-serif;
+}
+
 .row {
     min-width: 100%;
 }
@@ -348,12 +352,12 @@ p.trait-name {
     display: table;
     transition: opacity .3s ease;
 }
-  
+
 .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
 }
-  
+
 .modal-container {
     width: auto;
     max-width: 90vw;
@@ -367,15 +371,15 @@ p.trait-name {
     overflow-y: auto;
     height: 100%;
 }
-  
+
 .modal-header h3 {
     margin-top: 0;
 }
-  
+
 .modal-body {
     margin: 20px 0;
 }
-  
+
 .modal-default-button {
     float: right;
 }
@@ -385,7 +389,7 @@ div.duel-review-vs {
     margin: auto;
     padding: 1.75rem;
 }
-  
+
 /*
 * The following styles are auto-applied to elements with
 * transition="modal" when their visibility is toggled
@@ -394,15 +398,15 @@ div.duel-review-vs {
 * You can easily play with the modal transition by editing
 * these styles.
 */
-  
+
 .modal-enter {
     opacity: 0;
 }
-  
+
 .modal-leave-active {
     opacity: 0;
 }
-  
+
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
@@ -446,7 +450,7 @@ div.menu.login-items {
     display: none;
 }
 
-.sidebar-wrapper, 
+.sidebar-wrapper,
 .sidebar-wrapper h5 {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -477,4 +481,96 @@ div.duel-requests {
 
 .pending-type-label {
     margin-left: 1rem;
+}
+
+
+
+
+
+.all-wizards .card {
+    border: 1px solid #000;
+    box-shadow: 0.3rem 0.3rem 0 0 #000;
+    border-radius: 0px !important;
+}
+
+.all-wizards .card:hover {
+    cursor: pointer;
+}
+
+.all-wizards .card-img-top {
+    position: relative;
+    height: 150px;
+    width: 150px;
+    background-color: #fff;
+    background-size: 475px;
+    background-repeat: no-repeat;
+    background-position: center -100px;
+    border-radius: 50%;
+    border-top: 3px solid #000;
+    border-bottom: 3px solid #FFC033;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+.all-wizards .card-img-overlay {
+    background-color: #B79AFC;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    left: 105px;
+    text-align: center;
+    padding: 3px;
+}
+
+.all-wizards .card-img-overlay .icon {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    filter: invert(1);
+}
+
+.all-wizards .card {
+    background-color: #E0DBFC;
+}
+.all-wizards .affinity-water {
+    background-color: #C2F2F2;
+}
+
+.all-wizards .affinity-fire {
+    background-color: #FFE6EF;
+}
+
+.all-wizards .affinity-wind {
+    background-color: #D2FFB5;
+}
+
+.all-wizards .affinity-water .card-img-overlay {
+    background-color: #35D1E7;
+}
+
+.all-wizards .affinity-fire .card-img-overlay {
+    background-color: #FF809B;
+}
+
+.all-wizards .affinity-wind .card-img-overlay {
+    background-color: #8BEA63;
+}
+
+.all-wizards .card-body {
+    text-align: center;
+    background-color: #FFF032;
+    border-top: 2px solid #FFF;
+    margin-top: -75px;
+    padding-top: 90px;
+}
+
+.all-wizards dl {
+    font-size: .8em;
+}
+
+.all-wizards dt {
+    text-align: left;
+}
+
+.all-wizards dd {
+    text-align: right;
 }
