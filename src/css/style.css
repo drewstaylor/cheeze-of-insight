@@ -429,6 +429,7 @@ div.duel-review-vs {
 }
 .vs-sidebar.vs-sidebar-primary.vs-sidebar-position-right {
     padding: 0.5rem;
+    right: 0;
 }
 
 .chat-icon.sidebar-ctrlr {

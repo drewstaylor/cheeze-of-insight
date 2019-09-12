@@ -1,6 +1,7 @@
 'use strict';
 
 require('./duels/duels.js');
+require('./markets/markets.js');
 
 // Navigation states
 const HOME_STATE = -1;
@@ -79,7 +80,8 @@ const FIREBASE = require('./firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
-if (location.href.indexOf('duels') == -1) {
+if (location.href.indexOf('duels') == -1
+    && location.href.indexOf('markets') == -1) {
     let vm = new Vue({
         el: '#cheese-of-insight',
         data: () => ({
@@ -360,8 +362,8 @@ if (location.href.indexOf('duels') == -1) {
                             // Parse room name
                             let roomArgs = invite.toRoomName.split('-');
                             let challengingOwner = roomArgs[0];
-                            let challengingWizardId = roomArgs[2];
-                            let challengedWizardId = roomArgs[3];
+                            let challengingWizardId = roomArgs[3];
+                            let challengedWizardId = roomArgs[2];
                             // Create duel configuration object
                             this.chatDuelChallengeConfig = {
                                 action: "challenge-request",
@@ -606,7 +608,7 @@ if (location.href.indexOf('duels') == -1) {
                 if (this.activeDuelSimulation) {
                     // Notify user of incoming challenge
                     this.notification.title = 'Incoming challenge!';
-                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
+                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation but you have already accepted another unresolved challenge.';
                     this.notification.color = 'warning';
                     this.notification.counterInvalid = true;
                     this.notification.type = 'alert';
