@@ -8,11 +8,12 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap4-block-grid.min.css" rel="stylesheet">
-    <link href="css/vuesax.css" rel="stylesheet">
-    <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+    <link href="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/duels.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
     <script type="text/javascript" src="../js/jquery.min.js"></script>
@@ -30,10 +31,42 @@
     <div id="duels" class="container container-fluid main-content">
         <a href="/">Back</a>
         <h3>DUELS GO HERE</h3>
-        <pre v-if="duel">
-            {{ duel }}
-        </pre>
+
+        <textarea rows="12" cols="100" v-if="duel">{{ duel }}</textarea>
+
+        <div class="forecast-panel">
+
+            <h3>Forecast your spells!</h3>
+
+            <round-picker label="Turn 1" v-bind:value.sync="turns[0]"></round-picker>
+            <round-picker label="Turn 2" v-bind:value.sync="turns[1]"></round-picker>
+            <round-picker label="Turn 3" v-bind:value.sync="turns[2]"></round-picker>
+            <round-picker label="Turn 4" v-bind:value.sync="turns[3]"></round-picker>
+            <round-picker label="Turn 5" v-bind:value.sync="turns[4]"></round-picker>
+
+            <div class="forecast-submit-button">
+                <button
+                    @click="submitTurn();"
+                    :disabled="!(turns[0] && turns[1] && turns[2] && turns[3] && turns[4])">
+
+                    Submit
+                </button>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Template for round picking -->
+    <script type="text/x-template" id="round-picker-template">
+        <div>
+            <span>{{ label }}</span>
+            <select v-model="value" v-on:change="$emit('update:value', value);">
+                <option v-bind:value="2">Fire</option>
+                <option v-bind:value="3">Wind</option>
+                <option v-bind:value="4">Water</option>
+            </select>
+        </div>
+    </script>
 
     <!-- Template For Sidebar Component -->
     <script type="text/x-template" id="sidebar-template">
