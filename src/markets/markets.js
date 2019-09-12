@@ -4,6 +4,9 @@
 const config = require('../config');
 const request = require('request-promise');
 
+const RINKEBY_MARKET_URL = 'https://dev.augur.net/#!/market?id=';
+const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRiK7jwdRQX71FWNnLgDS1i9mf7wfy/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
+
 // Query helper
 const apiQuery = async (endpoint = null, method = "GET") => {
     let options;
@@ -46,6 +49,9 @@ if (location.href.indexOf('markets') !== -1) {
     let marketsVm = new Vue({
         el: '#markets',
         data: () => ({
+            // App Constants
+            RINKEBY_MARKET_URL: RINKEBY_MARKET_URL,
+            MAINNET_MARKET_URL: MAINNET_MARKET_URL,
             // Utilities
             apiQuery: apiQuery,
             // Dependencies
@@ -72,8 +78,10 @@ if (location.href.indexOf('markets') !== -1) {
                     wizards: []
                 }
             },
+            isMainnetAugur: false,
             coiMarkets: [],
-            communityMarkets: []
+            communityMarkets: [],
+            descrReadMore: true
         }),
         mounted: async function () {
             // Web3 Instances
@@ -114,7 +122,6 @@ if (location.href.indexOf('markets') !== -1) {
             },
             getCommunityMarkets: async function () {
                 let communityMarkets = await this.apiQuery('markets/community');
-                console.log(communityMarkets);
                 if (communityMarkets) {
                     if (communityMarkets.hasOwnProperty('data')) {
                         if (communityMarkets.data.hasOwnProperty('markets')) {
@@ -123,6 +130,35 @@ if (location.href.indexOf('markets') !== -1) {
                         }
                     }
                 }
+            },
+            getMarketImageUrl: function (tagsArray) {
+                let baseImgUrl = 'https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/';
+                if (!tagsArray) {
+                    return '';
+                }
+                let wizardId = null;
+                // Find Wizard, e.g. tag: "Wizard1614"
+                for (let i = 0; i < tagsArray.length; i++) {
+                    if (tagsArray[i].toLowerCase().indexOf('wizard') > -1 && tagsArray[i] !== "CheezeWizards") {
+                        tagsArray[i] = tagsArray[i].toLowerCase();
+                        let args = tagsArray[i].split('wizard');
+                        wizardId = args[1];
+                        break;
+                    }
+                }
+                // Return Wizard image or if no Wizard ID is found
+                // return a default Hackathon promo image from Coinlist
+                if (wizardId) {
+                    return baseImgUrl + wizardId + ".svg";
+                } else {
+                    return '/img/coinlist-promo.png';
+                }
+            },
+            doMarketNavigation: function (marketAddress) {
+                if (!marketAddress) {
+                    return '';
+                }
+                console.log('Market Address', this.RINKEBY_MARKET_URL + marketAddress);
             }
         }
     });

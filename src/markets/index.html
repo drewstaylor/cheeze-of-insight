@@ -13,6 +13,7 @@
     <link href="css/vuesax.css" rel="stylesheet">
     <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/markets.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
     <script type="text/javascript" src="../js/jquery.min.js"></script>
@@ -29,6 +30,69 @@
 <body>
     <div id="markets" class="container container-fluid main-content">
         <a href="/">Back</a>
+        <div class="wrapper mount-wrapper" v-cloak>
+            <div v-if="!descrReadMore">
+                <h3>Prediction Markets</h3>
+                <a @click="descrReadMore = true;">Read more</a>
+            </div>
+            
+            <div class="jumbotron" v-else>
+                <h3>Prediction Markets</h3>
+                <p class="lead">Throughout Phase III of the tournament, COI will be releasing daily prediction markets on Augur. These markets allow you bet ETH on the outcomes that appear after the next dueling window! You'll be able to bet on whether or not power levels of specific wizards will increase.</p>
+                <p>Our created prediction markets are created using analytics collected using the DApp tools on our homepage.</p>
+                <p>
+                    <strong>But wait, there's more!</strong>
+                </p>
+                <p>Think our prediction markets are super cool? Why not launch your own Augur market and have it appear in the "Community Markets" section of this page!</p>
+                <p>We've open sourced our Augur market creation tool to make it easy for you to launch prediction markets that will automatically be sycn'd up with the "Community Markets" section of this page. Just clone the repo <a href="#">here</a> and follow the instructions of the README to get started!</p>
+                <hr class="my-4">
+                <p>Wizards used in our markets are chosen according to any one of the following 2 principals and refer to that Wizard's power level after the previous day's Duels have resolved.</p>
+                <ul>
+                    <li>Wizard is one of the top 3 most powerful Wizards left in the tournament</li>
+                    <li>Wizard is one of the top 3 most "volatile" Wizards (we take "volatile" to mean Wizards power levels that fluctuated by the greatest margin) left in tournament</li>
+                </ul>
+                <div class="read-less">
+                    <button class="btn btn-primary" @click="descrReadMore = false;">Read less</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COI Markets -->
+        <div class="coi-markets markets wrapper" v-if="coiMarkets">
+            <h5>COI Markets:</h5>
+            <div v-if="!coiMarkets.length">
+                <p>No COI markets found</p>
+            </div>
+            <div v-else>
+                <!-- Market Data-->
+                <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
+                    <div class="card">
+                        <img class="card-img-top" :src="getMarketImageUrl(market.tags)" :alt="market.description">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ market.description }}</h5>
+                            <p class="card-text">{{ market.details }}</p>
+                            <div class="category">
+                                <label>CATEGORY:</label> <span class="category">{{ market.category }}</span>
+                            </div>
+                            <div class="tags">
+                                <label>TAGS:</label>
+                                <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
+                            </div>
+                            <button @click="doMarketNavigation(market.id)" class="btn btn-primary">Go To Market Betting</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Markets -->
+        <div class="community-markets markets wrapper" v-if="communityMarkets">
+            <h5>Community Markets:</h5>
+            <div v-if="!communityMarkets.length">
+                <p>No community markets found. Want to create some? Clone <a href="#">this</a> repo and follow the README to get started!</p>
+            </div>
+            <div v-else></div>
+        </div>
     </div>
 
     <!-- Template For Sidebar Component -->
