@@ -750,7 +750,14 @@ if (location.href.indexOf('duels') == -1
                 } else if (isNaN(rarity)) {
                     return '';
                 }
-                return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                let rarityValue = Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                // Don't show 0% rarity, rare stats are important!
+                if (rarityValue > 0) {
+                    return rarityValue;
+                } else {
+                    rarityValue = 100 * (parseInt(rarity) / TOTAL_WIZARDS);
+                    return rarityValue.toFixed(1);
+                }
             },
             getIconUrlForAffinity: function(affinity) {
                 let index = affinity;
