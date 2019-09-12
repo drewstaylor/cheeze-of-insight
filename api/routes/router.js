@@ -108,13 +108,12 @@ router.get('/markets/community', (request, response) => {
       if (!markets.length) {
         // Formulate response object
         res = {
-          status: "200",
           data: {
               markets: []
           }
         };
         // Send empty data response
-        response.send(JSON.stringify(res));
+        response.status(200).send(JSON.stringify(res));
       } else {
         console.log('Fetching market details for =>', markets);
         // Let's get some markets shall we?
@@ -131,13 +130,12 @@ router.get('/markets/community', (request, response) => {
             //console.log('Markets with meta details =>', marketData);
             // Formulate response object
             res = {
-              status: "200",
               data: {
                 markets: marketsFiltered
               }
             };
             // Return owned markets response
-            response.send(JSON.stringify(res));
+            response.status(200).send(JSON.stringify(res));
         });
       }
     });

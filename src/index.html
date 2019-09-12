@@ -381,6 +381,9 @@
                     <li class="list-group-item predict-matches" v-bind:class="{active: navigation.state == PREDICT_MATCHES}">
                         <a v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
                     </li>
+                    <li class="list-group-item prediction-markets">
+                        <a v-on:click="setNavigation(3);">Prediction Markets</a>
+                    </li>
                 </ul>
             </div>
 
