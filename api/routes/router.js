@@ -42,7 +42,6 @@ router.get('/markets/owned', (request, response) => {
       if (!markets.length) {
         // Formulate response object
         res = {
-          status: "200",
           data: {
               markets: []
           }
@@ -58,7 +57,6 @@ router.get('/markets/owned', (request, response) => {
             //console.log('Markets with meta details =>', marketData);
             // Formulate response object
             res = {
-              status: "200",
               data: {
                 markets: marketData
               }
