@@ -1,12 +1,14 @@
 'use strict';
 
 require('./duels/duels.js');
+require('./markets/markets.js');
 
 // Navigation states
 const HOME_STATE = -1;
 const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
+const PREDICTION_MARKETS = 3;
 
 // Wizards sorting states
 const SORTED_BY_POWER_LEVEL_STRONGEST = 0;
@@ -79,7 +81,8 @@ const FIREBASE = require('./firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
-if (location.href.indexOf('duels') == -1) {
+if (location.href.indexOf('duels') == -1
+    && location.href.indexOf('markets') == -1) {
     let vm = new Vue({
         el: '#cheese-of-insight',
         data: () => ({
@@ -87,6 +90,7 @@ if (location.href.indexOf('duels') == -1) {
             VIEW_ALL_WIZARDS: VIEW_ALL_WIZARDS,
             VIEW_SELECTED_WIZARD: VIEW_SELECTED_WIZARD,
             PREDICT_MATCHES: PREDICT_MATCHES,
+            PREDICTION_MARKETS: PREDICTION_MARKETS,
             HOME_STATE: HOME_STATE,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
             SORTED_BY_POWER_LEVEL_WEAKEST: SORTED_BY_POWER_LEVEL_WEAKEST,
@@ -360,8 +364,8 @@ if (location.href.indexOf('duels') == -1) {
                             // Parse room name
                             let roomArgs = invite.toRoomName.split('-');
                             let challengingOwner = roomArgs[0];
-                            let challengingWizardId = roomArgs[2];
-                            let challengedWizardId = roomArgs[3];
+                            let challengingWizardId = roomArgs[3];
+                            let challengedWizardId = roomArgs[2];
                             // Create duel configuration object
                             this.chatDuelChallengeConfig = {
                                 action: "challenge-request",
@@ -606,7 +610,7 @@ if (location.href.indexOf('duels') == -1) {
                 if (this.activeDuelSimulation) {
                     // Notify user of incoming challenge
                     this.notification.title = 'Incoming challenge!';
-                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
+                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation but you have already accepted another unresolved challenge.';
                     this.notification.color = 'warning';
                     this.notification.counterInvalid = true;
                     this.notification.type = 'alert';
@@ -693,6 +697,9 @@ if (location.href.indexOf('duels') == -1) {
                         console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
                         break;
+                    case PREDICTION_MARKETS:
+                        window.location.href = "/markets";
+                        break;
                     default:
                         return;
                 }
@@ -750,7 +757,14 @@ if (location.href.indexOf('duels') == -1) {
                 } else if (isNaN(rarity)) {
                     return '';
                 }
-                return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                let rarityValue = Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                // Don't show 0% rarity, rare stats are important!
+                if (rarityValue > 0) {
+                    return rarityValue;
+                } else {
+                    rarityValue = 100 * (parseInt(rarity) / TOTAL_WIZARDS);
+                    return rarityValue.toFixed(1);
+                }
             },
             getIconUrlForAffinity: function(affinity) {
                 let index = affinity;

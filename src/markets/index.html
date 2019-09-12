@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <title>The Cheeze of Insight</title>
+
+    <!-- CSS Imports -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="css/vuesax.css" rel="stylesheet">
+    <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- JS Imports -->
+    <!-- jQuery is only for Firechat, sigh -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- Firebase -->
+    <script type="text/javascript" src="../js/firebase.js"></script>
+    <!-- Fire Chat -->
+    <script type="text/javascript" src="../node_modules/firechat/dist/firechat.js"></script>
+    <!-- Vue.js -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/vuefire.js"></script>
+    <script type="text/javascript" src="../js/vuesax.js"></script>
+    <script type="text/javascript" src="../js/vue-simple-context-menu.js"></script>
+</head>
+<body>
+    <div id="markets" class="container container-fluid main-content">
+        <a href="/">Back</a>
+    </div>
+
+    <!-- Template For Sidebar Component -->
+    <script type="text/x-template" id="sidebar-template">
+        <div id="parentx">
+            <slot name="menu-items"></slot>
+            <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
+            <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
+
+                <!-- Sidebar Header -->
+                <slot class="header-sidebar" name="header">
+                    <vs-avatar  size="70px" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+                    <h4>Title</h4>
+                </slot>
+
+                <!-- Main Content -->
+                <slot name="body">Body</slot>
+
+                <!-- Footer -->
+                <div class="footer-sidebar" slot="footer">
+                    <p></p>
+                </div>
+            
+            </vs-sidebar>
+        </div>
+    </script>
+    <!-- End Sidebar Template -->
+    
+    <!-- Template For Modal Component -->
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <!-- Header Slot -->
+                        <div class="modal-header">
+                            <slot name="header"></slot>
+                        </div>
+                        <!-- Body Slot -->
+                        <div class="modal-body">
+                            <slot name="body"></slot>
+                        </div>
+                        <!-- Footer Slot -->
+                        <div class="modal-footer">
+                            <slot name="footer">
+                                <button id="modal_close" class="modal-default-button btn btn-primary" @click="$emit('close')">
+                                    <slot name="footer">Close</slot>
+                                </button>
+                            </slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </script>
+    <!-- End Modal Template -->
+
+    <!-- Begin Notifications Template -->
+    <script type="text/x-template" id="notification-template">
+        <div class="con-notifications-position">
+            <slot name="notification" @click="$vs.notify({title:'Position top-right',text:'Lorem ipsum dolor sit amet, consectetur',color:'success',position:'top-right'})" color="success" type="flat">Notification</slot>
+        </div>
+    </script>
+    <!-- End Notifications Template -->
+
+    <!-- Begin Duel Request Template -->
+    <script type="text/x-template" id="duel-request-template">
+        <vs-row vs-justify="center">
+            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                <vs-card>
+                    <slot name="header">
+                        <h3>Title</h3>
+                    </slot>
+                    <slot name="body">
+                        <span>Body</span>
+                    </slot>
+                    <slot name="footer">
+                        <vs-row vs-justify="flex-end">Footer</vs-row>
+                    </slot>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </script>
+    <!-- End Duel Request Template -->
+
+    <script type="text/javascript" src="../build/app.js"></script>
+</body>
+</html>

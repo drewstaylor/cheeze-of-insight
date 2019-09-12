@@ -8,10 +8,10 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/bootstrap.block-grid/latest/bootstrap4-block-grid.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
-    <link href="https://unpkg.com/vue-simple-context-menu/dist/vue-simple-context-menu.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="css/vuesax.css" rel="stylesheet">
+    <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
@@ -380,6 +380,9 @@
                     </li>
                     <li class="list-group-item predict-matches" v-bind:class="{active: navigation.state == PREDICT_MATCHES}">
                         <a v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
+                    </li>
+                    <li class="list-group-item prediction-markets">
+                        <a v-on:click="setNavigation(3);">Prediction Markets</a>
                     </li>
                 </ul>
             </div>
@@ -1458,7 +1461,7 @@
         <div id="parentx">
             <slot name="menu-items"></slot>
             <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
-            <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
+            <vs-sidebar position-right parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
 
                 <!-- Sidebar Header -->
                 <slot class="header-sidebar" name="header">

@@ -18,10 +18,10 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
     }
 
     // Request options
-    if (endpoint.indexOf('opensea') > -1 || endpoint.indexOf('infiniteinternet') > -1) {
+    if (endpoint.indexOf('opensea') > -1 || endpoint.indexOf('cheezeofinsight') > -1) {
         options = {
             method: method,
-            uri: (endpoint.indexOf('infiniteinternet') > -1) ? endpoint : scheme + endpoint,
+            uri: (endpoint.indexOf('cheezeofinsight') > -1) ? endpoint : scheme + endpoint,
             // Headers
             headers: {
                 'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
             response = err.response.body;
         });
 
-    if (endpoint.indexOf('infiniteinternet') > -1) {
+    if (endpoint.indexOf('cheezeofinsight') > -1) {
         await parse(response).then( async (data) => {
             response = await JSON.stringify(data);
         });
