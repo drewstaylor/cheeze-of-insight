@@ -1,3 +1,5 @@
+require('dotenv').config({path: __dirname + '/.env'});
+
 const Augur = require('augur.js');
 let augur = new Augur();
 let coiOwnedMarkets = [];
@@ -28,8 +30,8 @@ const getMarketDataByAddresses = async function (markets) {
  */
 const getCoiOwnedMarkets = function () {
     augur.markets.getMarkets({
-        universe: "0x02149d40d255fceac54a3ee3899807b0539bad60",
-        creator: "0x88b49ca334521bada40faa71ef3b416fb1b161ec"
+        universe: process.env.AUGUR_UNIVERSE,
+        creator: process.env.COI_OWNER_ADDRESS
     }, (error, markets) => {
         console.log(markets);
         getMarketDataByAddresses(markets);
@@ -56,12 +58,7 @@ const augurConnect = async function () {
     });
 }
 
-async function construct() {
-    augurConnect();
-}
 
-construct();
-
-/*module.exports = {
-    augur: augur
-};*/
+module.exports = {
+    node: augur
+};

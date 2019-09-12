@@ -1,24 +1,20 @@
 {
-  "name": "coi-augur-api",
-  "version": "1.0.0",
-  "description": "Markets component Augur query tool",
-  "main": "index.js",
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "keywords": [
-    "Augur",
-    "Ethereum",
-    "COI",
-    "Dapper Labs",
-    "Cheeze Wizards",
-    "Cheeze of Insight",
-    "0x"
-  ],
-  "author": "drew@infiniteinternet.ca",
-  "license": "MIT",
   "dependencies": {
     "augur.js": "^6.7.0-1",
-    "dotenv": "^8.1.0"
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.1.0",
+    "express": "~4.16.1",
+    "http-errors": "^1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   }
 }
