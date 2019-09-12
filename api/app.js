@@ -1,16 +1,18 @@
+require('dotenv').config({path: __dirname + '/.env'});
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-//const bodyParser = require('body-parser');
-const http = require('http');
-//const https = require('https');
 const cors = require('cors');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
 
-//CORS middleware
+// CORS middleware
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -73,32 +75,31 @@ const toErrorMsg = function (errMsg) {
 
 app.use(errorHandler);
 
-// Certificate
-// XXX TODO: Net cert.
-/*
-const privateKey = fs.readFileSync('', 'utf8');
-const certificate = fs.readFileSync('', 'utf8');
-const ca = fs.readFileSync('', 'utf8');
+if (process.env.hasOwnProperty('CERT_PATH_PUBLIC')) {
+  // Certificate
+  const privateKey = fs.readFileSync(process.env.CERT_PATH_PRIVATE, 'utf8');
+  const certificate = fs.readFileSync(process.env.CERT_PATH_PUBLIC, 'utf8');
+  const ca = fs.readFileSync(process.env.CERT_PATH_PUBLIC, 'utf8');
 
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca
-};
-*/
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+  };
+}
 
 // Start http & https servers
+const httpsServer = (process.env.hasOwnProperty('CERT_PATH_PUBLIC')) ? https.createServer(credentials, app) : false;
 const httpServer = http.createServer(app);
-//const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(80, () => {
 	console.log('HTTP Server running on port 80');
 });
 
-/*
-httpsServer.listen(443, () => {
-	console.log('HTTPS Server running on port 443');
-});
-*/
+if (httpsServer) {
+  httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+  });
+}
 
 module.exports = app;
