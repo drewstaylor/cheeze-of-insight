@@ -586,8 +586,14 @@ div.duel-requests {
     padding-bottom: 15px;
     background-repeat: repeat;
 }
-.cheeze-melt {
-    height: 35px;
+.subnav {
     background-color: #FFFF85;
     border-bottom: 1px solid #000;
+}
+.subnav a:hover {
+    background-color: #FFEF57;
+    text-decoration: none !important;
+}
+.subnav a.active, .subnav a.active:hover {
+    background-color: #FFE133;
 }

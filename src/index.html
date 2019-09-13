@@ -37,7 +37,11 @@
       <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
       <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
     </nav>
-    <div class="cheeze-melt"></div>
+    <nav class="nav subnav justify-content-center">
+      <a class="nav-link" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}" v-on:click="setNavigation(0);">Browse Wizards</a>
+      <a class="nav-link" v-bind:class="{active: navigation.state == PREDICT_MATCHES}" v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
+      <a class="nav-link" v-on:click="setNavigation(3);">Prediction Markets</a>
+    </nav>
 
     <div class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
@@ -377,19 +381,6 @@
             </div>
             <div class="back-btn" v-else>
                 <a v-on:click="navigation.state = HOME_STATE">Back</a>
-            </div>
-            <div class="row navigation">
-                <ul class="list-group">
-                    <li class="list-group-item view-all-wizards" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}">
-                        <a v-on:click="setNavigation(0);">Browse Wizards</a>
-                    </li>
-                    <li class="list-group-item predict-matches" v-bind:class="{active: navigation.state == PREDICT_MATCHES}">
-                        <a v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
-                    </li>
-                    <li class="list-group-item prediction-markets">
-                        <a v-on:click="setNavigation(3);">Prediction Markets</a>
-                    </li>
-                </ul>
             </div>
 
             <!-- Browse All Wizards -->
