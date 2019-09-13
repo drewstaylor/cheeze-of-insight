@@ -204,6 +204,7 @@ div.selected-wizard-right {
 div.selected-wizard-left {
     padding: 1.5rem;
     float: left;
+    background-color: #ffd45a;
 }
 
 div.selected-wizard-right {
