@@ -211,12 +211,16 @@ div.selected-wizard-left {
 div.selected-wizard-right {
     float: right;
     position: relative;
-    top: -125px;
+    top: -55px;
 }
 
 .icon.external-link {
     height: 20px;
     margin-left: 0.75rem;
+}
+
+.btn-selected-compare {
+    border: 1px solid black;
 }
 
 .icon.icon-search {
