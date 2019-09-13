@@ -1,10 +1,11 @@
 'use strict';
 
 // TODO: clean up / consolidate with similar logic below
-const duelConfig = JSON.parse(sessionStorage.getItem('duel'));
+//const duelConfig = JSON.parse(sessionStorage.getItem('duel'));
 
 const FIREBASE = require('../firebase');
-const path = `duel-simulations/${duelConfig.roomId}`;
+//const path = `duel-simulations/${duelConfig.roomId}`;
+const path = 'duel-simulations';
 const duelsRef = FIREBASE.firebaseDb.ref(path);
 
 // Config 
