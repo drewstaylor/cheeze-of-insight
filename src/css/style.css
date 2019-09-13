@@ -55,8 +55,9 @@ h3.home-title {
 
 div.img-main img {
     margin: auto;
-    padding-top: 1rem;
+    margin-top: 2.5rem;
     display: block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 input[type=number],
