@@ -689,18 +689,41 @@ if (location.href.indexOf('duels') == -1
                 // Handle state change
                 switch(state) {
                     // Show all Wizards
+                    case HOME_STATE:
+                        this.isBgAnimated = false;
+                        this.navigation.state = HOME_STATE;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
+                        break;
                     case VIEW_ALL_WIZARDS:
                         console.log('Wizards browsing mode enabled');
+                        this.isBgAnimated = false;
                         this.navigation.state = VIEW_ALL_WIZARDS;
                         this.getAllWizards();
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
                         break;
                     case VIEW_SELECTED_WIZARD:
+                        this.isBgAnimated = false;
                         this.navigation.state = VIEW_SELECTED_WIZARD;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
                         break;
                     // Show match prediction
                     case PREDICT_MATCHES:
+                        this.isBgAnimated = false;
                         console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
                         break;
                     case PREDICTION_MARKETS:
                         window.location.href = "/markets";

@@ -33,7 +33,7 @@
         <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
     </div>
     <nav class="navbar navbar-light">
-      <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="navigation.state = HOME_STATE">Cheeze of Insight</span>
+      <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="setNavigation(HOME_STATE)">Cheeze of Insight</span>
       <span class="notification-count" v-if="notificationsCount > 0">
           <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
       </span>
@@ -377,13 +377,13 @@
                 <img class="img-fluid" src="img/holiness.jpg">
             </div>
             <div class="back-btn" v-else-if="navigation.state == VIEW_SELECTED_WIZARD">
-                <a v-on:click="navigation.state = VIEW_ALL_WIZARDS">Back</a>
+                <a v-on:click="setNavigation(VIEW_ALL_WIZARDS)">Back</a>
             </div>
             <div class="back-btn" v-else-if="navigation.state == PREDICT_MATCHES && currentWizard">
-                <a v-on:click="navigation.state = VIEW_SELECTED_WIZARD">Back</a>
+                <a v-on:click="setNavigation(VIEW_SELECTED_WIZARD)">Back</a>
             </div>
             <div class="back-btn" v-else>
-                <a v-on:click="navigation.state = HOME_STATE">Back</a>
+                <a v-on:click="setNavigation(HOME_STATE)">Back</a>
             </div>
 
             <!-- Browse All Wizards -->
@@ -598,6 +598,10 @@
                             <p>
                                 <a :href="'https://www.cheezewizards.com/wizard/' + currentOpposingWizard.id" target="_blank">View on cheezewizards.com <img class="icon external-link" src="img/icons/external_link.svg"></a>
                             </p>
+                        </div>
+                        <!-- Comparison -->
+                        <div class="comparison">
+                            <button class="btn btn-inverse" @click="setNavigation(PREDICT_MATCHES)">Compare With This Wizard</button>
                         </div>
                     </div>
 
