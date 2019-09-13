@@ -6,6 +6,8 @@ const request = require('request-promise');
 
 const RINKEBY_MARKET_URL = 'https://dev.augur.net/#!/market?id=';
 const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRiK7jwdRQX71FWNnLgDS1i9mf7wfy/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
+const MAIN_STATE = 0;
+const EXIT_COI_STATE = 1;
 
 // Query helper
 const apiQuery = async (endpoint = null, method = "GET") => {
@@ -52,6 +54,8 @@ if (location.href.indexOf('markets') !== -1) {
             // App Constants
             RINKEBY_MARKET_URL: RINKEBY_MARKET_URL,
             MAINNET_MARKET_URL: MAINNET_MARKET_URL,
+            MAIN_STATE: MAIN_STATE,
+            EXIT_COI_STATE: EXIT_COI_STATE,
             // Utilities
             apiQuery: apiQuery,
             // Dependencies
@@ -81,7 +85,9 @@ if (location.href.indexOf('markets') !== -1) {
             isMainnetAugur: false,
             coiMarkets: [],
             communityMarkets: [],
-            descrReadMore: true
+            applicationState: MAIN_STATE,
+            descrReadMore: false,
+            exitTimer: null,
         }),
         mounted: async function () {
             // Web3 Instances
@@ -158,7 +164,30 @@ if (location.href.indexOf('markets') !== -1) {
                 if (!marketAddress) {
                     return '';
                 }
-                console.log('Market Address', this.RINKEBY_MARKET_URL + marketAddress);
+
+                // Set navigation warning
+                this.applicationState = EXIT_COI_STATE;
+
+                let marketUrl;
+                
+                // Build Market URL
+                if (!this.isMainnetAugur) {
+                    marketUrl = this.RINKEBY_MARKET_URL + marketAddress;
+                } else {
+                    marketUrl = this.MAINNET_MARKET_URL + marketAddress;
+                }
+
+                console.log('Navigating to Market Address =>', marketUrl);
+                this.exitTimer = 5;
+                let timer;
+                timer = setInterval(() => {
+                    if (this.exitTimer > 0) {
+                        --this.exitTimer;
+                    } else {
+                        window.location.href = marketUrl;
+                        clearInterval(timer);
+                    }
+                }, 1000);
             }
         }
     });
