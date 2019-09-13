@@ -39,6 +39,11 @@ Vue.component('round-picker', {
     template: '#round-picker-template',
 });
 
+Vue.component('duel-status', {
+    props: ['outcome', 'power', 'score'],
+    template: '#duel-status-template',
+});
+
 // Create application
 if (location.href.indexOf('duels') !== -1) {
     let duelsVm = new Vue({
@@ -76,10 +81,12 @@ if (location.href.indexOf('duels') !== -1) {
             // Duel
             duel: null,
             duelingWizardId: null,
-            turns: [0,0,0,0,0],
+            duelResults: null,
+            turns: randomTurns(),
             firebaseDuels: [],
         }),
         firebase: {
+            // TODO: subscribe to "duel-simulations/"+ duelId
             firebaseDuels: duelsRef,
         },
         mounted: async function () {
@@ -216,6 +223,19 @@ if (location.href.indexOf('duels') !== -1) {
                         .child("moves")
                         .child(this.duel.wizardChallenging.id)
                         .set(randomTurns());
+
+                const contractResults = await this.resolveDuelSimulation(randomTurns(), randomTurns());
+                const power = Math.floor(parseInt(contractResults[0]) / 1000000000000);
+                const score = parseInt(contractResults[1]);
+                const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
+
+                this.duelResults = {
+                    power: power,
+                    score: score,
+                    outcome: outcome,
+                };
+
+                console.log("Compiled duel results:", this.duelResults);
 
             },
         }

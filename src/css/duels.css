@@ -9,3 +9,9 @@
 .forecast-submit-button button {
 	padding: 8px 18px 8px 18px;
 }
+.duel-status-container {
+	border: 1px solid gray;
+	padding: 2px;
+	margin-top: 6px;
+	margin-bottom: 10px;
+}

@@ -54,6 +54,13 @@
             </div>
         </div>
 
+        <duel-status
+                v-if="duelResults"
+                v-bind:outcome="duelResults.outcome"
+                v-bind:power="duelResults.power"
+                v-bind:score="duelResults.score">
+        </duel-status>
+
     </div>
 
     <!-- Template for round picking -->
@@ -65,6 +72,15 @@
                 <option v-bind:value="3">Wind</option>
                 <option v-bind:value="4">Water</option>
             </select>
+        </div>
+    </script>
+
+    <!-- Template for duel status -->
+    <script type="text/x-template" id="duel-status-template">
+        <div class="duel-status-container">
+            <h3>Duel Results: {{ outcome }} !!</h3>
+            <div><span>Power: {{ power }}</span></div>
+            <div><span>Score: {{ score }}</span></div>
         </div>
     </script>
 

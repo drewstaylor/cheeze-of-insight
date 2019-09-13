@@ -135,9 +135,9 @@ const validMove=  {
 
  const SimulateDuel = async (moves1,moves2,power1,power2,affinity1,affinity2,web3)=>{
     try{
-        let MS1= generateMoveSet(moves1[0],moves1[1],moves1[2],moves1[2],moves1[3])
+        let MS1= generateMoveSet(moves1[0],moves1[1],moves1[2],moves1[3],moves1[4])
         //console.log(MS1)
-        let MS2= generateMoveSet(moves2[0],moves2[1],moves2[2],moves2[2],moves2[3])
+        let MS2= generateMoveSet(moves2[0],moves2[1],moves2[2],moves2[3],moves2[4])
         
         let result =await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract,web3)
         console.log(result)
