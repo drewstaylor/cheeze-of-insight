@@ -1,6 +1,7 @@
 .forecast-panel {
 	border: 1px solid gray;
 	padding: 2px;
+	margin-top: 10px;
 }
 
 .forecast-submit-button {

@@ -1,7 +1,11 @@
 'use strict';
 
+// TODO: clean up / consolidate with similar logic below
+const duelConfig = JSON.parse(sessionStorage.getItem('duel'));
+
 const FIREBASE = require('../firebase');
-let duelsRef = FIREBASE.firebaseDb.ref('duel-simulations');
+const path = `duel-simulations/${duelConfig.roomId}`;
+const duelsRef = FIREBASE.firebaseDb.ref(path);
 
 // Config 
 const config = require('../config');
@@ -82,7 +86,8 @@ if (location.href.indexOf('duels') !== -1) {
             duel: null,
             ourWizardId: null,
             duelResults: null,
-            turns: randomTurns(),
+            ourMoves: randomTurns(),
+            opponentMoves: null,
             firebaseDuels: [],
         }),
         firebase: {
@@ -116,15 +121,15 @@ if (location.href.indexOf('duels') !== -1) {
             const ourWizardId = sessionStorage.getItem('ourWizardId');
             console.log('ourWizardId', ourWizardId);
             if (ourWizardId) {
-                //sessionStorage.removeItem('duel');
                 this.ourWizardId = ourWizardId;
+            } else {
+                console.log("WARNING: no 'ourWizardId' in sessionStorage!");
             }
 
             // Mount duel configuration
             let duelConfig = JSON.parse(sessionStorage.getItem('duel'));
             console.log('duelConfig', duelConfig);
             if (duelConfig) {
-                //sessionStorage.removeItem('duel');
                 this.duel = duelConfig;
 
                 // determine opposing wizard's id
@@ -143,14 +148,50 @@ if (location.href.indexOf('duels') !== -1) {
                     this.ourWizard = this.duel.wizardChallenging;
                     // this.ourWizardId = this.duel.wizardChallenging.id;
                 }
+            } else {
+                console.log("WARNING: no 'duel' in sessionStorage!");
             }
         },
         watch: {
-            firebaseDuels: {
-                immediate: true,
-                handler: function(firebaseDuels) {
-                    // TODO: update our state
-                },
+            firebaseDuels(value) {
+                // TODO: why do we get values in an array like this?
+                //       I would expect to get the real object, which looks something like:
+                //       {
+                //           duelConfig: { /* our duel object, e.g. this.duel */ },
+                //           moves: {
+                //               1234: [ /* wizard 1234's moves */],
+                //               0001: [ /* wizard 0001's moves */],
+                //           }
+                //       }
+                //
+                //       Instead, we get an array of objects, like:
+                //       [
+                //           { .key: "duelConfig", /* the rest of our duelConfig object */ },
+                //           { .key: "moves", /* the rest of our moves object */ },
+                //       ]
+                //
+                //       So we have this ugly code here which finds the matching key.
+
+                let moves = null;
+                for (const obj of value) {
+                    if (obj['.key'] === "moves") {
+                        moves = obj;
+                        break;
+                    }
+                }
+
+                if (! moves) {
+                    console.log("No moves yet");
+                    return;
+                }
+
+                const ourMoves = moves[this.ourWizardId];
+                const opponentMoves = moves[this.opposingWizardId];
+
+                if (opponentMoves) {
+                    console.log("Setting opponentMoves", opponentMoves);
+                    this.opponentMoves = opponentMoves;
+                }
             },
         },
         methods: {
@@ -192,11 +233,34 @@ if (location.href.indexOf('duels') !== -1) {
             },
 
             /**
+             * Submit random moves for opponent
+             */
+            async submitRandomOpponentForecast() {
+
+                // submit fake turns for opponent
+                await duelsRef
+                        .child("moves")
+                        .child(this.opposingWizardId)
+                        .set(randomTurns());
+            },
+
+            /**
+             * Clear opponent's forecast
+             */
+            async clearOpponentMoves() {
+
+                await duelsRef
+                        .child("moves")
+                        .child(this.opposingWizardId)
+                        .remove();
+            },
+
+            /**
              * Submit turn
              */
             async submitTurn() {
 
-                if (!(this.turns[0] && this.turns[1] && this.turns[2] && this.turns[3] && this.turns[4])) {
+                if (!(this.ourMoves[0] && this.ourMoves[1] && this.ourMoves[2] && this.ourMoves[3] && this.ourMoves[4])) {
                     console.log("Error: not all turns are set");
                     return;
                 }
@@ -207,32 +271,22 @@ if (location.href.indexOf('duels') !== -1) {
                         .set({});
                 */
 
+                const moves = {};
+                moves[this.ourWizardId] = this.ourMoves;
+
                 // post duel config
                 // TODO: don't want both parties posting this
                 //       also, probably not the ideal time to post it
                 await duelsRef
-                        .child(this.duel.roomId)
                         .child("duelConfig")
                         .set(this.duel);
 
                 // post moves object
                 await duelsRef
-                        .child(this.duel.roomId)
                         .child("moves")
-                        .child(this.ourWizardId)
-                        .set(this.turns);
+                        .update(moves);
 
-
-                // submit fake turns for opponent
-                // TODO: should actually wait for firebase update that includes opponent's submission
-                // post moves object
-                await duelsRef
-                        .child(this.duel.roomId)
-                        .child("moves")
-                        .child(this.opposingWizardId)
-                        .set(randomTurns());
-
-                const contractResults = await this.resolveDuelSimulation(randomTurns(), randomTurns());
+                const contractResults = await this.resolveDuelSimulation(this.ourMoves, this.opponentMoves);
                 const power = Math.floor(parseInt(contractResults[0]) / 1000000000000);
                 const score = parseInt(contractResults[1]);
                 const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
@@ -244,7 +298,6 @@ if (location.href.indexOf('duels') !== -1) {
                 };
 
                 console.log("Compiled duel results:", this.duelResults);
-
             },
         }
     });
