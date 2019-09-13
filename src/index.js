@@ -762,8 +762,26 @@ if (location.href.indexOf('duels') == -1
                 if (rarityValue > 0) {
                     return rarityValue;
                 } else {
+                    // Fix decimal length to the first non-zero value
                     rarityValue = 100 * (parseInt(rarity) / TOTAL_WIZARDS);
-                    return rarityValue.toFixed(1);
+                    // Make a string from rarity stat
+                    let nonZeroWorker = rarityValue.toString();
+                    // Split the string at the decimal place
+                    nonZeroWorker = nonZeroWorker.split('.');
+                    // Take only the fractional segment of the result
+                    nonZeroWorker = nonZeroWorker[1];
+                    // Get substring index of first non-zero char
+                    let nonZeroIndex;
+                    for (let i = 1; i < nonZeroWorker.length; i++) {
+                        if (nonZeroWorker.charAt(i) == 0) {
+                            continue
+                        } else {
+                            nonZeroIndex = i + 1;
+                            break;
+                        }
+                    }
+                    // Return
+                    return rarityValue.toFixed(nonZeroIndex);
                 }
             },
             getIconUrlForAffinity: function(affinity) {

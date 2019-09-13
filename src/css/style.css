@@ -10,6 +10,22 @@ body {
     display: none !important;
 }
 
+.navbar-brand {
+    cursor: pointer;
+}
+
+h3.home-title {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+div.img-main img {
+    margin: auto;
+    padding-top: 1rem;
+    display: block;
+}
+
 input[type=number],
 select {
     min-width: 300px;

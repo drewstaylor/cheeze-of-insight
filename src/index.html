@@ -30,7 +30,7 @@
 <body>
 <div id="cheese-of-insight">
     <nav class="navbar navbar-light">
-      <span class="navbar-brand mb-0 h1 tk-exocet">Holy Cheeze of Insight</span>
+      <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="navigation.state = HOME_STATE">Cheeze of Insight</span>
       <span class="notification-count" v-if="notificationsCount > 0">
           <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
       </span>
@@ -369,7 +369,7 @@
             <!---->
             <!-- End Wizard Challenge Modals -->
 
-            <h3>Welcome to the Holy Cheeze of Insight!</h3>
+            <h3 class="home-title">Welcome to the Holy Cheeze of Insight!</h3>
             <div class="img-main" v-if="navigation.state < 0">
                 <img class="img-fluid" src="img/holiness.jpg">
             </div>
