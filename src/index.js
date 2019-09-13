@@ -204,7 +204,8 @@ if (location.href.indexOf('duels') == -1
             showSearch: false,
             showMyWizardTraits: false,
             showOpponentTraits: false,
-            manualCurrentWizardSelection: false
+            manualCurrentWizardSelection: false,
+            isBgAnimated: false
         }),
         firebase: {
             usersOnline: usersOnline
@@ -244,6 +245,10 @@ if (location.href.indexOf('duels') == -1
                 }
             });
 
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+            }, 0);
         },
         methods: {
             // Chat / Login

@@ -29,6 +29,9 @@
 </head>
 <body>
 <div id="cheese-of-insight">
+    <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
+        <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
+    </div>
     <nav class="navbar navbar-light">
       <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="navigation.state = HOME_STATE">Cheeze of Insight</span>
       <span class="notification-count" v-if="notificationsCount > 0">
