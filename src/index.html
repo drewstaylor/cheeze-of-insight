@@ -28,7 +28,18 @@
     <script type="text/javascript" src="js/vue-simple-context-menu.js"></script>
 </head>
 <body>
-    <div id="cheese-of-insight" class="container container-fluid main-content">
+<div id="cheese-of-insight">
+    <nav class="navbar navbar-light">
+      <span class="navbar-brand mb-0 h1 tk-exocet">Holy Cheeze of Insight</span>
+      <span class="notification-count" v-if="notificationsCount > 0">
+          <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
+      </span>
+      <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
+      <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
+    </nav>
+    <div class="cheeze-melt"></div>
+
+    <div class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
             <!-- Notifications - Alert (top ribbon) -->
@@ -78,13 +89,6 @@
 
             <!-- Chat Component (Sidebar) -->
             <sidebar>
-                <div class="menu login-items" slot="menu-items">
-                    <span class="notification-count" v-if="notificationsCount > 0">
-                        <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
-                    </span>
-                    <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
-                    <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
-                </div>
 
                 <!-- Header -->
                 <div class="header-sidebar" slot="header">
@@ -1496,6 +1500,8 @@
 
         </div>
     </div>
+
+</div>
 
     <!-- Template For Sidebar Component -->
     <script type="text/x-template" id="sidebar-template">

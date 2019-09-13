@@ -434,8 +434,8 @@ div.duel-review-vs {
 
 .chat-icon.sidebar-ctrlr {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 1.7rem;
+    right: 6rem;
     cursor: pointer;
 }
 
@@ -574,4 +574,20 @@ div.duel-requests {
 
 .all-wizards dd {
     text-align: right;
+}
+
+.navbar {
+    background-color: #FFF032;
+    background-image: url(/img/gridPatternWhite.svg);
+    background-position: top -10px center;
+    background-size: 2rem auto;
+    border-bottom: 1px solid black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-repeat: repeat;
+}
+.cheeze-melt {
+    height: 35px;
+    background-color: #FFFF85;
+    border-bottom: 1px solid #000;
 }
