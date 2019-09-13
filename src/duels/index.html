@@ -30,12 +30,8 @@
 <body>
     <div id="duels" class="container container-fluid main-content">
         <a href="/">Back</a>
-        <h3>DUELS GO HERE</h3>
-
-        <textarea rows="12" cols="100" v-if="duel">{{ duel }}</textarea>
 
         <div class="forecast-panel">
-
             <h3>Forecast your spells!</h3>
 
             <round-picker label="Turn 1" v-bind:value.sync="turns[0]"></round-picker>

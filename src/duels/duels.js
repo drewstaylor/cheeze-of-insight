@@ -17,7 +17,7 @@ const firebaseConfig = config.firebaseConfig;
  * sessionStorage.setItem('duel', duelConfig);
  *
  * also, set current wizard id:
- * sessionStorage.setItem('currentDuelingWizardId', '1353');
+ * sessionStorage.setItem('ourWizardId', '1353');
  */
 
 const randomTurn = () => { return Math.floor(Math.random() * 3) + 2; };
@@ -80,7 +80,7 @@ if (location.href.indexOf('duels') !== -1) {
             firebase: FIREBASE,
             // Duel
             duel: null,
-            duelingWizardId: null,
+            ourWizardId: null,
             duelResults: null,
             turns: randomTurns(),
             firebaseDuels: [],
@@ -113,19 +113,36 @@ if (location.href.indexOf('duels') !== -1) {
                 this.isWeb3Enabled = false;
             }
 
+            const ourWizardId = sessionStorage.getItem('ourWizardId');
+            console.log('ourWizardId', ourWizardId);
+            if (ourWizardId) {
+                //sessionStorage.removeItem('duel');
+                this.ourWizardId = ourWizardId;
+            }
+
             // Mount duel configuration
             let duelConfig = JSON.parse(sessionStorage.getItem('duel'));
             console.log('duelConfig', duelConfig);
             if (duelConfig) {
                 //sessionStorage.removeItem('duel');
                 this.duel = duelConfig;
-            }
 
-            const duelingWizardId = sessionStorage.getItem('currentDuelingWizardId');
-            console.log('duelingWizardId', duelingWizardId);
-            if (duelingWizardId) {
-                //sessionStorage.removeItem('duel');
-                this.duelingWizardId = duelingWizardId;
+                // determine opposing wizard's id
+                if (this.duel.wizardChallenged.id === this.ourWizardId) {
+                    console.log("We're the challenged wizard");
+                    this.opposingWizard = this.duel.wizardChallenging;
+                    this.opposingWizardId = this.duel.wizardChallenging.id;
+
+                    this.ourWizard = this.duel.wizardChallenged;
+                    // this.ourWizardId = this.duel.wizardChallenged.id;
+                } else {
+                    console.log("We're the challenging wizard");
+                    this.opposingWizard = this.duel.wizardChallenged;
+                    this.opposingWizardId = this.duel.wizardChallenged.id;
+
+                    this.ourWizard = this.duel.wizardChallenging;
+                    // this.ourWizardId = this.duel.wizardChallenging.id;
+                }
             }
         },
         watch: {
@@ -138,24 +155,18 @@ if (location.href.indexOf('duels') !== -1) {
         },
         methods: {
             /**
-             * @param {Object} moveArrayChallengingdWizard: An array of turn commitments (enums) for the challenging Wizard
-             * @param {Object} moveArrayChallengedWizard: An array of turn commitments (enums) for the challenged Wizard
-             * @return {Object} : An object containing the duel result. XXX TODO: Clarify how to interpret this result.
+             * @param {Object} ourMoves: An array of turn commitments (enums) for our wizard
+             * @param {Object} opponentMoves: An array of turn commitments (enums) from our opponent
+             * @return {Object} : object[0] = power transfer, object[1] = sum of move scores
              * 
              * Example response:
              * 
              * $ node TestDuel.js
              * Resolved Duel => Result { '0': '2', '1': '100', __length__: 2 }
              */
-            resolveDuelSimulation: async function(moveArrayChallengingWizard, moveArrayChallengedWizard) {
+            resolveDuelSimulation: async function(ourMoves, opponentMoves) {
                 // Only call, when valid args are present
-                if (!moveArrayChallengingWizard
-                    || !moveArrayChallengedWizard
-                    || !this.duel) {
-                        return;
-                } else if (!this.duel.hasOwnProperty('wizardChallenging')) {
-                    return;
-                } else if (!this.duel.hasOwnProperty('wizardChallenged')) {
+                if (!ourMoves || !opponentMoves || !this.duel) {
                     return;
                 }
 
@@ -164,12 +175,12 @@ if (location.href.indexOf('duels') !== -1) {
 
                 // Process Duel resolution
                 let result = await this.DuelSim.SimulateDuel(
-                    moveArrayChallengingWizard,             // Challenger player move set
-                    moveArrayChallengedWizard,              // Challenged player move set 
-                    this.duel.wizardChallenging.power,      // Challenger Wizard's power level
-                    this.duel.wizardChallenged.power,       // Challenged Wizard's power level
-                    this.duel.wizardChallenging.affinity,   // Challenger Wizard's affinity
-                    this.duel.wizardChallenged.affinity,    // Challenged Wizard's affinity
+                    ourMoves,
+                    opponentMoves,
+                    this.ourWizard.power,
+                    this.opposingWizard.power,
+                    this.ourWizard.affinity,
+                    this.opposingWizard.affinity,
                     rinkeby
                 );
 
@@ -190,9 +201,6 @@ if (location.href.indexOf('duels') !== -1) {
                     return;
                 }
 
-                console.log(`Posting duel data to room ${this.duel.roomId}`, this.duel);
-                console.log("duelingWizardId: "+ this.duelingWizardId);
-
                 /* uncomment to push an empty object to 'duel-simulations', e.g. to clean up
                 await duelsRef
                         .child(this.duel.roomId)
@@ -211,7 +219,7 @@ if (location.href.indexOf('duels') !== -1) {
                 await duelsRef
                         .child(this.duel.roomId)
                         .child("moves")
-                        .child(this.duelingWizardId)
+                        .child(this.ourWizardId)
                         .set(this.turns);
 
 
@@ -221,7 +229,7 @@ if (location.href.indexOf('duels') !== -1) {
                 await duelsRef
                         .child(this.duel.roomId)
                         .child("moves")
-                        .child(this.duel.wizardChallenging.id)
+                        .child(this.opposingWizardId)
                         .set(randomTurns());
 
                 const contractResults = await this.resolveDuelSimulation(randomTurns(), randomTurns());
