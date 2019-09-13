@@ -153,7 +153,7 @@ if (location.href.indexOf('duels') !== -1) {
             }
         },
         watch: {
-            firebaseDuels(value) {
+            async firebaseDuels(value) {
                 // TODO: why do we get values in an array like this?
                 //       I would expect to get the real object, which looks something like:
                 //       {
@@ -191,6 +191,21 @@ if (location.href.indexOf('duels') !== -1) {
                 if (opponentMoves) {
                     console.log("Setting opponentMoves", opponentMoves);
                     this.opponentMoves = opponentMoves;
+                }
+
+                if (! this.duelResults && this.opponentMoves && this.ourMoves) {
+                    const contractResults = await this.resolveDuelSimulation(this.ourMoves, this.opponentMoves);
+                    const power = Math.floor(parseInt(contractResults[0]) / 1000000000000);
+                    const score = parseInt(contractResults[1]);
+                    const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
+
+                    this.duelResults = {
+                        power: power,
+                        score: score,
+                        outcome: outcome,
+                    };
+
+                    console.log("Compiled duel results:", this.duelResults);
                 }
             },
         },
@@ -285,19 +300,6 @@ if (location.href.indexOf('duels') !== -1) {
                 await duelsRef
                         .child("moves")
                         .update(moves);
-
-                const contractResults = await this.resolveDuelSimulation(this.ourMoves, this.opponentMoves);
-                const power = Math.floor(parseInt(contractResults[0]) / 1000000000000);
-                const score = parseInt(contractResults[1]);
-                const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
-
-                this.duelResults = {
-                    power: power,
-                    score: score,
-                    outcome: outcome,
-                };
-
-                console.log("Compiled duel results:", this.duelResults);
             },
         }
     });
