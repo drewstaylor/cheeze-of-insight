@@ -13,6 +13,7 @@
     <link href="css/vuesax.css" rel="stylesheet">
     <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/markets.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
     <script type="text/javascript" src="../js/jquery.min.js"></script>
@@ -29,6 +30,115 @@
 <body>
     <div id="markets" class="container container-fluid main-content">
         <a href="/">Back</a>
+
+        <!-- MAIN STATE (Markets) -->
+        <div class="wrapper mount-wrapper" v-cloak v-if="applicationState == MAIN_STATE">
+
+            <div v-if="!descrReadMore">
+                <h3>Prediction Markets</h3>
+                <p class="descr">COI will be releasing daily prediction markets on Augur!</p>
+                <a @click="descrReadMore = true;">Read more</a>
+            </div>
+            
+            <div class="jumbotron" v-else>
+                <h3>Prediction Markets</h3>
+                <p class="lead">Throughout Phase III of the tournament, COI will be releasing daily prediction markets on Augur. These markets allow you to place bets of ETH on outcomes of the next dueling window! For example, you'll be able to bet on whether the power of a specific wizard will increase.</p>
+                <p>How our markets get created depends on analytics collected from the DApp you're using right now</p>
+                <p>
+                    <strong>But wait, there's more!</strong>
+                </p>
+                <p>Think our prediction markets are cool? Why not launch your own Augur market and have it appear in the "Community Markets" section of this page</p>
+                <p>We've open sourced our market creator to make it easy for you to launch markets that will appear on our platform. Just clone the repo <a href="#">here</a> and follow the instructions of the README to get started!</p>
+                <hr class="my-4">
+                <p>The Wizards used by our markets are chosen according to either of the following 2 principals, and refer to that Wizard's power after the previous day's Duels have resolved.</p>
+                <ul>
+                    <li>Wizard is one of the top 3 most powerful Wizards still in the tournament</li>
+                    <li>Wizard is one of the top 3 most "volatile" Wizards still in the tournament</li>
+                </ul>
+                <p>
+                    <strong>*Note: we take "volatile" to mean Wizards power levels that fluctuated by the greatest margin during the previous day's dueling window</strong>
+                </p>
+                <div class="read-less">
+                    <button class="btn btn-primary" @click="descrReadMore = false;">Read less</button>
+                </div>
+            </div>
+        
+
+            <!-- COI Markets -->
+            <div class="coi-markets markets wrapper" v-if="coiMarkets">
+                <h5>COI Markets:</h5>
+                <div v-if="!coiMarkets.length">
+                    <p>No COI markets found</p>
+                </div>
+                <div v-else>
+                    <!-- Market Data-->
+                    <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
+                        <div class="card">
+                            <img class="card-img-top" :src="getMarketImageUrl(market.tags)" :alt="market.description">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ market.description }}</h5>
+                                <p class="card-text">{{ market.details }}</p>
+                                <div class="category">
+                                    <label>
+                                        <strong>CATEGORY:</strong>
+                                    </label> <span class="category">{{ market.category }}</span>
+                                </div>
+                                <div class="tags">
+                                    <label>
+                                        <strong>TAGS:</strong>
+                                    </label>
+                                    <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
+                                </div>
+                                <button @click="doMarketNavigation(market.id)" class="btn btn-primary">Go To Market Betting</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Markets -->
+            <div class="community-markets markets wrapper" v-if="communityMarkets">
+                <h5>Community Markets:</h5>
+                <div v-if="!communityMarkets.length">
+                    <p>No community markets found. Want to create some? Clone <a href="#">this</a> repo and follow the README to get started!</p>
+                </div>
+                <div v-else>
+                    <!-- Market Data-->
+                    <div v-for="(market, index) in communityMarkets" @click="doMarketNavigation(market.id)">
+                        <div class="card">
+                            <img class="card-img-top" :src="getMarketImageUrl(market.tags)" :alt="market.description">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ market.description }}</h5>
+                                <p class="card-text">{{ market.details }}</p>
+                                <div class="category">
+                                    <label>
+                                        <strong>CATEGORY:</strong>
+                                    </label> <span class="category">{{ market.category }}</span>
+                                </div>
+                                <div class="tags">
+                                    <label>
+                                        <strong>TAGS:</strong>
+                                    </label>
+                                    <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
+                                </div>
+                                <button @click="doMarketNavigation(market.id)" class="btn btn-primary">Go To Market Betting</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXIT COI STATE (Redirection Warning) -->
+        <div class="wrapper mount-wrapper exit-coi" v-cloak v-if="applicationState == EXIT_COI_STATE">
+            <div class="jumbotron">
+                <h1>Redirect Notice</h1>
+                <p class="lead">You will be automatically redirected in {{ exitTimer }} seconds.</p>
+                <hr class="my-4">
+                <p>You are now leaving CheezeOfInsight.com and entering a website with no affiliation, support, or relationship to the Cheeze Of Insight or Infinite Internet Labs.</p>
+                <p>Infinite Internet Labs does not endorse this website, its sponsor, or any policies, activities, products, or services offered on the site by any any advertiser or service provider. Infinite Internet Labs cannot attest to the accuracy of the information provided by this link. You will be subject to the destination site's privacy policy when you follow the link. Services offered when following the link have no affiliation with Infinite Internet Labs, and the Cheeze Of Insight team makes no claims in relation to the following link.</p>
+            </div>
+        </div>
     </div>
 
     <!-- Template For Sidebar Component -->
@@ -56,7 +166,7 @@
         </div>
     </script>
     <!-- End Sidebar Template -->
-    
+        
     <!-- Template For Modal Component -->
     <script type="text/x-template" id="modal-template">
         <transition name="modal">

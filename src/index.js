@@ -8,6 +8,7 @@ const HOME_STATE = -1;
 const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
+const PREDICTION_MARKETS = 3;
 
 // Wizards sorting states
 const SORTED_BY_POWER_LEVEL_STRONGEST = 0;
@@ -89,6 +90,7 @@ if (location.href.indexOf('duels') == -1
             VIEW_ALL_WIZARDS: VIEW_ALL_WIZARDS,
             VIEW_SELECTED_WIZARD: VIEW_SELECTED_WIZARD,
             PREDICT_MATCHES: PREDICT_MATCHES,
+            PREDICTION_MARKETS: PREDICTION_MARKETS,
             HOME_STATE: HOME_STATE,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
             SORTED_BY_POWER_LEVEL_WEAKEST: SORTED_BY_POWER_LEVEL_WEAKEST,
@@ -695,6 +697,9 @@ if (location.href.indexOf('duels') == -1
                         console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
                         break;
+                    case PREDICTION_MARKETS:
+                        window.location.href = "/markets";
+                        break;
                     default:
                         return;
                 }
@@ -706,6 +711,8 @@ if (location.href.indexOf('duels') == -1
                 // as changing routes will clear the chat
                 let duel = JSON.stringify(this.activeDuelSimulation);
                 sessionStorage.setItem('duel', duel);
+                // TODO specify the wizardId (or firebase username or ETH addr, etc...)
+                sessionStorage.setItem('currentDuelingWizardId', this.currentWizard.selectedId);
                 // Hard navigate to duel room
                 return window.location.href = '/duels';
             },
