@@ -77,8 +77,8 @@ const readSessionStorage = function() {
     const duel = JSON.parse(sessionStorage.getItem('duel'));
 
     if (! mode) throw new Error("duels.js requires 'mode' in sessionStorage");
-    if (! ourWizardId) throw new Error("duels.js requires 'ourWizardId' in sessionStorage");
-    if (! opposingWizardId) throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
+    if (! ourWizardId || ourWizardId === "undefined") throw new Error("duels.js requires 'ourWizardId' in sessionStorage");
+    if (! opposingWizardId || opposingWizardId === "undefined") throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
     if (! duel) throw new Error("duels.js requires 'duel' in sessionStorage");
 
     return {
