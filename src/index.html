@@ -201,7 +201,7 @@
                             <div slot="footer">
                                 <div class="pending-challenge-footer">
                                     <button class="btn btn-danger btn-decline-challenge" @click="declineChallenge(index)">Decline</button>
-                                    <button class="btn btn-primary btn-accept-challenge" @click="acceptChallenge(index)">Accept</button>
+                                    <button class="btn btn-inverse btn-accept-challenge" @click="acceptChallenge(index)">Accept</button>
                                 </div>
                             </div>
 
@@ -253,7 +253,7 @@
                             </div>
                             <div slot="footer">
                                 <div class="pending-challenge-footer unresolved">
-                                    <button class="btn btn-primary btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
+                                    <button class="btn btn-inverse btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
                                 </div>
                             </div>
 
@@ -280,7 +280,7 @@
                                     <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
-                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -305,7 +305,7 @@
                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
-                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -332,7 +332,7 @@
                                 <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
-                                    <p>Cheeze Wizard #{{ currentWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
+                                    <p><span v-if="currentWizard.specialPower">{{ currentWizard.specialPower }}</span> Wizard #{{ currentWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -354,7 +354,7 @@
                                 <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
-                                    <p>Cheeze Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
+                                    <p><span v-if="currentOpposingWizard.specialPower">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -363,7 +363,7 @@
 
                     <!-- Submit Challenge -->
                     <div class="row" v-if="!this.chatDuelChallengeConfig.isSending">
-                        <button class="modal-default-button btn btn-primary submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
+                        <button class="modal-default-button btn btn-inverse submit-duel-challenge" @click="submitChallenge();">Submit Duel Challenge</button>
                     </div>
 
                 </div>
@@ -514,10 +514,10 @@
 
                     <!-- Paging -->
                     <div class="page-controls">
-                        <button class="btn btn-primary" v-on:click="previousWizardsPage();" :disabled="currentWizardsPage <= 1">Previous</button>
+                        <button class="btn btn-inverse" v-on:click="previousWizardsPage();" :disabled="currentWizardsPage <= 1">Previous</button>
                         <button class="btn btn-inverse" v-on:click="currentWizardsPage = 1;" :disabled="currentWizardsPage <= 1"><<</button>
                         <button class="btn btn-inverse" v-on:click="currentWizardsPage = totalWizardsPages" :disabled="currentWizardsPage >= totalWizardsPages">>></button>
-                        <button class="btn btn-primary" v-on:click="nextWizardsPage();" :disabled="currentWizardsPage >= totalWizardsPages">Next</button>
+                        <button class="btn btn-inverse" v-on:click="nextWizardsPage();" :disabled="currentWizardsPage >= totalWizardsPages">Next</button>
                     </div>
                 </div>
             </div>
@@ -529,7 +529,7 @@
                     <!-- Left Pane - Wizard Image -->
                     <div class="selected-wizard-left">
                         <!-- Title -->
-                        <h5 class="title">Cheeze Wizard #{{ currentOpposingWizard.id }}</h5>
+                        <h5 class="title"><span v-if="currentOpposingWizard.specialPower">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }}</h5>
                         <!-- Affinity -->
                         <div class="affinity">
                             <p>
@@ -584,7 +584,7 @@
                                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                                     <!-- Card Label (Link Text) -->
                                                     <div class="wizard-card wizard-card-label">
-                                                        <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                                     </div>
                                                 </div>
                                             </a>
@@ -915,7 +915,7 @@
                 <input type="number" name="opposing_wizard" min="0" max="99999" v-model="currentOpposingWizard.selectedId" placeholder="Enter opponent's Wizard ID">
             </div>
             <div class="predict predict-btn">
-                <button class="btn btn-primary" v-on:click="predictMatchOutcome(currentWizard.selectedId, currentOpposingWizard.selectedId);" :disabled="!currentWizard || !currentOpposingWizard">Compare Wizards</button>
+                <button class="btn btn-inverse" v-on:click="predictMatchOutcome(currentWizard.selectedId, currentOpposingWizard.selectedId);" :disabled="!currentWizard || !currentOpposingWizard">Compare These Wizards</button>
             </div>
 
             <!-- Prediction Results -->
@@ -937,10 +937,10 @@
                     <div v-if="matchPrediction.id">
                         <h5>Careful now, you've encountered one seriously sassy sorceror!</h5>
                         <p>
-                            <strong><span v-if="matchPrediction.higherPoweredWizard">{{ matchPrediction.higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction.id }} is more powerful!</strong>
+                            <strong><span v-if="matchPrediction.specialPower">{{ matchPrediction.specialPower }}</span> Wizard #{{ matchPrediction.id }} is more powerful!</strong>
                         </p>
                         <p>
-                            <strong><span v-if="matchPrediction.higherPoweredWizard">{{ matchPrediction.higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction.id }} has an affinity advantage!</strong>
+                            <strong><span v-if="matchPrediction.specialPower">{{ matchPrediction.specialPower }}</span> Wizard #{{ matchPrediction.id }} has an affinity advantage!</strong>
                         </p>
                     </div>
                     <!-- Well Suited Wizard-->
@@ -968,7 +968,7 @@
                     <h1 class="display-4">Your Wizard:</h1>
                     <hr/>
 
-                    <h5 class="title">Cheeze Wizard #{{ currentWizard.id }}</h5>
+                    <h5 class="title"><span v-if="currentWizard.specialPower">{{ currentWizard.specialPower }}</span> Wizard #{{ currentWizard.id }}</h5>
                     <!-- Affinity -->
                     <div class="affinity">
                         <p>
@@ -1027,7 +1027,7 @@
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">
-                                                <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                             </div>
                                         </div>
                                     </a>
@@ -1237,7 +1237,7 @@
                     <h1 class="display-4">Opponent's Wizard:</h1>
                     <hr/>
 
-                    <h5 class="title">Cheeze Wizard #{{ currentOpposingWizard.id }}</h5>
+                    <h5 class="title"><span v-if="currentOpposingWizard.specialPower">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }}</h5>
                     <!-- Affinity -->
                     <div class="affinity">
                         <p>
@@ -1294,7 +1294,7 @@
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">
-                                                <p>Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                             </div>
                                         </div>
                                     </a>
@@ -1547,7 +1547,7 @@
                         <!-- Footer Slot -->
                         <div class="modal-footer">
                             <slot name="footer">
-                                <button id="modal_close" class="modal-default-button btn btn-primary" @click="$emit('close')">
+                                <button id="modal_close" class="modal-default-button btn btn-inverse" @click="$emit('close')">
                                     <slot name="footer">Close</slot>
                                 </button>
                             </slot>
