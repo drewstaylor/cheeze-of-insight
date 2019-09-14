@@ -279,8 +279,15 @@ if (location.href.indexOf('duels') !== -1) {
              */
             processDuelSimulation: async function(ourMoves, opponentMoves) {
                 // Only call, when valid args are present
-                if (!ourMoves || !opponentMoves || !this.duel) {
-                    return;
+                if (!ourMoves || !opponentMoves || !this.duel || !this.opponentMovesReceived) {
+                    console.log("processDuelSimulation(): preconditions not met => ",
+                        {
+                            ourMoves,
+                            opponentMoves,
+                            duel: this.duel,
+                            opponentMovesReceived: this.opponentMovesReceived
+                        });
+                    throw new Error("processDuelSimulation(): preconditions not met (see console)");
                 }
 
                 // Instance of Providers
