@@ -681,7 +681,7 @@ if (location.href.indexOf('duels') == -1
                 // If cancelled, don't dispatch our event
                 let canceled = !elem.dispatchEvent(evt);
             },
-            setNavigation: function (state = null) {
+            setNavigation: function (state = null, comparisonId = null) {
                 // Change navigation state as required
                 if (this.navigation.state == state) {
                     return;
@@ -720,10 +720,36 @@ if (location.href.indexOf('duels') == -1
                         this.isBgAnimated = false;
                         console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
+
+                        // Handle state entry
+                        // User's owned wizard
+                        if (!this.currentWizard.selectedId && this.userOwnsWizards) {
+                            if (this.tokens.mainnet.wizards) {
+                                if (this.tokens.mainnet.wizards.length) {
+                                    this.currentWizard.selectedId = this.tokens.mainnet.wizards[0].id;
+                                }
+                            }
+                        }
+
+                        // Comparison wizard
+                        if (this.currentOpposingWizard.id && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = this.currentOpposingWizard.id;
+                        } else if (comparisonId && !this.currentOpposingWizard.hasOwnProperty('selectedId')) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        } else if (comparisonId && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        }
+
                         // Animate Cheeze Melt
                         setTimeout(() => {
                             this.isBgAnimated = true;
                         }, 100);
+
+                        // Run predictor automatically on state resolultion
+                        if (this.currentWizard.selectedId && this.currentOpposingWizard.selectedId) {
+                            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+                        }
+
                         break;
                     case PREDICTION_MARKETS:
                         window.location.href = "/markets";
@@ -1066,6 +1092,9 @@ if (location.href.indexOf('duels') == -1
                 // Disable loading
                 this.isLoading = false;
                 console.log('Wizards Compared =>', [this.currentWizard, this.currentOpposingWizard]);
+
+                // Scroll to top of page (useful when running predictions from modal pop-ups)
+                window.scrollTo(0,0);
             },
             // Paging
             nextWizardsPage: function () {

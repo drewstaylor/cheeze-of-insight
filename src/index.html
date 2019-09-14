@@ -43,7 +43,7 @@
     <nav class="nav subnav justify-content-center">
       <a class="nav-link" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}" v-on:click="setNavigation(0);">Browse Wizards</a>
       <a class="nav-link" v-bind:class="{active: navigation.state == PREDICT_MATCHES}" v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
-      <a class="nav-link" v-on:click="setNavigation(3);">Prediction Markets</a>
+      <a class="nav-link" v-on:click="setNavigation(PREDICTION_MARKETS);">Prediction Markets</a>
     </nav>
 
     <div class="container container-fluid main-content">
@@ -601,7 +601,7 @@
                         </div>
                         <!-- Comparison -->
                         <div class="comparison">
-                            <button class="btn btn-inverse btn-selected-compare" @click="setNavigation(PREDICT_MATCHES)">Compare With This Wizard</button>
+                            <button class="btn btn-inverse btn-selected-compare" @click="setNavigation(PREDICT_MATCHES, currentOpposingWizard.id)">Compare With This Wizard</button>
                         </div>
                     </div>
 
@@ -899,7 +899,7 @@
                     </label>
                 </p>
                 <select v-model="currentWizard.selectedId">
-                    <option v-for="wizard in tokens.mainnet.wizards" v-bind:value="wizard.id">Cheeze Wizard #{{ wizard.id }}</option>
+                    <option v-for="wizard in tokens.mainnet.wizards" v-bind:value="wizard.id">{{ wizard.specialPower}} Wizard #{{ wizard.id }}</option>
                 </select>
                 <p>
                     <a v-on:click="manualCurrentWizardSelection = true">Choose Wizard manually instead</a>
@@ -923,7 +923,7 @@
                 <!-- Nothing to predict -->
                 <div class="invalid-prediction prediction-data" v-if="predictionType == PREDICTION_UNAVAILABLE || matchPrediction == false">
                     <p>
-                        <strong>Wizard #{{currentWizard.id}} and Wizard #{{ currentOpposingWizard.id }} appear to be evenly matched!</strong>
+                        <strong>{{ currentWizard.specialPower }} Wizard #{{currentWizard.id}} and {{ currentOpposingWizard.specialPower }} Wizard #{{ currentOpposingWizard.id }} appear to be evenly matched!</strong>
                     </p>
                 </div>
 
@@ -931,31 +931,31 @@
                 <div class="prediction-data" v-else-if="matchPrediction">
                     <!-- OP Wizard -->
                     <p v-if="matchPrediction.higherPoweredWizard">
-                        <strong>Wizard #{{ matchPrediction.higherPoweredWizard.id }} is more powerful!</strong>
+                        <strong><span v-if="matchPrediction.higherPoweredWizard.specialPower">{{ matchPrediction.higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction.higherPoweredWizard.id }} is more powerful!</strong>
                     </p>
                     <!-- OP Wizard -->
                     <div v-if="matchPrediction.id">
                         <h5>Careful now, you've encountered one seriously sassy sorceror!</h5>
                         <p>
-                            <strong>Wizard #{{ matchPrediction.id }} is more powerful!</strong>
+                            <strong><span v-if="matchPrediction.higherPoweredWizard">{{ matchPrediction.higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction.id }} is more powerful!</strong>
                         </p>
                         <p>
-                            <strong>Wizard #{{ matchPrediction.id }} has an affinity advantage!</strong>
+                            <strong><span v-if="matchPrediction.higherPoweredWizard">{{ matchPrediction.higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction.id }} has an affinity advantage!</strong>
                         </p>
                     </div>
                     <!-- Well Suited Wizard-->
                     <p v-if="matchPrediction.betterSuitedWizard">
-                        <strong>Wizard #{{ matchPrediction.betterSuitedWizard.id }} has an affinity advantage!</strong>
+                        <strong><span v-if="matchPrediction.betterSuitedWizard.specialPower">{{ matchPrediction.betterSuitedWizard.specialPower }}</span> Wizard #{{ matchPrediction.betterSuitedWizard.id }} has an affinity advantage!</strong>
                     </p>
 
                     <div v-if="matchPrediction[0]">
                         <p v-if="matchPrediction[0].higherPoweredWizard">
-                            <strong>Wizard #{{ matchPrediction[0].higherPoweredWizard.id }} is more powerful!</strong>
+                            <strong><span v-if="matchPrediction[0].higherPoweredWizard.specialPower">{{ matchPrediction[0].higherPoweredWizard.specialPower }}</span> Wizard #{{ matchPrediction[0].higherPoweredWizard.id }} is more powerful!</strong>
                         </p>
                     </div>
                     <div v-if="matchPrediction[1]">
                         <p v-if="matchPrediction[1].betterSuitedWizard">
-                            <strong>Wizard #{{ matchPrediction[1].betterSuitedWizard.id }} has an affinity advantage!</strong>
+                            <strong><span v-if="matchPrediction[1].betterSuitedWizard.specialPower">{{ matchPrediction[1].betterSuitedWizard.specialPower }}</span> Wizard #{{ matchPrediction[1].betterSuitedWizard.id }} has an affinity advantage!</strong>
                         </p>
                     </div>
                 </div>
