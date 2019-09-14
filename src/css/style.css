@@ -478,9 +478,9 @@ div.duel-review-vs {
 .notification-count .vs-icon.small {
     font-size: 15px;
     font-weight: bold;
-    position: relative;
-    top: -25px;
-    left: 15px;
+    position: absolute;
+    top: 17px;
+    right: 5.5rem;
 }
 .vs-sidebar.vs-sidebar-primary.vs-sidebar-position-right {
     padding: 0.5rem;
