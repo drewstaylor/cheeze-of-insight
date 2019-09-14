@@ -290,6 +290,18 @@ if (location.href.indexOf('duels') !== -1) {
                     throw new Error("processDuelSimulation(): preconditions not met (see console)");
                 }
 
+                // even more pedantic... 
+                if (! this.ourWizardId || ! this.ourWizard || ! this.opposingWizardId || ! this.opposingWizard) {
+                    console.log("processDuelSimulation(): don't have correct wizard ids, how did we even get here? => ",
+                        {
+                            ourWizardId: this.ourWizardId,
+                            ourWizard: this.ourWizard,
+                            opposingWizardId: this.opposingWizardId,
+                            opposingWizard: this.opposingWizard,
+                        });
+                    throw new Error("processDuelSimulation(): incorrect wizard(s) in duel config");
+                }
+
                 // Instance of Providers
                 let rinkeby = this.web3Providers.rinkeby;
 
