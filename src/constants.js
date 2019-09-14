@@ -6,8 +6,8 @@ const constants = {
         UNKNOWN: 0,
         NEUTRAL: 1,
         FIRE: 2,
-        WIND: 3,
-        WATER: 4,
+        WATER: 3,
+        WIND: 4,
     }),
 
     AffinityRelationships: Object.freeze({
