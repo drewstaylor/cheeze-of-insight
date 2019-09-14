@@ -111,6 +111,11 @@ Vue.component('duel-status', {
     template: '#duel-status-template',
 });
 
+Vue.component('wizard-card', {
+    props: ['wizard', 'api'],
+    template: "#wizard-card-template",
+});
+
 // Create application
 if (location.href.indexOf('duels') !== -1) {
     let duelsVm = new Vue({
@@ -148,7 +153,9 @@ if (location.href.indexOf('duels') !== -1) {
             // Duel
             mode: null,
             duel: null,
+            ourWizard: null,
             ourWizardId: null,
+            opposingWizard: null,
             opposingWizardId: null,
             duelResults: null,
             ourMoves: [],

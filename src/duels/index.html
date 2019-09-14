@@ -35,6 +35,8 @@
             <div class="forecast-panel">
                 <h3>Forecast your Spells!</h3>
 
+                <wizard-card v-if="ourWizard" :wizard="ourWizard" :api="api"></wizard-card>
+
                 <round-picker label="Turn 1" v-bind:value.sync="ourMoves[0]"></round-picker>
                 <round-picker label="Turn 2" v-bind:value.sync="ourMoves[1]"></round-picker>
                 <round-picker label="Turn 3" v-bind:value.sync="ourMoves[2]"></round-picker>
@@ -53,6 +55,8 @@
 
             <div v-if="mode == 'offline'" class="forecast-panel">
                 <h3>Simulate Opponent's Forecast!</h3>
+
+                <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card>
 
                 <round-picker label="Turn 1" v-bind:value.sync="opponentMoves[0]"></round-picker>
                 <round-picker label="Turn 2" v-bind:value.sync="opponentMoves[1]"></round-picker>
@@ -187,6 +191,31 @@
         </vs-row>
     </script>
     <!-- End Duel Request Template -->
+
+    <!-- Wizard card template -->
+    <script type="text/x-template" id="wizard-card-template">
+        <div class="all-wizards">
+            <div :class="'card mb-3 affinity-' + wizard.specialPower.toLowerCase()">
+                <div class="card-img-top" :style="'background-image: url(' + api.getWizardImageUrlById(wizard.id) + ');'">
+                    <div class="card-img-overlay d-flex justify-content-end">
+                        <img class="icon" :src="'/img/icons/'+ wizard.specialPower.toLowerCase()+ '.svg'" v-if="wizard.affinity !== 0">
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ wizard.specialPower }} Wizard #{{ wizard.id }}</h5>
+                    <dl class="card-text row text-muted">
+                        <dt class="col-sm-4">Power</dt>
+                        <dd class="col-sm-8">{{ wizard.power / 1000000000000 }}</dd>
+                        <dt class="col-sm-4">Owner</dt>
+                        <dd class="col-sm-8">{{ wizard.owner.substring(0, 12) }}&hellip;</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+    <!-- End Wizard card template -->
 
     <script type="text/javascript" src="../build/app.js"></script>
 </body>
