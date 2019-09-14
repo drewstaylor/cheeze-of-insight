@@ -418,9 +418,9 @@ if (location.href.indexOf('duels') == -1
                         let notifier;
                         switch (inviteResponse.status) {
                             case 'declined':
-                                // Notify user of incoming challenge
+                                // Notify user of challenge declined
                                 this.notification.title = 'Challenge declined!';
-                                this.notification.text = inviteResponse.fromUserName + ' has declined your challenge.';
+                                this.notification.text = inviteResponse.toUserName + ' has declined your challenge.';
                                 this.notification.color = 'danger';
                                 this.notification.type = 'alert';
                                 if (!found) {
@@ -430,7 +430,7 @@ if (location.href.indexOf('duels') == -1
                             case 'accepted':
                                 // Notify user of incoming Duel acceptance
                                 this.notification.title = 'Challenge accepted!';
-                                this.notification.text = inviteResponse.fromUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
+                                this.notification.text = inviteResponse.toUserName + ' has accepted your challenge. Open chat to proceed with your duel simulation.';
                                 this.notification.color = 'success';
                                 this.notification.type = 'alert';
                                 if (!found) {
