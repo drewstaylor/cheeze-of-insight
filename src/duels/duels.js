@@ -4,7 +4,6 @@
 //const duelConfig = JSON.parse(sessionStorage.getItem('duel'));
 
 const FIREBASE = require('../firebase');
-//const path = `duel-simulations/${duelConfig.roomId}`;
 const path = 'duel-simulations';
 const duelsRef = FIREBASE.firebaseDb.ref(path);
 
@@ -155,39 +154,31 @@ if (location.href.indexOf('duels') !== -1) {
         },
         watch: {
             async firebaseDuels(value) {
-                // TODO: why do we get values in an array like this?
-                //       I would expect to get the real object, which looks something like:
-                //       {
-                //           duelConfig: { /* our duel object, e.g. this.duel */ },
-                //           moves: {
-                //               1234: [ /* wizard 1234's moves */],
-                //               0001: [ /* wizard 0001's moves */],
-                //           }
-                //       }
-                //
-                //       Instead, we get an array of objects, like:
-                //       [
-                //           { .key: "duelConfig", /* the rest of our duelConfig object */ },
-                //           { .key: "moves", /* the rest of our moves object */ },
-                //       ]
-                //
-                //       So we have this ugly code here which finds the matching key.
 
-                let moves = null;
-                for (const obj of value) {
-                    if (obj['.key'] === "moves") {
-                        moves = obj;
+                console.log("firebaseDuels change => ", value);
+
+                // 'duel-simulations' is an array of all active duels; we need to loop through each to find ours
+                let thisDuel = null;
+                for (const duel of value) {
+                    if (duel && duel['.key'] && duel['.key'] === this.duel.roomId) {
+                        console.log("Found our duel => ", duel);
+                        thisDuel = duel;
                         break;
                     }
                 }
 
-                if (! moves) {
+                if (! thisDuel) {
+                    console.log("Did not find our duel");
+                    return;
+                }
+
+                if (! thisDuel.moves) {
                     console.log("No moves yet");
                     return;
                 }
 
-                const ourMoves = moves[this.ourWizardId];
-                const opponentMoves = moves[this.opposingWizardId];
+                const ourMoves = thisDuel.moves[this.ourWizardId];
+                const opponentMoves = thisDuel.moves[this.opposingWizardId];
 
                 if (opponentMoves) {
                     console.log("Setting opponentMoves", opponentMoves);
@@ -255,6 +246,7 @@ if (location.href.indexOf('duels') !== -1) {
 
                 // submit fake turns for opponent
                 await duelsRef
+                        .child(this.duel.roomId)
                         .child("moves")
                         .child(this.opposingWizardId)
                         .set(randomTurns());
@@ -266,6 +258,7 @@ if (location.href.indexOf('duels') !== -1) {
             async clearOpponentMoves() {
 
                 await duelsRef
+                        .child(this.duel.roomId)
                         .child("moves")
                         .child(this.opposingWizardId)
                         .remove();
@@ -294,11 +287,13 @@ if (location.href.indexOf('duels') !== -1) {
                 // TODO: don't want both parties posting this
                 //       also, probably not the ideal time to post it
                 await duelsRef
+                        .child(this.duel.roomId)
                         .child("duelConfig")
                         .set(this.duel);
 
                 // post moves object
                 await duelsRef
+                        .child(this.duel.roomId)
                         .child("moves")
                         .update(moves);
             },
