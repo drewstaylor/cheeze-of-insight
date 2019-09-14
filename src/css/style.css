@@ -649,7 +649,7 @@ div.duel-requests {
 
 .navbar {
     background-color: #FFF032;
-    background-image: url(/img/gridPatternWhite.svg);
+    background-image: url('../img/gridPatternWhite.svg');
     background-position: top -10px center;
     background-size: 2rem auto;
     border-bottom: 1px solid black;
@@ -667,4 +667,62 @@ div.duel-requests {
 }
 .subnav a.active, .subnav a.active:hover {
     background-color: #FFE133;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 2.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    color: #000000;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+img.footer.footer-bg {
+    min-width: 100vw;
+    height: auto;
+    left: 0;
+    right: 0;
+}
+
+.footer-descr {
+    position: absolute;
+    bottom: -17px;
+    width: 100%;
+    background-color: #FFF032;
+    background-image: url('../img/gridPatternWhite.svg');
+    background-position: top -10px center;
+    background-size: 2rem auto;
+    background-repeat: repeat;
+}
+
+.footer.left {
+    width: 75%;
+    position: relative;
+    padding-left: 2rem;
+    float: left;
+}
+
+.footer.right {
+    float: right;
+    margin-top: 10px;
+    width: 25%;
+}
+
+.footer.list-inline {
+    clear: both;
+}
+
+a.footer-link {
+    color: #000;
+}
+
+a.footer-link:hover {
+    color: #000;
 }
