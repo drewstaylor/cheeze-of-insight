@@ -161,6 +161,7 @@ if (location.href.indexOf('duels') !== -1) {
             opposingWizardId: null,
             duelResults: null,
             ourMoves: [],
+            ourMovesSubmitted: false,
             opponentMoves: [],
             opponentMovesReceived: false,
             firebaseDuels: [],
@@ -279,7 +280,8 @@ if (location.href.indexOf('duels') !== -1) {
              */
             processDuelSimulation: async function(ourMoves, opponentMoves) {
                 // Only call, when valid args are present
-                if (!ourMoves || !opponentMoves || !this.duel || !this.opponentMovesReceived) {
+                if (!ourMoves || !opponentMoves || !this.duel ||
+                        (!this.opponentMovesReceived && this.mode === 'challeng')) {
                     console.log("processDuelSimulation(): preconditions not met => ",
                         {
                             ourMoves,
@@ -395,6 +397,12 @@ if (location.href.indexOf('duels') !== -1) {
                     console.log("Error: not all turns are set");
                     return;
                 }
+
+                if (this.ourMovesSubmitted) {
+                    console.log("Error: can't submit our turns more than once");
+                    return;
+                }
+                this.ourMovesSubmitted = true;
 
                 /* uncomment to push an empty object to 'duel-simulations', e.g. to clean up
                 await duelsRef

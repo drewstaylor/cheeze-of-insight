@@ -45,8 +45,9 @@
 
                 <div v-if="mode != 'offline'" class="forecast-submit-button">
                     <button
+                        class="btn btn-inverse"
                         @click="submitTurn();"
-                        :disabled="!(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
+                        :disabled="ourMovesSubmitted || !(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
 
                         Submit
                     </button>
