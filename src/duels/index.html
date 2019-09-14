@@ -71,7 +71,7 @@
 
 
         <div v-if="mode != 'offline'" class="forecast-panel">
-            <div v-if="opponentMoves">
+            <div v-if="opponentMovesReceived">
                 <span>Opponent's moves have been cast.</span>
                 <button @click="clearOpponentMoves();">Clear opponent's forecast</button>
             </div>

@@ -160,6 +160,7 @@ if (location.href.indexOf('duels') !== -1) {
             duelResults: null,
             ourMoves: [],
             opponentMoves: [],
+            opponentMovesReceived: false,
             firebaseDuels: [],
         }),
         firebase: {
@@ -247,9 +248,10 @@ if (location.href.indexOf('duels') !== -1) {
                 if (opponentMoves) {
                     console.log("Setting opponentMoves", opponentMoves);
                     this.opponentMoves = opponentMoves;
+                    this.opponentMovesReceived = true;
                 }
 
-                if (! this.duelResults && this.opponentMoves && this.ourMoves) {
+                if (! this.duelResults && this.opponentMovesReceived && this.ourMoves) {
                     await this.processDuelSimulation(this.ourMoves, this.opponentMoves);
                 }
             },
