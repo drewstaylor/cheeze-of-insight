@@ -206,7 +206,7 @@
                     <h5 class="card-title">{{ wizard.specialPower }} Wizard #{{ wizard.id }}</h5>
                     <dl class="card-text row text-muted">
                         <dt class="col-sm-4">Power</dt>
-                        <dd class="col-sm-8">{{ wizard.power / 1000000000000 }}</dd>
+                        <dd class="col-sm-8">{{ Math.round(wizard.power / 1000000000000) }}</dd>
                         <dt class="col-sm-4">Owner</dt>
                         <dd class="col-sm-8">{{ wizard.owner.substring(0, 12) }}&hellip;</dd>
                     </dl>
