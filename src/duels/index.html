@@ -97,19 +97,19 @@
             <span>{{ label }}</span>
             <button>
                 <img
-                    :class="'icon affinityIcon ' + (value == 2 ? 'affinitySelected' : '')"
+                    :class="'icon affinityIcon ' + (value == 2 ? 'affinitySelectedFire' : '')"
                     src="/img/icons/fire.svg"
                     @click="value=2; $emit('update:value', 2);">
             </button>
             <button>
                 <img
-                    :class="'icon affinityIcon ' + (value == 3 ? 'affinitySelected' : '')"
+                    :class="'icon affinityIcon ' + (value == 3 ? 'affinitySelectedWater' : '')"
                     src="/img/icons/water.svg"
                     @click="value=3; $emit('update:value', 3);">
             </button>
             <button>
                 <img
-                    :class="'icon affinityIcon ' + (value == 4 ? 'affinitySelected' : '')"
+                    :class="'icon affinityIcon ' + (value == 4 ? 'affinitySelectedWind' : '')"
                     src="/img/icons/wind.svg"
                     @click="value=4; $emit('update:value', 4);">
             </button>

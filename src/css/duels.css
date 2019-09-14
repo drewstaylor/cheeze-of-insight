@@ -45,6 +45,12 @@
 	width: 42px;
 	height: 42px;
 }
-.affinitySelected {
-	background-color: #FFD45A;
+.affinitySelectedFire {
+	background-color: #ff809b;
+}
+.affinitySelectedWater {
+	background-color: #35d1e7;
+}
+.affinitySelectedWind {
+	background-color: #8bea63;
 }
