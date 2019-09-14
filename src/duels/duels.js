@@ -67,11 +67,9 @@ const randomTurns = () => {
  * This also validates the input from sessionStorage, throwing an instance of
  * Error on invalid input.
  *
- * @param {bool} clear - determines whether or not the sessionStorage is cleared
- *               after reading
  * @return {object} an object with the sessionStorage variables filled out
  */
-const readSessionData = function(clear = false) {
+const readSessionStorage = function() {
 
     const mode = sessionStorage.getItem("mode");
     const ourWizardId = sessionStorage.getItem("ourWizardId");
@@ -83,13 +81,6 @@ const readSessionData = function(clear = false) {
     if (! opposingWizardId) throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
     if (! duel) throw new Error("duels.js requires 'duel' in sessionStorage");
 
-    if (clear) {
-        sessionStorage.removeItem("mode");
-        sessionStorage.removeItem("ourWizardId");
-        sessionStorage.removeItem("opposingWizardId");
-        sessionStorage.removeItem("duel");
-    }
-
     return {
         mode,
         ourWizardId,
@@ -97,6 +88,17 @@ const readSessionData = function(clear = false) {
         duel,
     };
 };
+
+
+/**
+ * Clears sessionStorage
+ */
+const clearSessionStorage = function() {
+    sessionStorage.removeItem("mode");
+    sessionStorage.removeItem("ourWizardId");
+    sessionStorage.removeItem("opposingWizardId");
+    sessionStorage.removeItem("duel");
+}
 
 Vue.component('round-picker', {
     props: ['label'],
@@ -169,7 +171,7 @@ if (location.href.indexOf('duels') !== -1) {
         },
         mounted: async function () {
 
-            const duelParams = readSessionData(true);
+            const duelParams = readSessionStorage();
             console.log("duelParams => ", duelParams);
 
             this.mode = duelParams.mode;
@@ -309,6 +311,7 @@ if (location.href.indexOf('duels') !== -1) {
                 };
 
                 console.log("Compiled duel results:", this.duelResults);
+                clearSessionStorage();
             },
 
             /**
