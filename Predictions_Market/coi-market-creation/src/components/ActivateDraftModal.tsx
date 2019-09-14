@@ -56,7 +56,7 @@ function NetworkWarning({ children }: { children: React.ReactChild }) {
       return (
         <ErrorMessage>
           <b>Wrong network</b>: switch over to{" "}
-          {Store.getDesiredNetworkId() === "1" ? "Mainnet" : "Kovan"} to
+          {Store.getDesiredNetworkId() === "1" ? "Mainnet" : "Rinkeby"} to
           activate this market.
         </ErrorMessage>
       );
@@ -67,8 +67,6 @@ function NetworkWarning({ children }: { children: React.ReactChild }) {
 export default function ActivateDraftModal(props: Props) {
   return useObserver(() => {
     const store = useContext(StoreContext);
-
-    console.log('store?', store);//here
 
     const repBalance = useErc20Balance(
       store.repAddress,
@@ -98,6 +96,11 @@ export default function ActivateDraftModal(props: Props) {
     );
 
     const getUniswapExchangeRate = useCallback(async () => {
+      // Only allow 0x instant purchases of REP on Mainnet
+      if (Store.getDesiredNetworkId() !== "1" ) {
+        return;
+      }
+      
       if (!local.additionalRepNeededToActivateMarket) return;
       local.ethRequired = await store.getUniswapExchangeRate(
         local.additionalRepNeededToActivateMarket
@@ -109,6 +112,12 @@ export default function ActivateDraftModal(props: Props) {
     }, []);
 
     const buyRep = useCallback(async () => {
+      // Buying REP with 0x instant is only
+      // available on Mainnet
+      if (Store.getDesiredNetworkId() !== "1") {
+        alert('Sorry! Buying REP with 0x instant is only available on Mainnet.');
+        return;
+      }
       if (!local.ethRequired || !local.additionalRepNeededToActivateMarket) {
         console.log('Missing values', local);
         return;

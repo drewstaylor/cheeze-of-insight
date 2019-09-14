@@ -1,9 +1,63 @@
+body {
+    font-family: code-saver, sans-serif;
+    overflow-x: hidden;
+    background-color: #ff809b;
+}
+
+div.bg-melt {
+    max-height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 500px;
+    z-index: -1;
+    background-color: #fff032;
+}
+
+div.bg-melt.transform {
+    max-height: 400px;
+    transition: max-height 0.3s ease-out;
+}
+
+div.melter {
+    margin-top: 0;
+    position: relative;
+    background: url('../img/bgMelt.svg');
+    background-repeat: repeat-x;
+    background-size: 800px 171px;
+    min-height: 171px;
+}
+
+div.melter.melts {
+    margin-top: 400px;
+    transition: margin-top 0.3s ease-out;
+}
+
 .row {
     min-width: 100%;
 }
 
 .hidden {
     display: none !important;
+}
+
+.navbar-brand {
+    cursor: pointer;
+}
+
+h3.home-title {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+div.img-main img {
+    margin: auto;
+    margin-top: 2.5rem;
+    display: block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 input[type=number],
@@ -151,17 +205,22 @@ div.selected-wizard-right {
 div.selected-wizard-left {
     padding: 1.5rem;
     float: left;
+    background-color: #ffd45a;
 }
 
 div.selected-wizard-right {
     float: right;
     position: relative;
-    top: -125px;
+    top: -55px;
 }
 
 .icon.external-link {
     height: 20px;
     margin-left: 0.75rem;
+}
+
+.btn-selected-compare {
+    border: 1px solid black;
 }
 
 .icon.icon-search {
@@ -348,12 +407,12 @@ p.trait-name {
     display: table;
     transition: opacity .3s ease;
 }
-  
+
 .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
 }
-  
+
 .modal-container {
     width: auto;
     max-width: 90vw;
@@ -367,15 +426,15 @@ p.trait-name {
     overflow-y: auto;
     height: 100%;
 }
-  
+
 .modal-header h3 {
     margin-top: 0;
 }
-  
+
 .modal-body {
     margin: 20px 0;
 }
-  
+
 .modal-default-button {
     float: right;
 }
@@ -385,7 +444,7 @@ div.duel-review-vs {
     margin: auto;
     padding: 1.75rem;
 }
-  
+
 /*
 * The following styles are auto-applied to elements with
 * transition="modal" when their visibility is toggled
@@ -394,15 +453,15 @@ div.duel-review-vs {
 * You can easily play with the modal transition by editing
 * these styles.
 */
-  
+
 .modal-enter {
     opacity: 0;
 }
-  
+
 .modal-leave-active {
     opacity: 0;
 }
-  
+
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
@@ -425,12 +484,13 @@ div.duel-review-vs {
 }
 .vs-sidebar.vs-sidebar-primary.vs-sidebar-position-right {
     padding: 0.5rem;
+    right: 0;
 }
 
 .chat-icon.sidebar-ctrlr {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 1.7rem;
+    right: 6rem;
     cursor: pointer;
 }
 
@@ -446,7 +506,7 @@ div.menu.login-items {
     display: none;
 }
 
-.sidebar-wrapper, 
+.sidebar-wrapper,
 .sidebar-wrapper h5 {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -477,4 +537,118 @@ div.duel-requests {
 
 .pending-type-label {
     margin-left: 1rem;
+}
+
+
+
+
+
+.all-wizards .card {
+    border: 1px solid #000;
+    box-shadow: 0.3rem 0.3rem 0 0 #000;
+    border-radius: 0px !important;
+}
+
+.all-wizards .card:hover {
+    cursor: pointer;
+}
+
+.all-wizards .card-img-top {
+    position: relative;
+    height: 150px;
+    width: 150px;
+    background-color: #fff;
+    background-size: 475px;
+    background-repeat: no-repeat;
+    background-position: center -100px;
+    border-radius: 50%;
+    border-top: 3px solid #000;
+    border-bottom: 3px solid #FFC033;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+.all-wizards .card-img-overlay {
+    background-color: #B79AFC;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    left: 105px;
+    text-align: center;
+    padding: 3px;
+}
+
+.all-wizards .card-img-overlay .icon {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    filter: invert(1);
+}
+
+.all-wizards .card {
+    background-color: #E0DBFC;
+}
+.all-wizards .affinity-water {
+    background-color: #C2F2F2;
+}
+
+.all-wizards .affinity-fire {
+    background-color: #FFE6EF;
+}
+
+.all-wizards .affinity-wind {
+    background-color: #D2FFB5;
+}
+
+.all-wizards .affinity-water .card-img-overlay {
+    background-color: #35D1E7;
+}
+
+.all-wizards .affinity-fire .card-img-overlay {
+    background-color: #FF809B;
+}
+
+.all-wizards .affinity-wind .card-img-overlay {
+    background-color: #8BEA63;
+}
+
+.all-wizards .card-body {
+    text-align: center;
+    background-color: #FFF032;
+    border-top: 2px solid #FFF;
+    margin-top: -75px;
+    padding-top: 90px;
+}
+
+.all-wizards dl {
+    font-size: .8em;
+}
+
+.all-wizards dt {
+    text-align: left;
+}
+
+.all-wizards dd {
+    text-align: right;
+}
+
+.navbar {
+    background-color: #FFF032;
+    background-image: url(/img/gridPatternWhite.svg);
+    background-position: top -10px center;
+    background-size: 2rem auto;
+    border-bottom: 1px solid black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-repeat: repeat;
+}
+.subnav {
+    background-color: #FFFF85;
+    border-bottom: 1px solid #000;
+}
+.subnav a:hover {
+    background-color: #FFEF57;
+    text-decoration: none !important;
+}
+.subnav a.active, .subnav a.active:hover {
+    background-color: #FFE133;
 }

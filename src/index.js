@@ -1,12 +1,14 @@
 'use strict';
 
 require('./duels/duels.js');
+require('./markets/markets.js');
 
 // Navigation states
 const HOME_STATE = -1;
 const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
+const PREDICTION_MARKETS = 3;
 
 // Wizards sorting states
 const SORTED_BY_POWER_LEVEL_STRONGEST = 0;
@@ -31,7 +33,7 @@ const TOTAL_WIZARDS = 4882;
 const MAINNET = 0;
 const RINKEBY = 1;
 
-// Config 
+// Config
 const config = require('./config');
 const firebaseConfig = config.firebaseConfig;
 
@@ -79,7 +81,8 @@ const FIREBASE = require('./firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
-if (location.href.indexOf('duels') == -1) {
+if (location.href.indexOf('duels') == -1
+    && location.href.indexOf('markets') == -1) {
     let vm = new Vue({
         el: '#cheese-of-insight',
         data: () => ({
@@ -87,6 +90,7 @@ if (location.href.indexOf('duels') == -1) {
             VIEW_ALL_WIZARDS: VIEW_ALL_WIZARDS,
             VIEW_SELECTED_WIZARD: VIEW_SELECTED_WIZARD,
             PREDICT_MATCHES: PREDICT_MATCHES,
+            PREDICTION_MARKETS: PREDICTION_MARKETS,
             HOME_STATE: HOME_STATE,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
             SORTED_BY_POWER_LEVEL_WEAKEST: SORTED_BY_POWER_LEVEL_WEAKEST,
@@ -137,7 +141,7 @@ if (location.href.indexOf('duels') == -1) {
             userIsLoggedIn: false,
             isLoading: false,
             currentWizardsPage: 1,
-            wizardsPageSize: 10,
+            wizardsPageSize: 12,
             totalWizardsPages: null,
             totalAllWizardsPages: null,
             wizards: null,
@@ -200,7 +204,8 @@ if (location.href.indexOf('duels') == -1) {
             showSearch: false,
             showMyWizardTraits: false,
             showOpponentTraits: false,
-            manualCurrentWizardSelection: false
+            manualCurrentWizardSelection: false,
+            isBgAnimated: false
         }),
         firebase: {
             usersOnline: usersOnline
@@ -219,11 +224,11 @@ if (location.href.indexOf('duels') == -1) {
                     this.wallets.rinkeby = false;
                     this.wallets.mainnet = accounts[0];
                     console.log('Accounts =>', this.wallets);
-                    
+
                     // ERC721 Instances
                     this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
                     console.log('ERC721 Contract', this.contracts.mainnet.wizards);
-                    this.fetchUserWizards();                
+                    this.fetchUserWizards();
                 }
             } else {
                 this.isWeb3Enabled = false;
@@ -239,7 +244,11 @@ if (location.href.indexOf('duels') == -1) {
                     await this.setupChat(user);
                 }
             });
-            
+
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+            }, 0);
         },
         methods: {
             // Chat / Login
@@ -360,8 +369,8 @@ if (location.href.indexOf('duels') == -1) {
                             // Parse room name
                             let roomArgs = invite.toRoomName.split('-');
                             let challengingOwner = roomArgs[0];
-                            let challengingWizardId = roomArgs[2];
-                            let challengedWizardId = roomArgs[3];
+                            let challengingWizardId = roomArgs[3];
+                            let challengedWizardId = roomArgs[2];
                             // Create duel configuration object
                             this.chatDuelChallengeConfig = {
                                 action: "challenge-request",
@@ -381,7 +390,7 @@ if (location.href.indexOf('duels') == -1) {
                             this.pendingDuelRequests.push(this.chatDuelChallengeConfig);
                             //console.log('Pending Duels =>', this.pendingDuelRequests);
                         }
-                        
+
                     }
                 });
                 // Challenge accepted / declined
@@ -489,7 +498,7 @@ if (location.href.indexOf('duels') == -1) {
                 } else {
                     wizardId = parseInt(wizardId);
                 }
-                
+
                 if (isOpponent) {
                     // Check if challenged has been issued to yourself
                     if (this.userOwnsWizards) {
@@ -531,7 +540,7 @@ if (location.href.indexOf('duels') == -1) {
                 } else {
                     wizardId = parseInt(wizardId);
                 }
-                
+
                 if (isOpponent) {
                     // Check if challenged has been issued to yourself
                     if (this.userOwnsWizards) {
@@ -606,7 +615,7 @@ if (location.href.indexOf('duels') == -1) {
                 if (this.activeDuelSimulation) {
                     // Notify user of incoming challenge
                     this.notification.title = 'Incoming challenge!';
-                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation. Open chat to accept.';
+                    this.notification.text = invite.fromUserName + ' has challenged you to a duel simulation but you have already accepted another unresolved challenge.';
                     this.notification.color = 'warning';
                     this.notification.counterInvalid = true;
                     this.notification.type = 'alert';
@@ -680,18 +689,44 @@ if (location.href.indexOf('duels') == -1) {
                 // Handle state change
                 switch(state) {
                     // Show all Wizards
+                    case HOME_STATE:
+                        this.isBgAnimated = false;
+                        this.navigation.state = HOME_STATE;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
+                        break;
                     case VIEW_ALL_WIZARDS:
                         console.log('Wizards browsing mode enabled');
+                        this.isBgAnimated = false;
                         this.navigation.state = VIEW_ALL_WIZARDS;
-                        this.getAllWizards();                    
+                        this.getAllWizards();
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
                         break;
                     case VIEW_SELECTED_WIZARD:
+                        this.isBgAnimated = false;
                         this.navigation.state = VIEW_SELECTED_WIZARD;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
                         break;
                     // Show match prediction
                     case PREDICT_MATCHES:
+                        this.isBgAnimated = false;
                         console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
+                        break;
+                    case PREDICTION_MARKETS:
+                        window.location.href = "/markets";
                         break;
                     default:
                         return;
@@ -704,6 +739,9 @@ if (location.href.indexOf('duels') == -1) {
                 // as changing routes will clear the chat
                 let duel = JSON.stringify(this.activeDuelSimulation);
                 sessionStorage.setItem('duel', duel);
+                sessionStorage.setItem('mode', 'challenge');
+                sessionStorage.setItem('ourWizardId', this.currentWizard.selectedId);
+                sessionStorage.setItem('opposingWizardId', this.currentOpposingWizard.selectedId);
                 // Hard navigate to duel room
                 return window.location.href = '/duels';
             },
@@ -733,7 +771,7 @@ if (location.href.indexOf('duels') == -1) {
                         this.wizards = this.wizards.reverse();
                         this.wizardsSortedBy = SORTED_BY_AFFINITY_GROUPINGS;
                         break;
-                    
+
                 }
             },
             getPrettyPowerLevel: function (powerLevel) {
@@ -748,7 +786,32 @@ if (location.href.indexOf('duels') == -1) {
                 } else if (isNaN(rarity)) {
                     return '';
                 }
-                return Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                let rarityValue = Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                // Don't show 0% rarity, rare stats are important!
+                if (rarityValue > 0) {
+                    return rarityValue;
+                } else {
+                    // Fix decimal length to the first non-zero value
+                    rarityValue = 100 * (parseInt(rarity) / TOTAL_WIZARDS);
+                    // Make a string from rarity stat
+                    let nonZeroWorker = rarityValue.toString();
+                    // Split the string at the decimal place
+                    nonZeroWorker = nonZeroWorker.split('.');
+                    // Take only the fractional segment of the result
+                    nonZeroWorker = nonZeroWorker[1];
+                    // Get substring index of first non-zero char
+                    let nonZeroIndex;
+                    for (let i = 1; i < nonZeroWorker.length; i++) {
+                        if (nonZeroWorker.charAt(i) == 0) {
+                            continue
+                        } else {
+                            nonZeroIndex = i + 1;
+                            break;
+                        }
+                    }
+                    // Return
+                    return rarityValue.toFixed(nonZeroIndex);
+                }
             },
             getIconUrlForAffinity: function(affinity) {
                 let index = affinity;
@@ -764,6 +827,9 @@ if (location.href.indexOf('duels') == -1) {
                 const name = this.affinities[index].toLowerCase();
 
                 return "/img/icons/" + name + ".svg";
+            },
+            getWizardImageUrl: function(wizardId) {
+                return this.api.getWizardImageUrlById(wizardId);
             },
             // Getters
             getAllWizards: async function () {
@@ -853,8 +919,8 @@ if (location.href.indexOf('duels') == -1) {
 
                         console.log('Wizards of owner =>', this.selectedWizardsByAddress);
                     }
-                    
-                    
+
+
                 }
             },
             // View worker
@@ -900,7 +966,7 @@ if (location.href.indexOf('duels') == -1) {
                 // Add duels
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
-                
+
                 // Disable loading
                 this.isLoading = false;
                 console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
@@ -983,7 +1049,7 @@ if (location.href.indexOf('duels') == -1) {
                 // Retain model properties
                 currentOpposingWizard.selectedId = opposingWizardId;
                 this.currentWizard.selectedId = wizardId;
-                
+
                 // Add the Wizards' image urls and metadata
                 this.currentWizard.image = (this.currentWizard.hasOwnProperty('image')) ? this.currentWizard.image : this.api.getWizardImageUrlById(wizardId);
                 this.currentWizard = this.wizardUtils.getWizardMetadata(this.currentWizard);
@@ -1031,7 +1097,7 @@ if (location.href.indexOf('duels') == -1) {
             wizardsPage: function () {
                 let wizards,
                     filter;
-                
+
                 // Returns Wizards filter => owned by current DApp user
                 if (this.wizardsMineFilter) {
                     if (this.userOwnsWizards) {

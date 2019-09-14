@@ -1,0 +1,51 @@
+.markets.wrapper {
+    margin-top: 1.5rem;
+}
+
+.card {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+
+div.tags,
+div.category {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+span.tag,
+span.category {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 4px;
+}
+
+span.category {
+    background-color:#ff809b;
+    color: #ffffff;
+}
+
+span.tag {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+div.wrapper.mount-wrapper.exit-coi {
+    cursor: wait;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+div.wrapper.mount-wrapper.exit-coi .jumbotron {
+    background-color: #ffffff;
+}

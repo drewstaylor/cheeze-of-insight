@@ -55,7 +55,8 @@ export default class Store {
 
   static getDesiredNetworkId() {
     if (process.env.NETWORK_ID) return process.env.NETWORK_ID;
-    return "42";
+    // Default to Mainnet
+    return "1";
   }
 
   static getEthereumHttp() {
@@ -205,6 +206,7 @@ export default class Store {
     } = {
       1: "0x48b04d2a05b6b604d8d5223fd1984f191ded51af",
       42: "0x4ca9baaffcc2692db2b33ab2ab2edda86c2c4a4d",
+      //4: "0x903e028cb6752c9079bcf1b6bfae182d873b4b23"
       //0xe0fb73227c37051611c3edc091d6858f2a230ffe
     };
     return addressesByNetworkId[Store.getDesiredNetworkId()];
