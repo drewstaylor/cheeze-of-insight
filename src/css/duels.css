@@ -1,5 +1,13 @@
+.main-match-container {
+	border: 1px solid black;
+	padding: 2px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
 .forecast-panel {
-	border: 1px solid gray;
 	padding: 2px;
 	margin-top: 10px;
 }

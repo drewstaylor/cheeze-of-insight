@@ -31,27 +31,40 @@
     <div id="duels" class="container container-fluid main-content">
         <a href="/">Back</a>
 
-        <div class="forecast-panel">
-            <h3>Forecast your spells!</h3>
+        <div class="main-match-container">
+            <div class="forecast-panel">
+                <h3>Forecast your Spells!</h3>
 
-            <round-picker label="Turn 1" v-bind:value.sync="ourMoves[0]"></round-picker>
-            <round-picker label="Turn 2" v-bind:value.sync="ourMoves[1]"></round-picker>
-            <round-picker label="Turn 3" v-bind:value.sync="ourMoves[2]"></round-picker>
-            <round-picker label="Turn 4" v-bind:value.sync="ourMoves[3]"></round-picker>
-            <round-picker label="Turn 5" v-bind:value.sync="ourMoves[4]"></round-picker>
+                <round-picker label="Turn 1" v-bind:value.sync="ourMoves[0]"></round-picker>
+                <round-picker label="Turn 2" v-bind:value.sync="ourMoves[1]"></round-picker>
+                <round-picker label="Turn 3" v-bind:value.sync="ourMoves[2]"></round-picker>
+                <round-picker label="Turn 4" v-bind:value.sync="ourMoves[3]"></round-picker>
+                <round-picker label="Turn 5" v-bind:value.sync="ourMoves[4]"></round-picker>
 
-            <div class="forecast-submit-button">
-                <button
-                    @click="submitTurn();"
-                    :disabled="!(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
+                <div v-if="mode != 'offline'" class="forecast-submit-button">
+                    <button
+                        @click="submitTurn();"
+                        :disabled="!(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
 
-                    Submit
-                </button>
+                        Submit
+                    </button>
+                </div>
+            </div>
+
+            <div v-if="mode == 'offline'" class="forecast-panel">
+                <h3>Simulate Opponent's Forecast!</h3>
+
+                <round-picker label="Turn 1" v-bind:value.sync="opponentMoves[0]"></round-picker>
+                <round-picker label="Turn 2" v-bind:value.sync="opponentMoves[1]"></round-picker>
+                <round-picker label="Turn 3" v-bind:value.sync="opponentMoves[2]"></round-picker>
+                <round-picker label="Turn 4" v-bind:value.sync="opponentMoves[3]"></round-picker>
+                <round-picker label="Turn 5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+
             </div>
         </div>
 
 
-        <div class="forecast-panel">
+        <div v-if="mode != 'offline'" class="forecast-panel">
             <div v-if="opponentMoves">
                 <span>Opponent's moves have been cast.</span>
                 <button @click="clearOpponentMoves();">Clear opponent's forecast</button>
@@ -77,8 +90,8 @@
             <span>{{ label }}</span>
             <select v-model="value" v-on:change="$emit('update:value', value);">
                 <option v-bind:value="2">Fire</option>
-                <option v-bind:value="3">Wind</option>
-                <option v-bind:value="4">Water</option>
+                <option v-bind:value="3">Water</option>
+                <option v-bind:value="4">Wind</option>
             </select>
         </div>
     </script>

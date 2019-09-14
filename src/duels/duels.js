@@ -151,8 +151,8 @@ if (location.href.indexOf('duels') !== -1) {
             ourWizardId: null,
             opposingWizardId: null,
             duelResults: null,
-            ourMoves: randomTurns(),
-            opponentMoves: null,
+            ourMoves: [],
+            opponentMoves: [],
             firebaseDuels: [],
         }),
         firebase: {
@@ -206,6 +206,12 @@ if (location.href.indexOf('duels') !== -1) {
         watch: {
             async firebaseDuels(value) {
 
+                // TODO: we should not even connec to firebase in (mode == "offline")
+                if (this.mode === "offline") {
+                    console.log("Ignoring firebaseDuels update");
+                    return;
+                }
+
                 console.log("firebaseDuels change => ", value);
 
                 // 'duel-simulations' is an array of all active duels; we need to loop through each to find ours
@@ -237,19 +243,16 @@ if (location.href.indexOf('duels') !== -1) {
                 }
 
                 if (! this.duelResults && this.opponentMoves && this.ourMoves) {
-                    const contractResults = await this.resolveDuelSimulation(this.ourMoves, this.opponentMoves);
-                    const power = Math.floor(parseInt(contractResults[0]) / 1000000000000);
-                    const score = parseInt(contractResults[1]);
-                    const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
-
-                    this.duelResults = {
-                        power: power,
-                        score: score,
-                        outcome: outcome,
-                    };
-
-                    console.log("Compiled duel results:", this.duelResults);
+                    await this.processDuelSimulation(this.ourMoves, this.opponentMoves);
                 }
+            },
+            ourMoves(value) {
+                console.log("our moves updated => ", value);
+                this.processOfflineSimulation(this.ourMoves, this.opponentMoves);
+            },
+            opponentMoves(value) {
+                console.log("opponent moves updated => ", value);
+                this.processOfflineSimulation(this.ourMoves, this.opponentMoves);
             },
         },
         methods: {
@@ -263,7 +266,7 @@ if (location.href.indexOf('duels') !== -1) {
              * $ node TestDuel.js
              * Resolved Duel => Result { '0': '2', '1': '100', __length__: 2 }
              */
-            resolveDuelSimulation: async function(ourMoves, opponentMoves) {
+            processDuelSimulation: async function(ourMoves, opponentMoves) {
                 // Only call, when valid args are present
                 if (!ourMoves || !opponentMoves || !this.duel) {
                     return;
@@ -286,8 +289,45 @@ if (location.href.indexOf('duels') !== -1) {
                 // Debug
                 console.log('Resolved Duel =>', result);
 
-                // Return Duel result
-                return result;
+                const power = Math.floor(parseInt(result[0]) / 1000000000000);
+                const score = parseInt(result[1]);
+                const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
+
+                this.duelResults = {
+                    power: power,
+                    score: score,
+                    outcome: outcome,
+                };
+
+                console.log("Compiled duel results:", this.duelResults);
+            },
+
+            /**
+             * calls processDuelSimulation() if all moves (ours and opponent's) are
+             * selected. Only works in (mode == 'offline').
+             */
+            processOfflineSimulation: async function(ourMoves, opponentMoves) {
+                if (this.mode !== 'offline') {
+                    return;
+                }
+
+                const isValid = (move) => {
+                    return (move > 1 && move < 5);
+                };
+                if (isValid(ourMoves[0])
+                    && isValid(ourMoves[1])
+                    && isValid(ourMoves[2])
+                    && isValid(ourMoves[3])
+                    && isValid(ourMoves[4])
+
+                    && isValid(opponentMoves[0])
+                    && isValid(opponentMoves[1])
+                    && isValid(opponentMoves[2])
+                    && isValid(opponentMoves[3])
+                    && isValid(opponentMoves[4])) {
+
+                    await this.processDuelSimulation(ourMoves, opponentMoves);
+                }
             },
 
             /**
