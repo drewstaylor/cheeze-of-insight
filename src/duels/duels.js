@@ -1,3 +1,26 @@
+/**
+ * `duels.js` contains functionality to display and interact with a duel simulation. The simulation
+ * can be carried out in different ways depending on how it is "invoked," as described below.
+ *
+ * Modes - there are currently two modes of operation. One is a `challenge` duel where two live
+ * participants duel each other. `firebase` is used as a means of communicating wizard `forecasts`.
+ * In this mode, each player submits their `forecast` and then waits for their opponent's `forecast`
+ * from `firebase`, at which point the duel results are displayed.
+ *
+ * The other mode is an `offline` duel where a single user has selected two arbitrary wizards and
+ * picks one or both of their moves. This allows the user to simulate different outcomes and learn
+ * about both the dueling process and the different outcomes of the match.
+ *
+ * These modes are invoked by passing certain data to `duels.js` by means of `sessionStorage`. This
+ * includes:
+ *
+ * @param {string} mode should be either "challenge" or "offline"
+ * @param {string} ourWizardId should be the wizard ID of the wizard associated with the user
+ * @param {string} opposingWizardId should be the wizard ID of the wizard to duel against
+ * @param {object} duel is a config object that contains info about both wizards and the
+ *                 duel setup.
+ */
+
 'use strict';
 
 // TODO: clean up / consolidate with similar logic below
@@ -12,7 +35,7 @@ const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
 
 /**
- * This information can be used to  manually set sessionData via console for testing Duels 
+ * This information can be used to  manually set sessionStorage via console for testing Duels 
  * without requiring multiple Twitter accounts or multiple Web3 wallets (each having wizards)
  * 
  * Console commands:
@@ -34,6 +57,46 @@ const randomTurns = () => {
         randomTurn(),
     ];
 }
+
+/**
+ * Reads in variables from sessionStorage, optionally deleting them.
+ *
+ * See the documentation at the top of this file (duels.js) for more info on
+ * what data is stored in sessionStorage.
+ *
+ * This also validates the input from sessionStorage, throwing an instance of
+ * Error on invalid input.
+ *
+ * @param {bool} clear - determines whether or not the sessionStorage is cleared
+ *               after reading
+ * @return {object} an object with the sessionStorage variables filled out
+ */
+const readSessionData = function(clear = false) {
+
+    const mode = sessionStorage.getItem("mode");
+    const ourWizardId = sessionStorage.getItem("ourWizardId");
+    const opposingWizardId = sessionStorage.getItem("opposingWizardId");
+    const duel = JSON.parse(sessionStorage.getItem('duel'));
+
+    if (! mode) throw new Error("duels.js requires 'mode' in sessionStorage");
+    if (! ourWizardId) throw new Error("duels.js requires 'ourWizardId' in sessionStorage");
+    if (! opposingWizardId) throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
+    if (! duel) throw new Error("duels.js requires 'duel' in sessionStorage");
+
+    if (clear) {
+        sessionStorage.removeItem("mode");
+        sessionStorage.removeItem("ourWizardId");
+        sessionStorage.removeItem("opposingWizardId");
+        sessionStorage.removeItem("duel");
+    }
+
+    return {
+        mode,
+        ourWizardId,
+        opposingWizardId,
+        duel,
+    };
+};
 
 Vue.component('round-picker', {
     props: ['label'],
@@ -83,8 +146,10 @@ if (location.href.indexOf('duels') !== -1) {
             },
             firebase: FIREBASE,
             // Duel
+            mode: null,
             duel: null,
             ourWizardId: null,
+            opposingWizardId: null,
             duelResults: null,
             ourMoves: randomTurns(),
             opponentMoves: null,
@@ -95,6 +160,26 @@ if (location.href.indexOf('duels') !== -1) {
             firebaseDuels: duelsRef,
         },
         mounted: async function () {
+
+            const duelParams = readSessionData(true);
+            console.log("duelParams => ", duelParams);
+
+            this.mode = duelParams.mode;
+            this.ourWizardId = duelParams.ourWizardId;
+            this.opposingWizardId = duelParams.opposingWizardId;
+            this.duel = duelParams.duel;
+
+            // determine which wizard is which
+            if (this.duel.wizardChallenged.id === this.ourWizardId) {
+                console.log("We're the challenged wizard");
+                this.opposingWizard = this.duel.wizardChallenging;
+                this.ourWizard = this.duel.wizardChallenged;
+            } else {
+                console.log("We're the challenging wizard");
+                this.opposingWizard = this.duel.wizardChallenged;
+                this.ourWizard = this.duel.wizardChallenging;
+            }
+
             // Web3 Instances
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
             this.web3Providers.rinkeby = await this.Provider.getWssWeb3Rinkeby();
@@ -116,40 +201,6 @@ if (location.href.indexOf('duels') !== -1) {
                 }
             } else {
                 this.isWeb3Enabled = false;
-            }
-
-            const ourWizardId = sessionStorage.getItem('ourWizardId');
-            console.log('ourWizardId', ourWizardId);
-            if (ourWizardId) {
-                this.ourWizardId = ourWizardId;
-            } else {
-                console.log("WARNING: no 'ourWizardId' in sessionStorage!");
-            }
-
-            // Mount duel configuration
-            let duelConfig = JSON.parse(sessionStorage.getItem('duel'));
-            console.log('duelConfig', duelConfig);
-            if (duelConfig) {
-                this.duel = duelConfig;
-
-                // determine opposing wizard's id
-                if (this.duel.wizardChallenged.id === this.ourWizardId) {
-                    console.log("We're the challenged wizard");
-                    this.opposingWizard = this.duel.wizardChallenging;
-                    this.opposingWizardId = this.duel.wizardChallenging.id;
-
-                    this.ourWizard = this.duel.wizardChallenged;
-                    // this.ourWizardId = this.duel.wizardChallenged.id;
-                } else {
-                    console.log("We're the challenging wizard");
-                    this.opposingWizard = this.duel.wizardChallenged;
-                    this.opposingWizardId = this.duel.wizardChallenged.id;
-
-                    this.ourWizard = this.duel.wizardChallenging;
-                    // this.ourWizardId = this.duel.wizardChallenging.id;
-                }
-            } else {
-                console.log("WARNING: no 'duel' in sessionStorage!");
             }
         },
         watch: {
