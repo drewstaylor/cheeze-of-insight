@@ -693,7 +693,7 @@ img.footer.footer-bg {
 
 .footer-descr {
     position: absolute;
-    bottom: -17px;
+    bottom: 0;
     width: 100%;
     background-color: #FFF032;
     background-image: url('../img/gridPatternWhite.svg');
