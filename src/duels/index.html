@@ -53,16 +53,18 @@
                 </div>
             </div>
 
-            <div v-if="mode == 'offline'" class="forecast-panel">
-                <h3>Simulate Opponent's Forecast!</h3>
+            <div class="forecast-panel">
+                <h3>Opponent</h3>
 
                 <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card>
 
-                <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
-                <round-picker label="2" v-bind:value.sync="opponentMoves[1]"></round-picker>
-                <round-picker label="3" v-bind:value.sync="opponentMoves[2]"></round-picker>
-                <round-picker label="4" v-bind:value.sync="opponentMoves[3]"></round-picker>
-                <round-picker label="5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+                <div v-if="mode == 'offline'">
+                    <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
+                    <round-picker label="2" v-bind:value.sync="opponentMoves[1]"></round-picker>
+                    <round-picker label="3" v-bind:value.sync="opponentMoves[2]"></round-picker>
+                    <round-picker label="4" v-bind:value.sync="opponentMoves[3]"></round-picker>
+                    <round-picker label="5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+                </div>
 
             </div>
         </div>
