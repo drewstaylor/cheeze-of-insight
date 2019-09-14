@@ -37,11 +37,11 @@
 
                 <wizard-card v-if="ourWizard" :wizard="ourWizard" :api="api"></wizard-card>
 
-                <round-picker label="Turn 1" v-bind:value.sync="ourMoves[0]"></round-picker>
-                <round-picker label="Turn 2" v-bind:value.sync="ourMoves[1]"></round-picker>
-                <round-picker label="Turn 3" v-bind:value.sync="ourMoves[2]"></round-picker>
-                <round-picker label="Turn 4" v-bind:value.sync="ourMoves[3]"></round-picker>
-                <round-picker label="Turn 5" v-bind:value.sync="ourMoves[4]"></round-picker>
+                <round-picker label="1" v-bind:value.sync="ourMoves[0]"></round-picker>
+                <round-picker label="2" v-bind:value.sync="ourMoves[1]"></round-picker>
+                <round-picker label="3" v-bind:value.sync="ourMoves[2]"></round-picker>
+                <round-picker label="4" v-bind:value.sync="ourMoves[3]"></round-picker>
+                <round-picker label="5" v-bind:value.sync="ourMoves[4]"></round-picker>
 
                 <div v-if="mode != 'offline'" class="forecast-submit-button">
                     <button
@@ -58,11 +58,11 @@
 
                 <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card>
 
-                <round-picker label="Turn 1" v-bind:value.sync="opponentMoves[0]"></round-picker>
-                <round-picker label="Turn 2" v-bind:value.sync="opponentMoves[1]"></round-picker>
-                <round-picker label="Turn 3" v-bind:value.sync="opponentMoves[2]"></round-picker>
-                <round-picker label="Turn 4" v-bind:value.sync="opponentMoves[3]"></round-picker>
-                <round-picker label="Turn 5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+                <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
+                <round-picker label="2" v-bind:value.sync="opponentMoves[1]"></round-picker>
+                <round-picker label="3" v-bind:value.sync="opponentMoves[2]"></round-picker>
+                <round-picker label="4" v-bind:value.sync="opponentMoves[3]"></round-picker>
+                <round-picker label="5" v-bind:value.sync="opponentMoves[4]"></round-picker>
 
             </div>
         </div>
@@ -90,13 +90,26 @@
 
     <!-- Template for round picking -->
     <script type="text/x-template" id="round-picker-template">
-        <div>
+        <div class="affinityPicker">
             <span>{{ label }}</span>
-            <select v-model="value" v-on:change="$emit('update:value', value);">
-                <option v-bind:value="2">Fire</option>
-                <option v-bind:value="3">Water</option>
-                <option v-bind:value="4">Wind</option>
-            </select>
+            <button>
+                <img
+                    :class="'icon affinityIcon ' + (value == 2 ? 'affinitySelected' : '')"
+                    src="/img/icons/fire.svg"
+                    @click="value=2; $emit('update:value', 2);">
+            </button>
+            <button>
+                <img
+                    :class="'icon affinityIcon ' + (value == 3 ? 'affinitySelected' : '')"
+                    src="/img/icons/water.svg"
+                    @click="value=3; $emit('update:value', 3);">
+            </button>
+            <button>
+                <img
+                    :class="'icon affinityIcon ' + (value == 4 ? 'affinitySelected' : '')"
+                    src="/img/icons/wind.svg"
+                    @click="value=4; $emit('update:value', 4);">
+            </button>
         </div>
     </script>
 
