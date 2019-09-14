@@ -14,12 +14,25 @@ const firebaseDb = firebaseApp.database();
 const login = async function () {
     // Log the user in via Twitter
     let provider = new firebase.auth.TwitterAuthProvider();
-    let response;
+    let response = null;
+
+    // Online persistence
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(function(error) {
+        console.log('Error authenticating user =>', error);
+        response = false;
+    });
+
+    // Create login
     await firebase.auth().signInWithPopup(provider).catch(function(error) {
         console.log('Error authenticating user =>', error);
         response = false;
     });
-    response = true;
+
+    // Response
+    if (response !== false) {
+        response = true;
+    }
+    
     return response;
 };
 
@@ -76,7 +89,8 @@ const getChat = async function (user, wizards = [], wallet = null) {
     let chat = new Firechat(chatRef);
 
     // Set the Firechat user
-    chat.setUser(user.uid, user.displayName, (user) => {
+    let userRef;
+    chat.setUser(user.uid, user.displayName, async (user) => {
         //console.log('New chat User =>', user);
         chat.userData = user;
         chat.userData.wizards = wizards;
@@ -85,21 +99,32 @@ const getChat = async function (user, wizards = [], wallet = null) {
         //chat.resumeSession();
 
         // Update Firebase with wallet address
-        let userRef = firebase.database().ref('firechat-general/user-names-online/' + String(user.name));
-        userRef.update({
+        let userName = user.name.toLowerCase();
+        let userRef = firebaseDb.ref('firechat-general/user-names-online/' + userName);
+        
+        if (!wallet || !wizards) {
+            return;
+        }
+
+        await userRef.update({
             wallet: wallet,
             wizards: wizards,
-            id: user.id
+            id: user.id,
+            isOnline: true
         });
+
+        let onlineRef = firebaseDb.ref('firechat-general/user-names-online/' + userName + "/isOnline");
+        onlineRef.onDisconnect().set(false);
+        //onlineRef.onDisconnect().cancel()*/
     });
 
     // Listeners for chat events
-    chat.on('room-invite', (invite) => {
+    /*chat.on('room-invite', (invite) => {
         console.log('invite', invite);
     });
     chat.on('room-invite-response', (inviteResponse) => {
         console.log('inviteResponse', inviteResponse);
-    });
+    });*/
     chat.on('room-enter', (roomEntered) => {
         console.log('roomEntered', roomEntered);
     });

@@ -30,7 +30,47 @@
     <div id="cheese-of-insight" class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
-            <!-- Notifications Component (top right) -->
+            <!-- Notifications - Alert (top ribbon) -->
+            <div class="row alert-ribbon" v-if="notification.type">
+                <!-- Alert - Primary -->
+                <div class="alert alert-primary" role="alert" v-if="notification.type == 'alert' && notification.color == 'primary'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Success -->
+                <div class="alert alert-success" role="alert" v-if="notification.type == 'alert' && notification.color == 'success'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Warning -->
+                <div class="alert alert-warning" role="alert" v-if="notification.type == 'alert' && notification.color == 'warning'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Danger -->
+                <div class="alert alert-danger" role="alert" v-if="notification.type == 'alert' && notification.color == 'danger'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="retireAlert()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notifications - Pop-Up (top right) -->
             <notification>
                 <vs-button id="notifier" slot="notification" @click="$vs.notify(notification)" type="flat"></vs-button>
             </notification>
@@ -38,6 +78,9 @@
             <!-- Chat Component (Sidebar) -->
             <sidebar>
                 <div class="menu login-items" slot="menu-items">
+                    <span class="notification-count" v-if="notificationsCount > 0">
+                        <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
+                    </span>
                     <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
                     <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
                 </div>
@@ -51,7 +94,7 @@
                     </div>
                     <div class="wrapper sidebar-wrapper avatar" v-if="isWeb3Enabled && tokens.mainnet.wizards.length">
                         <!-- Wizard Avatar -->
-                        <vs-avatar  size="70px" :src="tokens.mainnet.wizards[0].image"/>
+                        <vs-avatar size="70px" :src="tokens.mainnet.wizards[0].image"/>
                     </div>
                     <div class="wrapper sidebar-wrapper" v-if="isWeb3Enabled">
                         <!-- Twitter Username -->
@@ -78,11 +121,11 @@
                         <div v-if="usersOnline && chat">
                             <div v-for="(user, index) in usersOnline" @click.prevent.stop="contextMenuHandler($event, user)" v-if="chat.userData">
                                 <!-- Yourself / Current User -->
-                                <div class="chat summoner-row self" v-if="user['.key'] == chat.userData.name">
+                                <div class="chat summoner-row self" v-if="(user['.key'] == chat.userData.name || user['.key'].toLowerCase() == chat.userData.name.toLowerCase()) && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }} <span class="you">(you)</span></a>
                                 </div>
                                 <!-- Other Users -->
-                                <div class="chat summoner-row opponent" v-if="user['.key'] !== chat.userData.name && user.wallet">
+                                <div class="chat summoner-row opponent" v-if="(user['.key'] !== chat.userData.name && user['.key'].toLowerCase() !== chat.userData.name.toLowerCase()) && user.wallet && user.isOnline">
                                     <a class="summoner-link">{{ index + 1 }}) {{ user['.key'] }}</a>
                                 </div>
                             </div>
@@ -100,13 +143,115 @@
                     </div>
 
                     <!-- Active Chat Window -->
-                    <div class="select-duel-partner"></div>
+                    <div class="duel-requests pending" v-if="pendingDuelRequests.length">
+                        
+                        <h5 class="pending-duel-requests title">Pending Duel Simulations:</h5>
+
+                        <!-- List Pending Duels -->
+                        <pending-duel class="pending-duel-card" v-for="(pending, index) in pendingDuelRequests" v-bind:key="pending.roomId">
+
+                            <div slot="header">
+                                <h5>You've been challenged!</h5>
+                            </div>
+                            <div slot="body">
+                                <vs-row>
+                                    <!-- Challenger Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="pending.wizardChallenging">
+                                        <vs-row class="pending-type-label">Challenger:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-opponnent" size="35px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</vs-row>
+                                    </vs-col>
+                                    
+                                    <!-- VS. -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                                        <span class="pending-vs">
+                                            <strong>VS.</strong>
+                                        </span>
+                                    </vs-col>
+
+                                    <!-- Challenged Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="pending.wizardChallenged">
+                                        <vs-row class="pending-type-label">You:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-wizard" size="35px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ pending.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</vs-row>
+                                    </vs-col>
+
+                                </vs-row>
+                            </div>
+                            <div slot="footer">
+                                <div class="pending-challenge-footer">
+                                    <button class="btn btn-danger btn-decline-challenge" @click="declineChallenge(index)">Decline</button>
+                                    <button class="btn btn-primary btn-accept-challenge" @click="acceptChallenge(index)">Accept</button>
+                                </div>
+                            </div>
+
+                        </pending-duel>
+                    </div>
+
+                    <div class="duel-requests unresolved" v-if="activeDuelSimulation">
+                        
+                        <h5 class="pending-duel-requests title">Active Duel:</h5>
+
+                        <!-- List Pending Duels -->
+                        <pending-duel class="pending-duel-card unresolved">
+
+                            <div slot="header">
+                                <h5>Let's Duel!</h5>
+                            </div>
+                            <div slot="body">
+                                <vs-row>
+                                    <!-- Challenger Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="activeDuelSimulation.wizardChallenging">
+                                        <vs-row class="pending-type-label">Challenger:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
+                                    </vs-col>
+                                    
+                                    <!-- VS. -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                                        <span class="pending-vs">
+                                            <strong>VS.</strong>
+                                        </span>
+                                    </vs-col>
+
+                                    <!-- Challenged Wizard -->
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="right" vs-w="12" v-if="activeDuelSimulation.wizardChallenged">
+                                        <vs-row class="pending-type-label">You:</vs-row>
+                                        
+                                        <vs-row>
+                                            <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
+                                        </vs-row>
+
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
+                                    </vs-col>
+
+                                </vs-row>
+                            </div>
+                            <div slot="footer">
+                                <div class="pending-challenge-footer unresolved">
+                                    <button class="btn btn-primary btn-go-to-duel" @click="proceedToDuel()">Proceed to Duel</button>
+                                </div>
+                            </div>
+
+                        </pending-duel>
+                    </div>
                 </div>
 
                 <!-- Footer - Chat Box Input -->
             </sidebar>
             <!-- End Chat Component (Sidebar) -->
-
             
             <!-- Setup Chat Wizard Challenge Modals -->
             <!---->
@@ -1312,13 +1457,8 @@
     <script type="text/x-template" id="sidebar-template">
         <div id="parentx">
             <slot name="menu-items"></slot>
-            <img src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar">
+            <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
             <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
-            
-                <!-- Close Sidebar -->
-                <div class="close-sidebar">
-                    <a id="close_sidebar_a" class="link" src="img/icons/chat.svg" @click="showSidebar = false">Close Chat</a>
-                </div>
 
                 <!-- Sidebar Header -->
                 <slot class="header-sidebar" name="header">
@@ -1331,7 +1471,7 @@
 
                 <!-- Footer -->
                 <div class="footer-sidebar" slot="footer">
-                    <p>Footer</p>
+                    <p></p>
                 </div>
             
             </vs-sidebar>
@@ -1375,6 +1515,26 @@
         </div>
     </script>
     <!-- End Notifications Template -->
+
+    <!-- Begin Duel Request Template -->
+    <script type="text/x-template" id="duel-request-template">
+        <vs-row vs-justify="center">
+            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                <vs-card>
+                    <slot name="header">
+                        <h3>Title</h3>
+                    </slot>
+                    <slot name="body">
+                        <span>Body</span>
+                    </slot>
+                    <slot name="footer">
+                        <vs-row vs-justify="flex-end">Footer</vs-row>
+                    </slot>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </script>
+    <!-- End Duel Request Template -->
 
     <script type="text/javascript" src="build/app.js"></script>
 </body>
