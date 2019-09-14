@@ -135,7 +135,7 @@ export class MarketFormStore {
   @observable minPrice: BigNumber | null;
   @observable scalarDenomination: string = "USD";
   @observable timezone: string;
-  @observable tags: string[] = ['CheezeWizards', 'Coinlist', 'Ethereum', 'Dapper Labs', 'Game'];
+  @observable tags: string[] = ['CheezeWizards', 'CheezeOfInsight'];
   @observable category: string = 'GAMES';
   @observable marketCreatorFeeRate: string = '1';
   @observable scalarPrecision: BigNumber | null = new BigNumber("0.01");
