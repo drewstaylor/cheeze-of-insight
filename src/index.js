@@ -193,6 +193,8 @@ if (location.href.indexOf('duels') == -1
             userOwnsWizards: 0,
             currentWizard: {},
             currentOpposingWizard: {},
+            activeDuelWizard: {},
+            activeOpponentWizard: {}, 
             selectedWizardsByAddress: {},
             selectedWizardsByAddressModalShown: false,
             comparisonWizardsByAddressModalShown: false,
@@ -317,6 +319,10 @@ if (location.href.indexOf('duels') == -1
                     }
                 }
 
+                // assume we're challenging here
+                this.activeDuelWizard = this.currentWizard;
+                this.activeOpponentWizard = this.currentOpposingWizard;
+
                 // Add meta properties to owned wizards
                 if (this.tokens.mainnet.wizards.length) {
                     for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
@@ -390,6 +396,10 @@ if (location.href.indexOf('duels') == -1
                             // Fetch wizards associated with duel
                             let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
                             let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
+
+                            // we're being challenged, so assume we are `challengedWizardId`
+                            this.activeDuelWizard = await this.getWizardById(challengedWizardId);
+                            this.activeOpponentWizard = await this.getWizardById(challengingWizardId);
 
                             // Notifications counter
                             ++this.notificationsCount;
@@ -774,8 +784,8 @@ if (location.href.indexOf('duels') == -1
                 let duel = JSON.stringify(this.activeDuelSimulation);
                 sessionStorage.setItem('duel', duel);
                 sessionStorage.setItem('mode', 'challenge');
-                sessionStorage.setItem('ourWizardId', this.currentWizard.selectedId);
-                sessionStorage.setItem('opposingWizardId', this.currentOpposingWizard.selectedId);
+                sessionStorage.setItem('ourWizardId', this.activeDuelWizard.selectedId);
+                sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.selectedId);
                 // Hard navigate to duel room
                 return window.location.href = '/duels';
             },
