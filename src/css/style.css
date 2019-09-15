@@ -3,6 +3,7 @@ body {
     overflow-x: hidden;
     background-color: #ff809b;
     background-image: url('../img/gridPatternWhite.svg');
+    min-height: 100vh;
     background-position: top -10px center;
     background-size: 2rem auto;
     background-repeat: repeat;
