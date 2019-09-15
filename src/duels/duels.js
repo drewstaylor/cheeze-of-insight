@@ -2,29 +2,29 @@
  * `duels.js` contains functionality to display and interact with a duel simulation. The simulation
  * can be carried out in different ways depending on how it is "invoked," as described below.
  *
+ * **Note**:
+ * If you're interested in testing this out, see `mockChallengeDuel.html` and `mockOfflineDuel.html`.
+ *
  * Modes - there are currently two modes of operation. One is a `challenge` duel where two live
  * participants duel each other. `firebase` is used as a means of communicating wizard `forecasts`.
  * In this mode, each player submits their `forecast` and then waits for their opponent's `forecast`
- * from `firebase`, at which point the duel results are displayed.
+ * from `firebase`, at which point the duel results are displayed. This mode is invoked if there are
+ * no URL query params, and the following information is expected to be passed via `sessionStorage`:
  *
- * The other mode is an `offline` duel where a single user has selected two arbitrary wizards and
- * picks one or both of their moves. This allows the user to simulate different outcomes and learn
- * about both the dueling process and the different outcomes of the match.
- *
- * These modes are invoked by passing certain data to `duels.js` by means of `sessionStorage`. This
- * includes:
- *
- * @param {string} mode should be either "challenge" or "offline"
+ * @param {string} mode should be either "challenge" or "offline" -- currently only `challenge` makes sense.
  * @param {string} ourWizardId should be the wizard ID of the wizard associated with the user
  * @param {string} opposingWizardId should be the wizard ID of the wizard to duel against
  * @param {object} duel is a config object that contains info about both wizards and the
  *                 duel setup.
+ *
+ * The other mode is an `offline` duel where a an arbitrary matchup can be simulated. This mode is
+ * assumed if there are any URL query params. The params are:
+ *
+ * @param wiz1
+ * @param wiz2
  */
 
 'use strict';
-
-// TODO: clean up / consolidate with similar logic below
-//const duelConfig = JSON.parse(sessionStorage.getItem('duel'));
 
 const FIREBASE = require('../firebase');
 const path = 'duel-simulations';
@@ -33,19 +33,6 @@ const duelsRef = FIREBASE.firebaseDb.ref(path);
 // Config 
 const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
-
-/**
- * This information can be used to  manually set sessionStorage via console for testing Duels 
- * without requiring multiple Twitter accounts or multiple Web3 wallets (each having wizards)
- * 
- * Console commands:
- * 
- * let duelConfig = '{"action":"challenge","name":"Challenge to a duel simulation","isValidPartner":true,"wizardChallenged":{"id":"1353","owner":"0x88b49cA334521BadA40Faa71EF3B416Fb1B161ec","affinity":3,"initialPower":"78071441448856","power":"78071441448856","eliminatedBlockNumber":null,"createdBlockNumber":7780436,"image":"https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1353.svg","specialPower":"Wind","vulnerability":"Fire","optimalOpponent":"Water"},"wizardChallenging":{"id":"1614","owner":"0x33Ec2fEd3E429a515ccDf361554f102eA36e0CEB","affinity":2,"initialPower":"100973404296275","power":"100973404296275","eliminatedBlockNumber":null,"createdBlockNumber":7780479,"image":"https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1614.svg","specialPower":"Fire","vulnerability":"Water","optimalOpponent":"Wind"},"roomId":"-Lo1qhvCJxBy1TS3nCnw"}';
- * sessionStorage.setItem('duel', duelConfig);
- *
- * also, set current wizard id:
- * sessionStorage.setItem('ourWizardId', '1353');
- */
 
 const randomTurn = () => { return Math.floor(Math.random() * 3) + 2; };
 const randomTurns = () => {
@@ -56,48 +43,6 @@ const randomTurns = () => {
         randomTurn(),
         randomTurn(),
     ];
-}
-
-/**
- * Reads in variables from sessionStorage, optionally deleting them.
- *
- * See the documentation at the top of this file (duels.js) for more info on
- * what data is stored in sessionStorage.
- *
- * This also validates the input from sessionStorage, throwing an instance of
- * Error on invalid input.
- *
- * @return {object} an object with the sessionStorage variables filled out
- */
-const readSessionStorage = function() {
-
-    const mode = sessionStorage.getItem("mode");
-    const ourWizardId = sessionStorage.getItem("ourWizardId");
-    const opposingWizardId = sessionStorage.getItem("opposingWizardId");
-    const duel = JSON.parse(sessionStorage.getItem('duel'));
-
-    if (! mode) throw new Error("duels.js requires 'mode' in sessionStorage");
-    if (! ourWizardId || ourWizardId === "undefined") throw new Error("duels.js requires 'ourWizardId' in sessionStorage");
-    if (! opposingWizardId || opposingWizardId === "undefined") throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
-    if (! duel) throw new Error("duels.js requires 'duel' in sessionStorage");
-
-    return {
-        mode,
-        ourWizardId,
-        opposingWizardId,
-        duel,
-    };
-};
-
-
-/**
- * Clears sessionStorage
- */
-const clearSessionStorage = function() {
-    sessionStorage.removeItem("mode");
-    sessionStorage.removeItem("ourWizardId");
-    sessionStorage.removeItem("opposingWizardId");
-    sessionStorage.removeItem("duel");
 }
 
 Vue.component('round-picker', {
@@ -165,6 +110,7 @@ if (location.href.indexOf('duels') !== -1) {
             opponentMoves: [],
             opponentMovesReceived: false,
             firebaseDuels: [],
+            mounted: false,
         }),
         firebase: {
             // TODO: subscribe to "duel-simulations/"+ duelId
@@ -172,7 +118,7 @@ if (location.href.indexOf('duels') !== -1) {
         },
         mounted: async function () {
 
-            const duelParams = readSessionStorage();
+            const duelParams = await this.readConfig();
             console.log("duelParams => ", duelParams);
 
             this.mode = duelParams.mode;
@@ -213,9 +159,24 @@ if (location.href.indexOf('duels') !== -1) {
             } else {
                 this.isWeb3Enabled = false;
             }
+
+            this.mounted = true;
         },
         watch: {
             async firebaseDuels(value) {
+
+                // TODO: nasty hack
+                // 1) mounted: can't be an async function without side effects (such as
+                //    this function being called "out of order")
+                //
+                // 2) only when we are using "offline" mode do we actually need that async
+                //    (because it has to use the API to lookup wizards)
+                //
+                // 3) so this check prevents firebaseDuels() from being called "out of order"
+                //    while we are looking up wizards with the API
+                if (! this.mounted) {
+                    return;
+                }
 
                 // TODO: we should not even connec to firebase in (mode == "offline")
                 if (this.mode === "offline") {
@@ -332,7 +293,7 @@ if (location.href.indexOf('duels') !== -1) {
                 };
 
                 console.log("Compiled duel results:", this.duelResults);
-                clearSessionStorage();
+                this.clearSessionStorage();
             },
 
             /**
@@ -426,6 +387,93 @@ if (location.href.indexOf('duels') !== -1) {
                         .child(this.duel.roomId)
                         .child("moves")
                         .update(moves);
+            },
+
+            /**
+             * Reads in variables from query params. If any are found, this implicitly sets us
+             * to "offline" mode where the user can freely select the moves of either opponent.
+             */
+            async readQueryParamsConfig() {
+                var urlParams = new URLSearchParams(window.location.search);
+
+                const ourWizardId = urlParams.get("wiz1");
+                const opposingWizardId = urlParams.get("wiz2");
+
+                if (ourWizardId && opposingWizardId) {
+                    const ourWizard = await this.api.getWizardById(ourWizardId);
+                    const opposingWizard = await this.api.getWizardById(opposingWizardId);
+
+                    if (! ourWizard) throw new Error(`ourWizardId (${ourWizardId}) not found`);
+                    if (! opposingWizard) throw new Error(`opposingWizardId (${opposingWizardId}) not found`);
+
+                    return {
+                        mode: "offline",
+                        ourWizardId,
+                        opposingWizardId,
+                        duel: {
+                            wizardChallenged: opposingWizard,
+                            wizardChallenging: ourWizard,
+                        },
+                    };
+
+                } else if (ourWizardId || opposingWizardId) {
+                    throw new Error("If ourWizardId is set, opposingWizardId must be set (and vise-versa)");
+                }
+
+                return null;
+            },
+
+            /**
+             * Reads in variables from sessionStorage, optionally deleting them.
+             *
+             * See the documentation at the top of this file (duels.js) for more info on
+             * what data is stored in sessionStorage.
+             *
+             * This also validates the input from sessionStorage, throwing an instance of
+             * Error on invalid input.
+             *
+             * @return {object} an object with the sessionStorage variables filled out
+             */
+            async readSessionStorageConfig() {
+
+                const mode = sessionStorage.getItem("mode");
+                const ourWizardId = sessionStorage.getItem("ourWizardId");
+                const opposingWizardId = sessionStorage.getItem("opposingWizardId");
+                const duel = JSON.parse(sessionStorage.getItem('duel'));
+
+                if (! mode) throw new Error("duels.js requires 'mode' in sessionStorage");
+                if (! ourWizardId || ourWizardId === "undefined") throw new Error("duels.js requires 'ourWizardId' in sessionStorage");
+                if (! opposingWizardId || opposingWizardId === "undefined") throw new Error("duels.js requires 'opposingWizardId' in sessionStorage");
+                if (! duel) throw new Error("duels.js requires 'duel' in sessionStorage");
+
+                return {
+                    mode,
+                    ourWizardId,
+                    opposingWizardId,
+                    duel,
+                };
+            },
+
+            /**
+             * Reads either URL query params or sessionStorage as config (preferring URL query params
+             * over sessionStorage)
+             */
+            async readConfig() {
+                let config = await this.readQueryParamsConfig();
+                if (! config) {
+                    config = await this.readSessionStorageConfig();
+                }
+                return config;
+            },
+
+            /**
+             * Clears sessionStorage
+             */
+            clearSessionStorage() {
+                sessionStorage.removeItem("mode");
+                sessionStorage.removeItem("ourWizardId");
+                sessionStorage.removeItem("opposingWizardId");
+                sessionStorage.removeItem("duel");
             },
         }
     });
