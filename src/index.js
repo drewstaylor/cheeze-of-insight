@@ -398,8 +398,8 @@ if (location.href.indexOf('duels') == -1
                             let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
 
                             // we're being challenged, so assume we are `challengedWizardId`
-                            this.activeDuelWizard = await this.getWizardById(challengedWizardId);
-                            this.activeOpponentWizard = await this.getWizardById(challengingWizardId);
+                            this.activeDuelWizard = await this.api.getWizardById(challengedWizardId);
+                            this.activeOpponentWizard = await this.api.getWizardById(challengingWizardId);
 
                             // Notifications counter
                             ++this.notificationsCount;
