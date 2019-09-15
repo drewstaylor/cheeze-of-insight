@@ -319,10 +319,6 @@ if (location.href.indexOf('duels') == -1
                     }
                 }
 
-                // assume we're challenging here
-                this.activeDuelWizard = this.currentWizard;
-                this.activeOpponentWizard = this.currentOpposingWizard;
-
                 // Add meta properties to owned wizards
                 if (this.tokens.mainnet.wizards.length) {
                     for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
@@ -391,15 +387,14 @@ if (location.href.indexOf('duels') == -1
                                 isValidPartner: true,
                                 name: "Challenge to a duel simulation",
                                 roomId: invite.roomId,
-                                inviteId: invite.id
+                                inviteId: invite.id,
+                                isMe: challengedWizardId,
+                                isOpponent: challengingWizardId
                             };
+                            
                             // Fetch wizards associated with duel
                             let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
                             let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
-
-                            // we're being challenged, so assume we are `challengedWizardId`
-                            this.activeDuelWizard = await this.api.getWizardById(challengedWizardId);
-                            this.activeOpponentWizard = await this.api.getWizardById(challengingWizardId);
 
                             // Notifications counter
                             ++this.notificationsCount;
@@ -457,6 +452,11 @@ if (location.href.indexOf('duels') == -1
                                 // Create active Duel from Duel config
                                 this.activeDuelSimulation = this.chatDuelChallengeConfig;
                                 console.log('this.activeDuelSimulation', this.activeDuelSimulation);
+
+                                // assume we're challenging here
+                                this.activeDuelWizard = this.activeDuelSimulation.wizardChallenging;
+                                this.activeOpponentWizard = this.activeDuelSimulation.wizardChallenged;
+                                console.log('accepted invite response', [this.activeDuelWizard, this.activeOpponentWizard]);
                                 break;
                         }
 
@@ -778,16 +778,42 @@ if (location.href.indexOf('duels') == -1
             },
             // Active Dueling
             proceedToDuel: function () {
+
+                console.log('duel??', this.activeDuelWizard);
+                console.log('chatDuelConfig??', this.chatDuelChallengeConfig);
+
                 // Note, since Duels are a route option
                 // there is no need to update chat counter
                 // as changing routes will clear the chat
                 let duel = JSON.stringify(this.activeDuelSimulation);
+
+                // Handle receiving player args.
+                if (!this.activeDuelWizard) {
+                    this.activeDuelWizard = {
+                        id: this.chatDuelChallengeConfig.isMe
+                    };
+                } else if (!this.activeDuelWizard.id) {
+                    this.activeDuelWizard = {
+                        id: this.chatDuelChallengeConfig.isMe
+                    };
+                }
+                // Handle receiving player opponent args.
+                if (!this.activeOpponentWizard) {
+                    this.activeOpponentWizard = {
+                        id: this.chatDuelChallengeConfig.isOpponent
+                    };
+                } else if (!this.activeOpponentWizard.id) {
+                    this.activeOpponentWizard = {
+                        id: this.chatDuelChallengeConfig.isOpponent
+                    };
+                }
+
                 sessionStorage.setItem('duel', duel);
                 sessionStorage.setItem('mode', 'challenge');
-                sessionStorage.setItem('ourWizardId', this.activeDuelWizard.selectedId);
-                sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.selectedId);
+                sessionStorage.setItem('ourWizardId', this.activeDuelWizard.id);
+                sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.id);
                 // Hard navigate to duel room
-                return window.location.href = '/duels';
+                //return window.location.href = '/duels';
             },
 
             // Helpers / Utils.
