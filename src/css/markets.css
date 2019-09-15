@@ -1,3 +1,21 @@
+a, a:hover {
+    color: #000000;
+}
+
+a.back {
+    position: relative;
+    margin-left: 2rem;
+    top: 1rem;
+}
+
+.jumbotron {
+    background-color: #ffc033;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
 .markets.wrapper {
     margin-top: 1.5rem;
 }

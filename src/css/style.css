@@ -674,7 +674,6 @@ footer {
     margin-top: 2.5rem;
     margin-left: 0;
     margin-right: 0;
-    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
@@ -684,6 +683,10 @@ footer {
     background-size: cover;
 }
 
+footer.home {
+    position: absolute;
+}
+
 img.footer.footer-bg {
     min-width: 100vw;
     height: auto;
@@ -691,8 +694,11 @@ img.footer.footer-bg {
     right: 0;
 }
 
-.footer-descr {
+.footer.home .footer-descr {
     position: absolute;
+}
+
+.footer-descr {
     bottom: 0;
     width: 100%;
     background-color: #FFF032;
@@ -700,6 +706,12 @@ img.footer.footer-bg {
     background-position: top -10px center;
     background-size: 2rem auto;
     background-repeat: repeat;
+    min-height: 50px;
+}
+
+.footer-descr.home {
+    background-color: #ff809b;
+    border-top: 1px solid #ffffff;
 }
 
 .footer.left {

@@ -115,6 +115,15 @@ if (location.href.indexOf('markets') !== -1) {
             this.getCommunityMarkets();
         },
         methods: {
+            // Menu Nav
+            goHome: function () {
+                return window.location.href = "/";
+            },
+            goHere: function () {
+                //return window.location.href = "/markets";
+                this.descrReadMore = !this.descrReadMore;
+            },
+            // Load COI Markets
             getCoiMarkets: async function () {
                 let coiMarkets = await this.apiQuery('markets/owned');
                 if (coiMarkets) {
@@ -126,6 +135,8 @@ if (location.href.indexOf('markets') !== -1) {
                     }
                 }
             },
+
+            // Load Comunnity Markets
             getCommunityMarkets: async function () {
                 let communityMarkets = await this.apiQuery('markets/community');
                 if (communityMarkets) {
@@ -184,7 +195,7 @@ if (location.href.indexOf('markets') !== -1) {
                     if (this.exitTimer > 0) {
                         --this.exitTimer;
                     } else {
-                        window.location.href = marketUrl;
+                        //window.location.href = marketUrl;
                         clearInterval(timer);
                     }
                 }, 1000);

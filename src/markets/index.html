@@ -11,6 +11,7 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
+    <link href="css/adobe-type-kit.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="../css/vuesax.css" rel="stylesheet">
@@ -32,16 +33,25 @@
     <script type="text/javascript" src="../js/vue-simple-context-menu.js"></script>
 </head>
 <body>
-    <div id="markets" class="container container-fluid main-content">
-        <a href="/">Back</a>
+    <div id="markets">
+
+        <nav class="navbar navbar-light">
+            <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="goHome();">Cheeze of Insight</span>
+        </nav>
+        <nav class="nav subnav justify-content-center">
+            <a class="nav-link" v-on:click="goHome();">Home</a>
+            <a class="nav-link" class="active" v-on:click="goHere();">Prediction Markets</a>
+        </nav>
+
+        <a class="back" href="/">Back</a>
 
         <!-- MAIN STATE (Markets) -->
-        <div class="wrapper mount-wrapper" v-cloak v-if="applicationState == MAIN_STATE">
+        <div class="wrapper mount-wrapper container container-fluid main-content" v-cloak v-if="applicationState == MAIN_STATE">
 
             <div v-if="!descrReadMore">
                 <h3>Prediction Markets</h3>
                 <p class="descr">COI will be releasing daily prediction markets on Augur!</p>
-                <a @click="descrReadMore = true;">Read more</a>
+                <a @click="descrReadMore = true;">Read more...</a>
             </div>
             
             <div class="jumbotron" v-else>
@@ -63,7 +73,7 @@
                     <strong>*Note: we take "volatile" to mean Wizards power levels that fluctuated by the greatest margin during the previous day's dueling window</strong>
                 </p>
                 <div class="read-less">
-                    <button class="btn btn-primary" @click="descrReadMore = false;">Read less</button>
+                    <button class="btn btn-inverse" @click="descrReadMore = false;">Read less</button>
                 </div>
             </div>
         
@@ -93,7 +103,7 @@
                                     </label>
                                     <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
                                 </div>
-                                <button @click="doMarketNavigation(market.id)" class="btn btn-primary">Go To Market Betting</button>
+                                <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
                             </div>
                         </div>
                     </div>
@@ -104,7 +114,7 @@
             <div class="community-markets markets wrapper" v-if="communityMarkets">
                 <h5>Community Markets:</h5>
                 <div v-if="!communityMarkets.length">
-                    <p>No community markets found. Want to create some? Clone <a href="#">this</a> repo and follow the README to get started!</p>
+                    <p>No community markets found. Want to create some? Clone <a class="underline" href="#">this</a> repo and follow the README to get started!</p>
                 </div>
                 <div v-else>
                     <!-- Market Data-->
@@ -125,7 +135,7 @@
                                     </label>
                                     <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
                                 </div>
-                                <button @click="doMarketNavigation(market.id)" class="btn btn-primary">Go To Market Betting</button>
+                                <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
                             </div>
                         </div>
                     </div>
@@ -144,6 +154,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-descr markets">
+            <div class="footer left">
+                <span class="navbar-brand mb-0 h1 tk-exocet">COI</span>2019
+            </div>
+            <div class="footer right">
+                <ul class="footer list-inline">
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/tos.html">Terms Of Service</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/privacy.html">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
     <!-- Template For Sidebar Component -->
     <script type="text/x-template" id="sidebar-template">
