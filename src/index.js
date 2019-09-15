@@ -454,8 +454,8 @@ if (location.href.indexOf('duels') == -1
                                 console.log('this.activeDuelSimulation', this.activeDuelSimulation);
 
                                 // assume we're challenging here
-                                this.activeDuelWizard = this.activeDuelSimulation.wizardChallenging;
-                                this.activeOpponentWizard = this.activeDuelSimulation.wizardChallenged;
+                                this.activeDuelWizard = this.activeDuelSimulation.wizardChallenged;
+                                this.activeOpponentWizard = this.activeDuelSimulation.wizardChallenging;
                                 console.log('accepted invite response', [this.activeDuelWizard, this.activeOpponentWizard]);
                                 break;
                         }
