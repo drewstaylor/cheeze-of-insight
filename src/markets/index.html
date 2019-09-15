@@ -88,7 +88,7 @@
                     <!-- Market Data-->
                     <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
                         <div class="card">
-                            <img class="card-img-top" :src="getMarketImageUrl(market.tags)" :alt="market.description">
+                            <img class="card-img-top" :src="getMarketImageUrl(market.description)" :alt="market.description">
                             <div class="card-body">
                                 <h5 class="card-title">{{ market.description }}</h5>
                                 <p class="card-text">{{ market.details }}</p>

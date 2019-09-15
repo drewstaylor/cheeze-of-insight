@@ -148,25 +148,26 @@ if (location.href.indexOf('markets') !== -1) {
                     }
                 }
             },
-            getMarketImageUrl: function (tagsArray) {
+            getMarketImageUrl: function (marketTitle) {
                 let baseImgUrl = 'https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/';
-                if (!tagsArray) {
-                    return '';
+                if (!marketTitle) {
+                    return '/img/coinlist-promo.png';
                 }
                 let wizardId = null;
+                // Example Market Title:
+                // "Will Wizard #1214 increase in power after the next dueling window is resolved?"
                 // Find Wizard, e.g. tag: "Wizard1614"
-                for (let i = 0; i < tagsArray.length; i++) {
-                    if (tagsArray[i].toLowerCase().indexOf('wizard') > -1 && tagsArray[i] !== "CheezeWizards") {
-                        tagsArray[i] = tagsArray[i].toLowerCase();
-                        let args = tagsArray[i].split('wizard');
-                        wizardId = args[1];
-                        break;
+                if (marketTitle.indexOf('Will Wizard #') !== -1) {
+                    let marketTitlePieces = marketTitle.split('Will Wizard #').join('').split(' ');
+                    wizardId = marketTitle[0];
+                    // Return Wizard image or if no Wizard ID is found
+                    // return a default Hackathon promo image from Coinlist
+                    if (wizardId) {
+                        return baseImgUrl + wizardId + ".svg";
+                    } else {
+                        return '/img/coinlist-promo.png';
                     }
-                }
-                // Return Wizard image or if no Wizard ID is found
-                // return a default Hackathon promo image from Coinlist
-                if (wizardId) {
-                    return baseImgUrl + wizardId + ".svg";
+                // Else, show Coinlist promo image
                 } else {
                     return '/img/coinlist-promo.png';
                 }
