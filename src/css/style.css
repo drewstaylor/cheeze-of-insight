@@ -2,6 +2,10 @@ body {
     font-family: code-saver, sans-serif;
     overflow-x: hidden;
     background-color: #ff809b;
+    background-image: url('../img/gridPatternWhite.svg');
+    background-position: top -10px center;
+    background-size: 2rem auto;
+    background-repeat: repeat;
 }
 
 div.bg-melt {
@@ -711,7 +715,7 @@ img.footer.footer-bg {
 
 .footer-descr.home {
     background-color: #ff809b;
-    border-top: 1px solid #ffffff;
+    /*border-top: 1px solid #ffffff;*/
 }
 
 .footer.left {
@@ -739,4 +743,8 @@ a.footer-link {
 
 a.footer-link:hover {
     color: #000;
+}
+
+.navbar-brand.mb-0 h1.tk-exocet.footer {
+    cursor: auto;
 }

@@ -31,7 +31,7 @@
     <script type="text/javascript" src="js/vue-simple-context-menu.js"></script>
 </head>
 <body>
-<div id="cheese-of-insight">
+<div id="cheese-of-insight" class="hidden">
     <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
         <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
     </div>
@@ -1508,7 +1508,7 @@
         <footer class="home" v-if="navigation.state == HOME_STATE">
             <div class="footer-descr home">
                 <div class="footer left">
-                    <span class="navbar-brand mb-0 h1 tk-exocet">COI</span>2019
+                    <span class="navbar-brand mb-0 h1 tk-exocet footer">COI</span>2019
                 </div>
                 <div class="footer right">
                     <ul class="footer list-inline">

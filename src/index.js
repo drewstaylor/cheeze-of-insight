@@ -60,6 +60,8 @@ Vue.component('pending-duel', {
     template: '#duel-request-template'
 });
 
+window.jQuery = require('jquery');
+
 // Context menus (right-click) component
 const contextMenuOptions = [
     {
@@ -248,7 +250,13 @@ if (location.href.indexOf('duels') == -1
             // Animate Cheeze Melt
             setTimeout(() => {
                 this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#cheese-of-insight').removeClass('hidden');
+                    });
+                }, 0);
             }, 0);
+
         },
         methods: {
             // Chat / Login

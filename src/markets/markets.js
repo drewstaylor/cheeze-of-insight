@@ -9,6 +9,8 @@ const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRi
 const MAIN_STATE = 0;
 const EXIT_COI_STATE = 1;
 
+window.jQuery = require('jquery');
+
 // Query helper
 const apiQuery = async (endpoint = null, method = "GET") => {
     let options;
@@ -88,6 +90,7 @@ if (location.href.indexOf('markets') !== -1) {
             applicationState: MAIN_STATE,
             descrReadMore: false,
             exitTimer: null,
+            isBgAnimated: false
         }),
         mounted: async function () {
             // Web3 Instances
@@ -113,6 +116,16 @@ if (location.href.indexOf('markets') !== -1) {
             this.getCoiMarkets();
             // Get Community Markets
             this.getCommunityMarkets();
+
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#markets').removeClass('hidden');
+                    });
+                }, 0);
+            }, 0);
         },
         methods: {
             // Menu Nav

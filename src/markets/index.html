@@ -33,8 +33,10 @@
     <script type="text/javascript" src="../js/vue-simple-context-menu.js"></script>
 </head>
 <body>
-    <div id="markets">
-
+    <div id="markets" class="hidden">
+        <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
+            <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
+        </div>
         <nav class="navbar navbar-light">
             <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="goHome();">Cheeze of Insight</span>
         </nav>
