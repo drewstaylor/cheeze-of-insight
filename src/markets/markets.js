@@ -193,6 +193,8 @@ if (location.href.indexOf('markets') !== -1) {
                 // Set navigation warning
                 this.applicationState = EXIT_COI_STATE;
 
+                jQuery('#markets-footer').hide();
+
                 let marketUrl;
                 
                 // Build Market URL
@@ -209,7 +211,7 @@ if (location.href.indexOf('markets') !== -1) {
                     if (this.exitTimer > 0) {
                         --this.exitTimer;
                     } else {
-                        //window.location.href = marketUrl;
+                        window.location.href = marketUrl;
                         clearInterval(timer);
                     }
                 }, 1000);
