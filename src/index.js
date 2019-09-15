@@ -813,7 +813,7 @@ if (location.href.indexOf('duels') == -1
                 sessionStorage.setItem('ourWizardId', this.activeDuelWizard.id);
                 sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.id);
                 // Hard navigate to duel room
-                //return window.location.href = '/duels';
+                return window.location.href = '/duels';
             },
 
             // Helpers / Utils.
