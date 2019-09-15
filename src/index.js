@@ -810,8 +810,10 @@ if (location.href.indexOf('duels') == -1
 
                 sessionStorage.setItem('duel', duel);
                 sessionStorage.setItem('mode', 'challenge');
-                sessionStorage.setItem('ourWizardId', this.activeDuelWizard.id);
-                sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.id);
+                //sessionStorage.setItem('ourWizardId', this.activeDuelWizard.id);
+                //sessionStorage.setItem('opposingWizardId', this.activeOpponentWizard.id);
+                sessionStorage.setItem('opposingWizardId', this.activeDuelWizard.id);
+                sessionStorage.setItem('ourWizardId', this.activeOpponentWizard.id);
                 // Hard navigate to duel room
                 return window.location.href = '/duels';
             },
