@@ -142,7 +142,7 @@ if (location.href.indexOf('markets') !== -1) {
                 if (coiMarkets) {
                     if (coiMarkets.hasOwnProperty('data')) {
                         if (coiMarkets.data.hasOwnProperty('markets')) {
-                            this.coiMarkets = coiMarkets.data.markets;
+                            this.coiMarkets = coiMarkets.data.markets.reverse();
                             console.log('coiMarkets =>', this.coiMarkets);
                         }
                     }
@@ -155,7 +155,7 @@ if (location.href.indexOf('markets') !== -1) {
                 if (communityMarkets) {
                     if (communityMarkets.hasOwnProperty('data')) {
                         if (communityMarkets.data.hasOwnProperty('markets')) {
-                            this.communityMarkets = communityMarkets.data.markets;
+                            this.communityMarkets = communityMarkets.data.markets.reverse();
                             console.log('communityMarkets =>', this.communityMarkets);
                         }
                     }
@@ -172,7 +172,7 @@ if (location.href.indexOf('markets') !== -1) {
                 // Find Wizard, e.g. tag: "Wizard1614"
                 if (marketTitle.indexOf('Will Wizard #') !== -1) {
                     let marketTitlePieces = marketTitle.split('Will Wizard #').join('').split(' ');
-                    wizardId = marketTitle[0];
+                    wizardId = marketTitlePieces[0];
                     // Return Wizard image or if no Wizard ID is found
                     // return a default Hackathon promo image from Coinlist
                     if (wizardId) {
