@@ -254,7 +254,7 @@ if (location.href.indexOf('duels') !== -1) {
                     this.opponentMovesReceived = true;
                 }
 
-                if (! this.duelResults && this.opponentMovesReceived && this.ourMoves) {
+                if (! this.duelResults && this.opponentMovesReceived && this.ourMovesSubmitted) {
                     await this.processDuelSimulation(this.ourMoves, this.opponentMoves);
                 }
             },
