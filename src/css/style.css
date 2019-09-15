@@ -717,6 +717,8 @@ img.footer.footer-bg {
 
 .footer.list-inline {
     clear: both;
+    text-align: right;
+    padding-right: 2rem;
 }
 
 a.footer-link {
