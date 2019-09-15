@@ -58,7 +58,7 @@ Vue.component('duel-status', {
     template: '#duel-status-template',
 });
 
-Vue.component('wizard-card', {
+const wizCard = Vue.component('wizard-card', {
     props: ['wizard', 'api'],
     template: "#wizard-card-template",
 });
@@ -110,7 +110,6 @@ if (location.href.indexOf('duels') !== -1) {
             opponentMoves: [],
             opponentMovesReceived: false,
             firebaseDuels: [],
-            mounted: false,
         }),
         firebase: {
             // TODO: subscribe to "duel-simulations/"+ duelId
@@ -118,10 +117,19 @@ if (location.href.indexOf('duels') !== -1) {
         },
         mounted: async function () {
 
+            // prior to any 'await' call, we need to determine whether we are in
+            // offline mode or not
+            this.mode = (this.isOfflineMode() ? 'offline' : 'challenge');
+            console.log("early detection of mode: "+ this.mode);
+
             const duelParams = await this.readConfig();
             console.log("duelParams => ", duelParams);
 
-            this.mode = duelParams.mode;
+            // this.mode = duelParams.mode;
+            if (this.mode !== duelParams.mode) {
+                console.log(`WARNING: detected mode (${this.mode}) != duelParams.mode (${duelParams.mode})!!`);
+            }
+
             this.ourWizardId = duelParams.ourWizardId;
             this.opposingWizardId = duelParams.opposingWizardId;
             this.duel = duelParams.duel;
@@ -160,23 +168,25 @@ if (location.href.indexOf('duels') !== -1) {
                 this.isWeb3Enabled = false;
             }
 
-            this.mounted = true;
+            // now that we've mounted and our async code has finished, replace our wizard placeholders
+
+            const wizCard1VM = new wizCard({
+                propsData: {
+                    wizard: this.ourWizard,
+                    api: this.api,
+                },
+            }).$mount('#wiz1-placeholder');
+
+            const wizCard2VM = new wizCard({
+                propsData: {
+                    wizard: this.opposingWizard,
+                    api: this.api,
+                },
+            }).$mount('#wiz2-placeholder');
+
         },
         watch: {
             async firebaseDuels(value) {
-
-                // TODO: nasty hack
-                // 1) mounted: can't be an async function without side effects (such as
-                //    this function being called "out of order")
-                //
-                // 2) only when we are using "offline" mode do we actually need that async
-                //    (because it has to use the API to lookup wizards)
-                //
-                // 3) so this check prevents firebaseDuels() from being called "out of order"
-                //    while we are looking up wizards with the API
-                if (! this.mounted) {
-                    return;
-                }
 
                 // TODO: we should not even connec to firebase in (mode == "offline")
                 if (this.mode === "offline") {
@@ -406,6 +416,12 @@ if (location.href.indexOf('duels') !== -1) {
                     if (! ourWizard) throw new Error(`ourWizardId (${ourWizardId}) not found`);
                     if (! opposingWizard) throw new Error(`opposingWizardId (${opposingWizardId}) not found`);
 
+                    // we need to add in a couple things to the data provided by the API
+                    ourWizard.specialPower = this.getHumanReadableAffinity(ourWizard.affinity);
+                    opposingWizard.specialPower = this.getHumanReadableAffinity(opposingWizard.affinity);
+
+
+
                     return {
                         mode: "offline",
                         ourWizardId,
@@ -474,6 +490,33 @@ if (location.href.indexOf('duels') !== -1) {
                 sessionStorage.removeItem("ourWizardId");
                 sessionStorage.removeItem("opposingWizardId");
                 sessionStorage.removeItem("duel");
+            },
+
+            /**
+             * Detects (in non-async way) whether we are in `offline` mode or not.
+             * We assume offline mode to be true if there are `wiz1` or `wiz2` params.
+             */
+            isOfflineMode() {
+                var urlParams = new URLSearchParams(window.location.search);
+
+                const ourWizardId = urlParams.get("wiz1");
+                const opposingWizardId = urlParams.get("wiz2");
+
+                return (ourWizardId || opposingWizardId);
+            },
+
+            /**
+             * calculate human-readable affinity name given an affinity index
+             *
+             * TODO: this is done elsewhere; DRY
+             */
+            getHumanReadableAffinity(affinityIndex) {
+                switch (affinityIndex) {
+                    case 2: return "Fire";
+                    case 3: return "Water";
+                    case 4: return "Wind";
+                }
+                return "";
             },
         }
     });

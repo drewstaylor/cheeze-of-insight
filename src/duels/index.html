@@ -39,7 +39,8 @@
             <div class="forecast-panel">
                 <h3>Forecast your Spells!</h3>
 
-                <wizard-card v-if="ourWizard" :wizard="ourWizard" :api="api"></wizard-card>
+                <div id="wiz1-placeholder"></div>
+                <!-- <wizard-card v-if="ourWizard" :wizard="ourWizard" :api="api"></wizard-card> -->
 
                 <round-picker label="1" v-bind:value.sync="ourMoves[0]"></round-picker>
                 <round-picker label="2" v-bind:value.sync="ourMoves[1]"></round-picker>
@@ -61,7 +62,8 @@
             <div class="forecast-panel">
                 <h3>Opponent</h3>
 
-                <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card>
+                <div id="wiz2-placeholder"></div>
+                <!-- <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card> -->
 
                 <div v-if="mode == 'offline'">
                     <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
