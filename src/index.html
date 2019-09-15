@@ -46,7 +46,7 @@
     <nav class="nav subnav justify-content-center">
       <a class="nav-link" v-bind:class="{active: navigation.state == VIEW_ALL_WIZARDS || navigation.state == VIEW_SELECTED_WIZARD}" v-on:click="setNavigation(0);">Browse Wizards</a>
       <a class="nav-link" v-bind:class="{active: navigation.state == PREDICT_MATCHES}" v-on:click="showPredictMatchOutcome();">Compare Wizards</a>
-      <a class="nav-link" v-on:click="setNavigation(PREDICTION_MARKETS);">Prediction Markets</a>
+      <a class="nav-link" v-on:click="setNavigation(PREDICTION_MARKETS);">Predictions</a>
     </nav>
 
     <div class="container container-fluid main-content">
