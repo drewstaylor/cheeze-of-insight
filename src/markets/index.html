@@ -11,7 +11,7 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
-    <link href="css/adobe-type-kit.css" rel="stylesheet">
+    <link href="../css/adobe-type-kit.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="../css/vuesax.css" rel="stylesheet">
@@ -83,15 +83,17 @@
             <!-- COI Markets -->
             <div class="coi-markets markets wrapper" v-if="coiMarkets">
                 <h5>COI Markets:</h5>
-                <div v-if="!coiMarkets.length">
+                <div class="markets-not-found" v-if="!coiMarkets.length">
                     <p>No COI markets found</p>
                 </div>
                 <div v-else>
                     <!-- Market Data-->
                     <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
                         <div class="card">
-                            <img class="card-img-top market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
                             <div class="card-body">
+                                <div class="row">
+                                    <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+                                </div>
                                 <h5 class="card-title">{{ market.description }}</h5>
                                 <p class="card-text">{{ market.details }}</p>
                                 <div class="category">
@@ -115,15 +117,17 @@
             <!-- Community Markets -->
             <div class="community-markets markets wrapper" v-if="communityMarkets">
                 <h5>Community Markets:</h5>
-                <div v-if="!communityMarkets.length">
+                <div class="markets-not-found" v-if="!communityMarkets.length">
                     <p>No community markets found. Want to create some? Clone <a class="underline" href="#">this</a> repo and follow the README to get started!</p>
                 </div>
                 <div v-else>
                     <!-- Market Data-->
                     <div v-for="(market, index) in communityMarkets" @click="doMarketNavigation(market.id)">
                         <div class="card">
-                            <img class="card-img-top market-img-preview img-fluid" :src="getMarketImageUrl(market.tags)" :alt="market.description">
                             <div class="card-body">
+                                <div class="row">
+                                    <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+                                </div>
                                 <h5 class="card-title">{{ market.description }}</h5>
                                 <p class="card-text">{{ market.details }}</p>
                                 <div class="category">

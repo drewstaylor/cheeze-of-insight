@@ -11,7 +11,7 @@
     <title>The Cheeze of Insight</title>
 
     <!-- CSS Imports -->
-    <link href="css/adobe-type-kit.css" rel="stylesheet">
+    <link href="../css/adobe-type-kit.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap4-block-grid.min.css" rel="stylesheet">
     <link href="../css/vuesax.css" rel="stylesheet">
@@ -32,70 +32,101 @@
     <script type="text/javascript" src="../js/vue-simple-context-menu.js"></script>
 </head>
 <body>
-    <div id="duels" class="container container-fluid main-content">
-        <a href="/">Back</a>
+    <div id="duels">
 
-        <div class="main-match-container">
-            <div class="forecast-panel">
-                <h3>Forecast your Spells!</h3>
+        <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
+            <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
+        </div>
+        <nav class="navbar navbar-light">
+            <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="goHome();">Cheeze of Insight</span>
+        </nav>
+        <nav class="nav subnav justify-content-center">
+            <a class="nav-link" v-on:click="goHome();">Home</a>
+            <a class="nav-link" href="/markets">Predictions</a>
+        </nav>
 
-                <div id="wiz1-placeholder"></div>
-                <!-- <wizard-card v-if="ourWizard" :wizard="ourWizard" :api="api"></wizard-card> -->
+        <a class="back" href="/">Back</a>
 
-                <round-picker label="1" v-bind:value.sync="ourMoves[0]"></round-picker>
-                <round-picker label="2" v-bind:value.sync="ourMoves[1]"></round-picker>
-                <round-picker label="3" v-bind:value.sync="ourMoves[2]"></round-picker>
-                <round-picker label="4" v-bind:value.sync="ourMoves[3]"></round-picker>
-                <round-picker label="5" v-bind:value.sync="ourMoves[4]"></round-picker>
+        <div class="container container-fluid main-content">
+            <div class="main-match-container">
+                <div class="forecast-panel">
+                    <h3>Forecast your Spells!</h3>
 
-                <div v-if="mode != 'offline'" class="forecast-submit-button">
-                    <button
-                        class="btn btn-inverse"
-                        @click="submitTurn();"
-                        :disabled="ourMovesSubmitted || !(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
+                    <div id="wiz1-placeholder"></div>
 
-                        Submit
-                    </button>
+                    <round-picker label="1" v-bind:value.sync="ourMoves[0]"></round-picker>
+                    <round-picker label="2" v-bind:value.sync="ourMoves[1]"></round-picker>
+                    <round-picker label="3" v-bind:value.sync="ourMoves[2]"></round-picker>
+                    <round-picker label="4" v-bind:value.sync="ourMoves[3]"></round-picker>
+                    <round-picker label="5" v-bind:value.sync="ourMoves[4]"></round-picker>
+
+                    <div v-if="mode != 'offline'" class="forecast-submit-button">
+                        <button
+                            class="btn btn-inverse"
+                            @click="submitTurn();"
+                            :disabled="ourMovesSubmitted || !(ourMoves[0] && ourMoves[1] && ourMoves[2] && ourMoves[3] && ourMoves[4])">
+
+                            Submit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="forecast-panel">
+                    <h3>Your Opponent</h3>
+
+                    <div id="wiz2-placeholder"></div>
+
+                    <div v-if="mode == 'offline'">
+                        <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
+                        <round-picker label="2" v-bind:value.sync="opponentMoves[1]"></round-picker>
+                        <round-picker label="3" v-bind:value.sync="opponentMoves[2]"></round-picker>
+                        <round-picker label="4" v-bind:value.sync="opponentMoves[3]"></round-picker>
+                        <round-picker label="5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+                    </div>
+
                 </div>
             </div>
 
-            <div class="forecast-panel">
-                <h3>Opponent</h3>
 
-                <div id="wiz2-placeholder"></div>
-                <!-- <wizard-card v-if="opposingWizard" :wizard="opposingWizard" :api="api"></wizard-card> -->
-
-                <div v-if="mode == 'offline'">
-                    <round-picker label="1" v-bind:value.sync="opponentMoves[0]"></round-picker>
-                    <round-picker label="2" v-bind:value.sync="opponentMoves[1]"></round-picker>
-                    <round-picker label="3" v-bind:value.sync="opponentMoves[2]"></round-picker>
-                    <round-picker label="4" v-bind:value.sync="opponentMoves[3]"></round-picker>
-                    <round-picker label="5" v-bind:value.sync="opponentMoves[4]"></round-picker>
+            <div v-if="mode != 'offline'" class="forecast-panel">
+                <div v-if="opponentMovesReceived">
+                    <span>Opponent's moves have been cast.</span>
+                    <button @click="clearOpponentMoves();">Clear opponent's forecast</button>
                 </div>
-
+                <div v-else class="forecast-submit-button">
+                    <span>Waiting for opponent to submit forecast...</span>
+                    <button @click="submitRandomOpponentForecast();">Submit Opponent's Forecast</button>
+                </div>
             </div>
+
+            <duel-status
+                    v-if="duelResults"
+                    v-bind:outcome="duelResults.outcome"
+                    v-bind:power="duelResults.power"
+                    v-bind:score="duelResults.score">
+            </duel-status>
+
         </div>
-
-
-        <div v-if="mode != 'offline'" class="forecast-panel">
-            <div v-if="opponentMovesReceived">
-                <span>Opponent's moves have been cast.</span>
-                <button @click="clearOpponentMoves();">Clear opponent's forecast</button>
-            </div>
-            <div v-else class="forecast-submit-button">
-                <span>Waiting for opponent to submit forecast...</span>
-                <button @click="submitRandomOpponentForecast();">Submit Opponent's Forecast</button>
-            </div>
-        </div>
-
-        <duel-status
-                v-if="duelResults"
-                v-bind:outcome="duelResults.outcome"
-                v-bind:power="duelResults.power"
-                v-bind:score="duelResults.score">
-        </duel-status>
-
     </div>
+
+    <!-- Footer -->
+    <footer id="markets-footer">
+        <div class="footer-descr markets">
+            <div class="footer left">
+                <span class="navbar-brand mb-0 h1 tk-exocet">COI</span>2019
+            </div>
+            <div class="footer right">
+                <ul class="footer list-inline">
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/tos.html">Terms Of Service</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/privacy.html">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
     <!-- Template for round picking -->
     <script type="text/x-template" id="round-picker-template">

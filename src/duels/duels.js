@@ -34,6 +34,8 @@ const duelsRef = FIREBASE.firebaseDb.ref(path);
 const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
 
+window.jQuery = require('jquery');
+
 const randomTurn = () => { return Math.floor(Math.random() * 3) + 2; };
 const randomTurns = () => {
     return [
@@ -110,12 +112,23 @@ if (location.href.indexOf('duels') !== -1) {
             opponentMoves: [],
             opponentMovesReceived: false,
             firebaseDuels: [],
+            // UI
+            isBgAnimated: false
         }),
         firebase: {
             // TODO: subscribe to "duel-simulations/"+ duelId
             firebaseDuels: duelsRef,
         },
         mounted: async function () {
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#markets').removeClass('hidden');
+                    });
+                }, 0);
+            }, 0);
 
             // prior to any 'await' call, we need to determine whether we are in
             // offline mode or not
@@ -239,6 +252,10 @@ if (location.href.indexOf('duels') !== -1) {
             },
         },
         methods: {
+            // Menu Nav
+            goHome: function () {
+                return window.location.href = "/";
+            },
             /**
              * @param {Object} ourMoves: An array of turn commitments (enums) for our wizard
              * @param {Object} opponentMoves: An array of turn commitments (enums) from our opponent

@@ -1,8 +1,5 @@
 body {
-    background-image: none;
-    background-position: 0;
-    background-size: 0;
-    background-repeat: no-repeat;
+    background-image: url('../img/gridPatternYellow.svg');
     background-color: #ffffff;
 }
 
@@ -24,13 +21,27 @@ a.back {
     text-decoration: underline;
 }
 
+.markets-not-found {
+    padding: 2rem;
+    background-color: #ffc033;
+    border-radius: 4px;
+    margin-top: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
 .markets.wrapper {
-    margin-top: 1.5rem;
+    margin-top: 4.5rem;
 }
 
 .card {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: 450px;
+    margin: auto;
 }
 
 .card:hover {
