@@ -34,6 +34,8 @@ const duelsRef = FIREBASE.firebaseDb.ref(path);
 const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
 
+window.jQuery = require('jquery');
+
 /**
  * This information can be used to  manually set sessionStorage via console for testing Duels 
  * without requiring multiple Twitter accounts or multiple Web3 wallets (each having wizards)
@@ -165,12 +167,23 @@ if (location.href.indexOf('duels') !== -1) {
             opponentMoves: [],
             opponentMovesReceived: false,
             firebaseDuels: [],
+            // UI
+            isBgAnimated: false
         }),
         firebase: {
             // TODO: subscribe to "duel-simulations/"+ duelId
             firebaseDuels: duelsRef,
         },
         mounted: async function () {
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#markets').removeClass('hidden');
+                    });
+                }, 0);
+            }, 0);
 
             const duelParams = readSessionStorage();
             console.log("duelParams => ", duelParams);
@@ -268,6 +281,10 @@ if (location.href.indexOf('duels') !== -1) {
             },
         },
         methods: {
+            // Menu Nav
+            goHome: function () {
+                return window.location.href = "/";
+            },
             /**
              * @param {Object} ourMoves: An array of turn commitments (enums) for our wizard
              * @param {Object} opponentMoves: An array of turn commitments (enums) from our opponent

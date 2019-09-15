@@ -1,10 +1,26 @@
-.main-match-container {
-	border: 1px solid black;
-	padding: 2px;
+body {
+	min-height: 100vh;
+}
 
+.main-match-container {
+	border: 0.5px solid #333333;
+	padding: 2px;
+	background-color: #ffc033;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
+	border-radius: 4px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+a, a:hover {
+    color: #000000;
+}
+
+a.back {
+    position: relative;
+    margin-left: 2rem;
+    top: 1rem;
 }
 
 .forecast-panel {
@@ -19,10 +35,14 @@
 	padding: 8px 18px 8px 18px;
 }
 .duel-status-container {
-	border: 1px solid gray;
-	padding: 2px;
-	margin-top: 6px;
-	margin-bottom: 10px;
+	
+	border: 0.5px solid #333333;
+	padding: 1.5rem;
+	background-color: #ffc033;
+	border-radius: 4px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 .affinityPicker {

@@ -93,6 +93,16 @@ if (location.href.indexOf('markets') !== -1) {
             isBgAnimated: false
         }),
         mounted: async function () {
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#markets').removeClass('hidden');
+                    });
+                }, 0);
+            }, 0);
+
             // Web3 Instances
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
             this.web3Providers.rinkeby = await this.Provider.getWssWeb3Rinkeby();
@@ -116,16 +126,6 @@ if (location.href.indexOf('markets') !== -1) {
             this.getCoiMarkets();
             // Get Community Markets
             this.getCommunityMarkets();
-
-            // Animate Cheeze Melt
-            setTimeout(() => {
-                this.isBgAnimated = true;
-                setTimeout(() => {
-                    jQuery('document').ready(function () {
-                        jQuery('#markets').removeClass('hidden');
-                    });
-                }, 0);
-            }, 0);
         },
         methods: {
             // Menu Nav

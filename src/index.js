@@ -215,6 +215,16 @@ if (location.href.indexOf('duels') == -1
             usersOnline: usersOnline
         },
         mounted: async function () {
+            // Animate Cheeze Melt
+            setTimeout(() => {
+                this.isBgAnimated = true;
+                setTimeout(() => {
+                    jQuery('document').ready(function () {
+                        jQuery('#cheese-of-insight').removeClass('hidden');
+                    });
+                }, 0);
+            }, 0);
+
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
 
@@ -248,16 +258,6 @@ if (location.href.indexOf('duels') == -1
                     await this.setupChat(user);
                 }
             });
-
-            // Animate Cheeze Melt
-            setTimeout(() => {
-                this.isBgAnimated = true;
-                setTimeout(() => {
-                    jQuery('document').ready(function () {
-                        jQuery('#cheese-of-insight').removeClass('hidden');
-                    });
-                }, 0);
-            }, 0);
 
         },
         methods: {
