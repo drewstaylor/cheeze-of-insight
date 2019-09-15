@@ -321,7 +321,7 @@ if (location.href.indexOf('duels') !== -1) {
                 // Debug
                 console.log('Resolved Duel =>', result);
 
-                const power = Math.floor(parseInt(result[0]) / 1000000000000);
+                const power = Math.round(parseInt(result[0]) / 1000000000000);
                 const score = parseInt(result[1]);
                 const outcome = (power > 0 ? "WIN" : (power == 0 ? "TIE" : "LOSS"));
 
