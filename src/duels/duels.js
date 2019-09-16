@@ -529,6 +529,8 @@ if (location.href.indexOf('duels') !== -1) {
              */
             getHumanReadableAffinity(affinityIndex) {
                 switch (affinityIndex) {
+                    case 0: return "Unset";
+                    case 1: return "Neutral";
                     case 2: return "Fire";
                     case 3: return "Water";
                     case 4: return "Wind";
