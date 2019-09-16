@@ -39,6 +39,13 @@ if (location.href.indexOf('learn') !== -1) {
             this.getAllWizards();
         },
         methods: {
+            // Menu Nav
+            goHome: function () {
+                return window.location.href = "/";
+            },
+            goPredict: function () {
+                return window.location.href = "/markets";
+            },
             getAllWizards: async function () {
                 // Get Wizards
                 let wizardsQuery = await this.api.getAllWizards();
