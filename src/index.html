@@ -492,7 +492,7 @@
                     </ul>
                     </div> -->
 
-                    <div class="row">
+                    <div class="row paginated-wizards">
 
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in wizardsPage">
                     <div :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase()" v-on:click="showWizard(wizard.id);">
