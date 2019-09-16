@@ -87,18 +87,6 @@
                 </div>
             </div>
 
-
-            <div v-if="mode != 'offline'" class="forecast-panel">
-                <div v-if="opponentMovesReceived">
-                    <span>Opponent's moves have been cast.</span>
-                    <button @click="clearOpponentMoves();">Clear opponent's forecast</button>
-                </div>
-                <div v-else class="forecast-submit-button">
-                    <span>Waiting for opponent to submit forecast...</span>
-                    <button @click="submitRandomOpponentForecast();">Submit Opponent's Forecast</button>
-                </div>
-            </div>
-
             <duel-status
                     v-if="duelResults"
                     v-bind:outcome="duelResults.outcome"
