@@ -109,7 +109,7 @@
                                     <vs-avatar class="pending-opponnent" size="300px" :src="currentOpposingWizard.image" v-if="currentOpposingWizard.image"/>
                                 </vs-row>
 
-                                <vs-row>#{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</vs-row>
+                                <vs-row>#{{ currentOpposingWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</vs-row>
                             </vs-col>
                         </vs-row>
                 </div>
