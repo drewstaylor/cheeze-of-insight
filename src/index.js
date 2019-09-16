@@ -2,6 +2,7 @@
 
 require('./duels/duels.js');
 require('./markets/markets.js');
+require('./learn/learn.js');
 
 // Navigation states
 const HOME_STATE = -1;
@@ -9,6 +10,8 @@ const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
 const PREDICTION_MARKETS = 3;
+const LEARN = 4;
+const PLAY = 5;
 
 // Wizards sorting states
 const SORTED_BY_POWER_LEVEL_STRONGEST = 0;
@@ -84,7 +87,9 @@ let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
 if (location.href.indexOf('duels') == -1
-    && location.href.indexOf('markets') == -1) {
+    && location.href.indexOf('markets') == -1
+    && location.href.indexOf('learn') == -1
+    && location.href.indexOf('play') == -1) {
     let vm = new Vue({
         el: '#cheese-of-insight',
         data: () => ({
@@ -94,6 +99,8 @@ if (location.href.indexOf('duels') == -1
             PREDICT_MATCHES: PREDICT_MATCHES,
             PREDICTION_MARKETS: PREDICTION_MARKETS,
             HOME_STATE: HOME_STATE,
+            LEARN: LEARN,
+            PLAY: PLAY,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
             SORTED_BY_POWER_LEVEL_WEAKEST: SORTED_BY_POWER_LEVEL_WEAKEST,
             SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST: SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST,
@@ -699,7 +706,7 @@ if (location.href.indexOf('duels') == -1
                 // If cancelled, don't dispatch our event
                 let canceled = !elem.dispatchEvent(evt);
             },
-            setNavigation: function (state = null, comparisonId = null) {
+            setNavigation: async function (state = null, comparisonId = null) {
                 // Change navigation state as required
                 if (this.navigation.state == state) {
                     return;
@@ -771,6 +778,19 @@ if (location.href.indexOf('duels') == -1
                         break;
                     case PREDICTION_MARKETS:
                         window.location.href = "/markets";
+                        break;
+                    case LEARN:
+                        window.location.href = "/learn";
+                        break;
+                    case PLAY:
+                        // Fetch random wizards
+                        if (!this.wizards) {
+                            await this.getAllWizards();
+                        }
+                        let wizardA = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                        let wizardB = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                        // Return a random duel
+                        window.location.href = "/duels/?wiz1=" + wizardA.id + "&wiz2=" + wizardB.id;
                         break;
                     default:
                         return;

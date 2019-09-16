@@ -1,0 +1,26 @@
+body {
+	min-height: 100vh;
+}
+
+a, a:hover {
+    color: #000000;
+}
+
+a.back {
+    position: relative;
+    margin-left: 2rem;
+    top: 1rem;
+}
+
+div.cheezey-info,
+div.generate-matchup {
+    padding: 2rem;
+    background-color: #ffc033;
+    border-radius: 4px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+	margin-top: 2.5rem;
+}
+
+.btn-step {
+	margin-top: 1.5rem;
+}

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Want to out manoeuvre your opponents? Predict their turns before they've been forecasted? Sharpen your rind in a free-to-play testnet environment? Grate no further, Cheeze of Insight is for you!">
+    <meta property="og:image" content="https://cheezeofinsight.com/img/holiness.jpg">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <title>The Cheeze of Insight</title>
+
+    <!-- CSS Imports -->
+    <link href="../css/adobe-type-kit.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap4-block-grid.min.css" rel="stylesheet">
+    <link href="../css/vuesax.css" rel="stylesheet">
+    <link href="../css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/learn.css" rel="stylesheet">
+
+    <!-- JS Imports -->
+    <!-- jQuery is only for Firechat, sigh -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- Firebase -->
+    <script type="text/javascript" src="../js/firebase.js"></script>
+    <!-- Fire Chat -->
+    <script type="text/javascript" src="../node_modules/firechat/dist/firechat.js"></script>
+    <!-- Vue.js -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/vuefire.js"></script>
+    <script type="text/javascript" src="../js/vuesax.js"></script>
+    <script type="text/javascript" src="../js/vue-simple-context-menu.js"></script>
+</head>
+<body>
+    <div id="learn" class="hidden">
+        <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
+            <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
+        </div>
+        <nav class="navbar navbar-light">
+            <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="goHome();">Cheeze of Insight</span>
+        </nav>
+        <nav class="nav subnav justify-content-center">
+            <a class="nav-link" v-on:click="goHome();">Home</a>
+            <a class="nav-link" class="active" v-on:click="goHere();">Predictions</a>
+        </nav>
+
+        <a class="back" href="/">Back</a>
+
+        <!-- Learn App -->
+        <div class="wrapper mount-wrapper container container-fluid main-content" v-cloak>
+
+            <div class="cheezey-info" v-if="step == 0">
+                <h1>SO WHY CHEESE? AND WHY WIZARDS?</h1>
+                <p>What, are you lactose intolerant or something?</p>
+                <p>Cheese is delicious, smelly, and takes time to mature. Magic has always been a metaphor for the exciting and the unknown. The combination describes our feelings about the technology behind decentralization quite well.</p>
+                <p>Blockchain is ripening into something special. There is still potential to be figured out, tasty ideas to explore, and exciting experiences to take part in. And, yes, some of the claims people are making about the tech... well, it smells a bit funny.</p>
+                
+                <p>So let's have fun with that.</p>
+                <p>Each Cheeze Wizard is special—like you. They're immortal, magical, and capable of world-changing feats. Sadly, they spend most of their time getting into petty disagreements online. Maybe you do too.</p>
+                <p>Put your digital cheddar where your virtual mouth is and fight for your cause. Duel friends. Taunt enemies. Or collect some magical curds and create a culture you're proud to champion.</p>
+
+                <button class="btn btn-inverse btn-step step-1" @click="step = 1">Ok, ok I get it! Let me play already</button>
+            </div>
+
+            <!-- Generate Matchup -->
+            <div class="generate-matchup" v-if="step == 1">
+                <h1>OH, SO DID YOU WANNA PLAY A FREE DUEL?</h1>
+                <p>Ha, look at you. Always wanting something for free.</p>
+
+                <h3>WHAT SORCERY IS THIS?!</h3>
+                <p>We get it, buying magical wizards is great and all but sending them into battle without training them first (although delicious) is a bit suicidial.</p>
+                
+                <!-- Prepare -->
+                <p>To start with, let's get you a matchup. HOT TIP: If you don't like the looks of your wizards, click the button again to get a different matchup.</p>
+                
+                <!-- Choose Wisely ;) -->
+                <p>
+                    <button class="btn btn-inverse" @click="generateMatchUp();">"Choose" Wisely (lol)</button>
+                </p>
+
+                <div v-if="matchUpReady">
+                        <vs-row>
+                            <!-- Your Wizard -->
+                            <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="currentWizard">
+                                <vs-row class="pending-type-label">You:</vs-row>
+
+                                <vs-row>
+                                    <vs-avatar class="pending-wizard" size="300px" :src="currentWizard.image" v-if="currentWizard.image"/>
+                                </vs-row>
+
+                                <vs-row>#{{ currentWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</vs-row>
+                            </vs-col>
+                        </vs-row>
+
+                        <!-- VS. -->
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                            <span class="pending-vs">
+                                <strong>VS.</strong>
+                            </span>
+                        </vs-col>
+
+                        <vs-row>
+                            <!-- Challenger Wizard -->
+                            <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="currentOpposingWizard">
+                                <vs-row class="pending-type-label">Challenger:</vs-row>
+
+                                <vs-row>
+                                    <vs-avatar class="pending-opponnent" size="300px" :src="currentOpposingWizard.image" v-if="currentOpposingWizard.image"/>
+                                </vs-row>
+
+                                <vs-row>#{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</vs-row>
+                            </vs-col>
+                        </vs-row>
+                </div>
+
+                <button class="btn btn-inverse" @click="step = 1">Oops, I want to go back</button>
+                <button class="btn btn-inverse" @click="proceedToDuel(currentWizard.id, currentOpposingWizard.id);" :disabled="!matchUpReady">Geez, take me to the duel already!</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="learn-footer">
+        <div class="footer-descr learn">
+            <div class="footer left">
+                <span class="navbar-brand mb-0 h1 tk-exocet">COI</span>2019
+            </div>
+            <div class="footer right">
+                <ul class="footer list-inline">
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/tos.html">Terms Of Service</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="footer-link" href="https://cheezeofinsight.com/policy/privacy.html">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Template For Sidebar Component -->
+    <script type="text/x-template" id="sidebar-template">
+        <div id="parentx">
+            <slot name="menu-items"></slot>
+            <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
+            <vs-sidebar position-right  parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
+
+                <!-- Sidebar Header -->
+                <slot class="header-sidebar" name="header">
+                    <vs-avatar  size="70px" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+                    <h4>Title</h4>
+                </slot>
+
+                <!-- Main Content -->
+                <slot name="body">Body</slot>
+
+                <!-- Footer -->
+                <div class="footer-sidebar" slot="footer">
+                    <p></p>
+                </div>
+            
+            </vs-sidebar>
+        </div>
+    </script>
+    <!-- End Sidebar Template -->
+        
+    <!-- Template For Modal Component -->
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <!-- Header Slot -->
+                        <div class="modal-header">
+                            <slot name="header"></slot>
+                        </div>
+                        <!-- Body Slot -->
+                        <div class="modal-body">
+                            <slot name="body"></slot>
+                        </div>
+                        <!-- Footer Slot -->
+                        <div class="modal-footer">
+                            <slot name="footer">
+                                <button id="modal_close" class="modal-default-button btn btn-primary" @click="$emit('close')">
+                                    <slot name="footer">Close</slot>
+                                </button>
+                            </slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </script>
+    <!-- End Modal Template -->
+
+    <!-- Begin Notifications Template -->
+    <script type="text/x-template" id="notification-template">
+        <div class="con-notifications-position">
+            <slot name="notification" @click="$vs.notify({title:'Position top-right',text:'Lorem ipsum dolor sit amet, consectetur',color:'success',position:'top-right'})" color="success" type="flat">Notification</slot>
+        </div>
+    </script>
+    <!-- End Notifications Template -->
+
+    <!-- Begin Duel Request Template -->
+    <script type="text/x-template" id="duel-request-template">
+        <vs-row vs-justify="center">
+            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                <vs-card>
+                    <slot name="header">
+                        <h3>Title</h3>
+                    </slot>
+                    <slot name="body">
+                        <span>Body</span>
+                    </slot>
+                    <slot name="footer">
+                        <vs-row vs-justify="flex-end">Footer</vs-row>
+                    </slot>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </script>
+    <!-- End Duel Request Template -->
+
+    <script type="text/javascript" src="../build/app.js"></script>
+</body>
+</html>
