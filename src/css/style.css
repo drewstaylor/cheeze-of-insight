@@ -805,3 +805,25 @@ a.footer-link:hover {
     color: #FFFF85;
     font-size: 75%;
 }
+
+@media (max-width: 767.98px) {
+    #splash .player1, #splash .player2 {
+        width: 300px;
+        top: 50px;
+    }
+    #splash .player1 {
+        left: -100px;
+    }
+    #splash .player2 {
+        right: -100px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    #splash .player1 {
+        left: -100px;
+    }
+    #splash .player2 {
+        right: -100px;
+    }
+}
