@@ -753,3 +753,55 @@ a.footer-link:hover {
 .navbar-brand.mb-0 h1.tk-exocet.footer {
     cursor: auto;
 }
+
+#splash {
+    position: absolute;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #000;
+    background-image: url('/img/bgCheeze.svg');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 90rem;
+    color: #FFF;
+}
+
+#splash h1 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 4rem;
+    margin-top: 5rem;
+}
+
+#splash .player1, #splash .player2 {
+    width: 500px;
+    position: absolute;
+    bottom: 2rem;
+}
+
+#splash .player1 {
+    left: 2rem;
+}
+
+#splash .player2 {
+    right: 2rem;
+}
+
+#splash .loading-term {
+    background: #000;
+    border: 1px solid #fff;
+    width: 400px;
+    margin: 50px auto;
+    height: 265px;
+    box-shadow: 0.3rem 0.3rem 0 0 #FFF;
+    padding: 0.3rem;
+
+}
+
+#splash pre {
+    color: #FFFF85;
+    font-size: 75%;
+}

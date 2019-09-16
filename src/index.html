@@ -31,6 +31,29 @@
     <script type="text/javascript" src="js/vue-simple-context-menu.js"></script>
 </head>
 <body>
+
+<div id="splash">
+    <h1 class="tk-exocet">Cheeze of Insight</h1>
+    <img src="/img/animated/animated_player_left_pane_fire.gif" class="player1"/>
+    <img src="/img/animated/animated_player_right_pane_water.gif" class="player2"/>
+    <div class="loading-term"><pre>
+summoning systems...
+gathering milk...
+  ((...))
+  ( O O )
+   \   /
+   (`_`)
+
+curdling... success.
+minimum cheese threshold satisfied.
+
+Welcome to Cheeze of Insight!
+</pre>
+        &gt; <span id="loading-text"></span><span id="cursor">&#9608;</span>
+    </div>
+    <script type="text/javascript" src="js/splash.js"></script>
+</div>
+
 <div id="cheese-of-insight" class="hidden">
     <div class="bg-melt bg-melter" v-bind:class="{transform: isBgAnimated}">
         <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>

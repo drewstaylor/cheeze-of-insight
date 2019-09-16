@@ -201,7 +201,7 @@ if (location.href.indexOf('duels') == -1
             currentWizard: {},
             currentOpposingWizard: {},
             activeDuelWizard: {},
-            activeOpponentWizard: {}, 
+            activeOpponentWizard: {},
             selectedWizardsByAddress: {},
             selectedWizardsByAddressModalShown: false,
             comparisonWizardsByAddressModalShown: false,
@@ -231,6 +231,17 @@ if (location.href.indexOf('duels') == -1
                     });
                 }, 0);
             }, 0);
+
+            // splash page
+            setTimeout(() => {
+                jQuery('document').ready(function () {
+                    jQuery('#splash').animate({
+                        opacity: 0
+                    }, 'slow', 'swing', function() {
+                        $(this).remove();
+                    });
+                });
+            }, 2500);
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -398,7 +409,7 @@ if (location.href.indexOf('duels') == -1
                                 isMe: challengedWizardId,
                                 isOpponent: challengingWizardId
                             };
-                            
+
                             // Fetch wizards associated with duel
                             let p1 = await this.selectPendingChallengeWizard(challengedWizardId, false);
                             let p2 = await this.selectPendingChallengeWizard(challengingWizardId, true);
