@@ -118,6 +118,7 @@ if (location.href.indexOf('duels') == -1
             Provider: require('./providers'),
             api: require('./api'),
             duelUtils: require('./duels'),
+            duelStats: require('./stats'),
             wizardUtils: require('./wizards'),
             // Firebase
             firebase: FIREBASE,
@@ -215,6 +216,8 @@ if (location.href.indexOf('duels') == -1
             showSearch: false,
             showMyWizardTraits: false,
             showOpponentTraits: false,
+            wizardDuelStatsShown: false,
+            wizardDuelStats: {},
             manualCurrentWizardSelection: false,
             isBgAnimated: false
         }),
@@ -1174,7 +1177,63 @@ if (location.href.indexOf('duels') == -1
                 if (this.currentWizardsPage > 1) {
                     --this.currentWizardsPage;
                 }
-            }
+            },
+            showWizardDuelStats: async function(wizardId) {
+                console.log("Should show Wizard duel stats");
+                const that = this;
+                this.wizardDuelStatsShown = true;
+
+                // create our duel stats.
+                // we're not using the Alchemy API here because there are no duels yet
+                // instead, we pull duels from firebase and turn them into the JSON
+                // structure that would otherwise be used by the Alchemy API.
+                //
+                // then we feed this to calculateDuelStatsOverall().
+                // TODO: should read from 'completed-duels'
+                const duels = [];
+                const completedDuelsRef = FIREBASE.firebaseDb.ref('duel-simulations');
+                completedDuelsRef.once('value').then(function(snapshot) {
+                    console.log("got firebase data");
+                    console.log(snapshot);
+
+                    snapshot.forEach(function(childSnapshot) {
+                        const childData = childSnapshot.val();
+                        console.log("Child:");
+                        console.log(childData);
+
+                        const wiz1Id = childData.duelConfig.wizardChallenged.id;
+                        const wiz2Id = childData.duelConfig.wizardChallenging.id;
+
+                        const duel = {
+                            id:"0x18d53c42aff5ef1a6603f79c26e4c43fe50c6a270025a94df96332d699e39155",
+                            wizard1Id: wiz1Id,
+                            affinity1: childData.duelConfig.wizardChallenged.affinity,
+                            startPower1: childData.duelConfig.wizardChallenged.power,
+                            endPower1: childData.duelConfig.wizardChallenged.power + 1, // TODO:
+                            moveSet1: childData.moves[wiz1Id],
+
+                            wizard2Id: wiz2Id,
+                            affinity2: childData.duelConfig.wizardChallenging.affinity,
+                            startPower2: childData.duelConfig.wizardChallenging.power,
+                            endPower2: childData.duelConfig.wizardChallenging.power - 1, // TODO:
+                            moveSet2: childData.moves[wiz2Id],
+                        };
+
+                        duels.push(duel);
+                    });
+
+                    console.log("duels built:");
+                    console.log(duels);
+
+                    that.wizardDuelStats = that.duelStats.calculateDuelStatsOverall(duels, parseInt(2489));
+                    console.log("duel stats: ");
+                    console.log(that.wizardDuelStats);
+
+                    // TODO: UI should dress this up
+                    that.wizardDuelStats.powerHigh = that.getPrettyPowerLevel(that.wizardDuelStats.powerHigh);
+                    that.wizardDuelStats.powerLow = that.getPrettyPowerLevel(that.wizardDuelStats.powerLow);
+                });
+            },
         },
         computed: {
             // Get list of online users (Twitter login)

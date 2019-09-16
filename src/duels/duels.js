@@ -321,6 +321,30 @@ if (location.href.indexOf('duels') !== -1) {
 
                 console.log("Compiled duel results:", this.duelResults);
                 this.clearSessionStorage();
+
+                if (this.mode === 'challenge') {
+
+                    // copy duel to 'completed-duels'
+                    const completedDuelsRef = FIREBASE.firebaseDb.ref('completed-duels');
+                    await completedDuelsRef
+                            .child(this.duel.roomId)
+                            .set({});
+                    await completedDuelsRef
+                            .child(this.duel.roomId)
+                            .child("duelConfig")
+                            .set(this.duel);
+
+                    const moves = {};
+                    moves[this.ourWizardId] = this.ourMoves;
+                    moves[this.opposingWizardId] = this.opponentMoves;
+
+                    // post moves object
+                    await duelsRef
+                            .child(this.duel.roomId)
+                            .child("moves")
+                            .update(moves);
+                }
+
             },
 
             /**

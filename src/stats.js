@@ -47,6 +47,7 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         powerHigh: 0,
         powerLow: Number.MAX_VALUE,
         moveStats: null,
+        aggregateMoveStats: null,
     }
 
     for (const duel of duels) {
@@ -58,6 +59,9 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         let endPower = null;
         let moveset = null;
         let opponentAffinity = null;
+
+        console.log("duel.moveSet1 => ", duel.moveSet1);
+        console.log("duel.moveSet2 => ", duel.moveSet2);
 
         // match our desired wizard in this duel or ignore it
         if (wizardId == duel.wizard1Id) {
@@ -82,9 +86,11 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
         affinity = parseInt(affinity);
         startPower = parseInt(startPower);
         endPower = parseInt(endPower);
-        moveset = duelUtils.convertMovesetToIntArray(moveset);
+        // moveset = duelUtils.convertMovesetToIntArray(moveset);
 
-        stats.moveStats = calculateWizardMovesetStats(affinity, opponentAffinity, moveset);
+        console.log("moveset: => ", moveset);
+
+        stats.moveStats = calculateWizardMovesetStats(affinity, opponentAffinity, moveset, stats.moveStats);
 
         // TODO: handle tie
         const isWin = (endPower > startPower);
@@ -108,6 +114,8 @@ const calculateDuelStatsOverall = (duels, wizardId) => {
     if (stats.powerLow == Number.MAX_VALUE) {
         stats.powerLow = 0;
     }
+
+    stats.aggregateMoveStats = aggregateStats(stats.moveStats);
 
     return stats;
 }
@@ -235,6 +243,32 @@ const calculateWizardMovesetStats = (wizardAffinity, opponentAffinity, moveset, 
     }
 
     return statsset;
+}
+
+/**
+ * Takes an array of stats and accumulates them all into one output
+ */
+const aggregateStats = function(statsArray) {
+    const aggregate = {...emptyStats};
+    console.log("initial stats => ", aggregate);
+    for (const stats of statsArray) {
+        console.log("adding stats => ", stats);
+
+        aggregate.usesOwnAffinityVsNeutral += stats.usesOwnAffinityVsNeutral;
+        aggregate.usesOwnAffinityVsSame += stats.usesOwnAffinityVsSame;
+        aggregate.usesOwnAffinityWhileAdvantaged += stats.usesOwnAffinityWhileAdvantaged;
+        aggregate.usesOwnAffinityWhileDisadvantaged += stats.usesOwnAffinityWhileDisadvantaged;
+
+        aggregate.usesOpponentsWeaknessVsSame += stats.usesOpponentsWeaknessVsSame;
+        aggregate.usesOpponentsWeaknessWhileAdvantaged += stats.usesOpponentsWeaknessWhileAdvantaged;
+        aggregate.usesOpponentsWeaknessWhileDisadvantaged += stats.usesOpponentsWeaknessWhileDisadvantaged;
+
+        aggregate.usesOwnWeaknessVsSame += stats.usesOwnWeaknessVsSame;
+        aggregate.usesOwnWeaknessWhileAdvantaged += stats.usesOwnWeaknessWhileAdvantaged;
+        aggregate.usesOwnWeaknessWhileDisadvantaged += stats.usesOwnWeaknessWhileDisadvantaged;
+    }
+
+    return aggregate;
 }
 
 module.exports = {
