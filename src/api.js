@@ -51,7 +51,7 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
             response = data;
         })
         .catch((err) => {
-            console.log('Encountered error', err);
+            //console.log('Encountered error', err);
             response = err.response.body;
         });
 

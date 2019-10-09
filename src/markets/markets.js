@@ -39,7 +39,7 @@ const apiQuery = async (endpoint = null, method = "GET") => {
         response = data;
     })
     .catch((err) => {
-        console.log('Encountered error', err);
+        //console.log('Encountered error', err);
         response = err.response.body;
     });
 
@@ -117,7 +117,7 @@ if (location.href.indexOf('markets') !== -1) {
                     // Wallets
                     this.wallets.rinkeby = false;
                     this.wallets.mainnet = accounts[0];
-                    console.log('Accounts =>', this.wallets);
+                    //console.log('Accounts =>', this.wallets);
                 }
             } else {
                 this.isWeb3Enabled = false;
@@ -148,7 +148,7 @@ if (location.href.indexOf('markets') !== -1) {
                     if (coiMarkets.hasOwnProperty('data')) {
                         if (coiMarkets.data.hasOwnProperty('markets')) {
                             this.coiMarkets = coiMarkets.data.markets.reverse();
-                            console.log('coiMarkets =>', this.coiMarkets);
+                            //console.log('coiMarkets =>', this.coiMarkets);
                         }
                     }
                 }
@@ -165,7 +165,7 @@ if (location.href.indexOf('markets') !== -1) {
                     if (communityMarkets.hasOwnProperty('data')) {
                         if (communityMarkets.data.hasOwnProperty('markets')) {
                             this.communityMarkets = communityMarkets.data.markets.reverse();
-                            console.log('communityMarkets =>', this.communityMarkets);
+                            //console.log('communityMarkets =>', this.communityMarkets);
                         }
                     }
                 }
@@ -213,7 +213,7 @@ if (location.href.indexOf('markets') !== -1) {
                     marketUrl = this.MAINNET_MARKET_URL + marketAddress;
                 }
 
-                console.log('Navigating to Market Address =>', marketUrl);
+                //console.log('Navigating to Market Address =>', marketUrl);
                 this.exitTimer = 5;
                 let timer;
                 timer = setInterval(() => {

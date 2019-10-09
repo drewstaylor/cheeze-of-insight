@@ -51,7 +51,7 @@ if (location.href.indexOf('learn') !== -1) {
                 let wizardsQuery = await this.api.getAllWizards();
                 // Sort Wizards
                 this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                console.log('All wizards', this.wizards);
+                //console.log('All wizards', this.wizards);
             },
             generateMatchUp: function () {
                 this.matchUpReady = false;

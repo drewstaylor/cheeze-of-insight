@@ -244,11 +244,11 @@ if (location.href.indexOf('duels') == -1
                     // Wallets
                     this.wallets.rinkeby = false;
                     this.wallets.mainnet = accounts[0];
-                    console.log('Accounts =>', this.wallets);
+                    //console.log('Accounts =>', this.wallets);
 
                     // ERC721 Instances
                     this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
-                    console.log('ERC721 Contract', this.contracts.mainnet.wizards);
+                    //console.log('ERC721 Contract', this.contracts.mainnet.wizards);
                     this.fetchUserWizards();
                 }
             } else {
@@ -279,12 +279,12 @@ if (location.href.indexOf('duels') == -1
                     let chatAvailable = await this.firebase.login();
                     if (chatAvailable) {
                         this.userIsLoggedIn = true;
-                        console.log('Chat =>', this.chat);
-                        console.log('Users =>', this.usersOnline);
-                        console.log('User Wizards =>', this.tokens.mainnet.wizards);
+                        //console.log('Chat =>', this.chat);
+                        //console.log('Users =>', this.usersOnline);
+                        //console.log('User Wizards =>', this.tokens.mainnet.wizards);
                     }
                 } catch (e) {
-                    console.log('Error logging into Firebase =>', e);
+                    //console.log('Error logging into Firebase =>', e);
                 }
             },
             logout: async function () {
@@ -297,7 +297,7 @@ if (location.href.indexOf('duels') == -1
                     await this.firebase.logout();
                     this.userIsLoggedIn = false;
                 } catch (e) {
-                    console.log('Error logging out user from Firebase =>', e);
+                    //console.log('Error logging out user from Firebase =>', e);
                 }
             },
             setupChat: async function (chatUser = null) {
@@ -458,12 +458,12 @@ if (location.href.indexOf('duels') == -1
                                 }
                                 // Create active Duel from Duel config
                                 this.activeDuelSimulation = this.chatDuelChallengeConfig;
-                                console.log('this.activeDuelSimulation', this.activeDuelSimulation);
+                                //console.log('this.activeDuelSimulation', this.activeDuelSimulation);
 
                                 // assume we're challenging here
                                 this.activeDuelWizard = this.activeDuelSimulation.wizardChallenged;
                                 this.activeOpponentWizard = this.activeDuelSimulation.wizardChallenging;
-                                console.log('accepted invite response', [this.activeDuelWizard, this.activeOpponentWizard]);
+                                //console.log('accepted invite response', [this.activeDuelWizard, this.activeOpponentWizard]);
                                 break;
                         }
 
@@ -473,13 +473,13 @@ if (location.href.indexOf('duels') == -1
             // Context Menu Handler
             contextMenuHandler: function (event, item) {
                 //console.log('contextMenuHandler =>', [event, item]);
-                console.log('this.$refs =>', this.$refs);
+                //console.log('this.$refs =>', this.$refs);
                 this.$refs.chatContextMenu.showMenu(event, item);
             },
             // Context Menu Worker
             contextMenuResolver: function (event) {
 
-                console.log('Option Selected =>', event);
+                //console.log('Option Selected =>', event);
 
                 // Hop out if `event` is invalid
                 if (!event) {
@@ -505,7 +505,7 @@ if (location.href.indexOf('duels') == -1
                         this.chatDuelChallengeConfig = event.option;
                         // Launch modal to finalize challenger config
                         if (!event.item.wallet) {
-                            console.log('No wallet was found for the user you wish to challenge :(');
+                            //console.log('No wallet was found for the user you wish to challenge :(');
                             event.item.wallet = false;
                         }
                         // Load Wizards of the Duelist you want to challenge
@@ -557,7 +557,7 @@ if (location.href.indexOf('duels') == -1
                     // Proceed to review and submit challenge (Step 3)
                     this.chatChallengeModal_step3 = true;
                 }
-                console.log('Challenge config =>', this.chatDuelChallengeConfig);
+                //console.log('Challenge config =>', this.chatDuelChallengeConfig);
             },
             selectPendingChallengeWizard: async function (wizardId, isOpponent) {
                 if (!wizardId) {
@@ -585,7 +585,7 @@ if (location.href.indexOf('duels') == -1
                     this.currentOpposingPendingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingPendingWizard);
                     // Set opponent's wizard in challenge config
                     this.chatDuelChallengeConfig.wizardChallenged = this.currentOpposingPendingWizard;
-                    console.log('Challenge config =>', this.chatDuelChallengeConfig);
+                    //console.log('Challenge config =>', this.chatDuelChallengeConfig);
                     return true;
                 } else {
                     // Load wizard
@@ -596,7 +596,7 @@ if (location.href.indexOf('duels') == -1
                     this.currentPendingWizard = this.wizardUtils.getWizardMetadata(this.currentPendingWizard);
                     // Set opponent's wizard in challenge config
                     this.chatDuelChallengeConfig.wizardChallenging = this.currentPendingWizard;
-                    console.log('Challenge config =>', this.chatDuelChallengeConfig);
+                    //console.log('Challenge config =>', this.chatDuelChallengeConfig);
                     return true;
                 }
             },
@@ -611,7 +611,7 @@ if (location.href.indexOf('duels') == -1
 
                 // Create duel room
                 this.chat.createRoom(roomName, 'private', (roomId) => {
-                    console.log('Created Room =>', roomId);
+                    //console.log('Created Room =>', roomId);
                     this.chatDuelChallengeConfig.roomId = roomId;
                     // Find partner in online user list
                     this.usersOnline.filter((user) => {
@@ -648,11 +648,11 @@ if (location.href.indexOf('duels') == -1
                 }
                 // Else, accept the Duel
                 let pendingDuel = this.pendingDuelRequests[pendingIndex];
-                console.log('Accepting duel request =>', pendingDuel);
+                //console.log('Accepting duel request =>', pendingDuel);
                 this.chat.acceptInvite(pendingDuel.inviteId, () => {
                     let newActiveDuel = this.pendingDuelRequests.splice(pendingIndex, 1);
                     this.activeDuelSimulation = newActiveDuel[0];
-                    console.log('this.activeDuelSimulation', this.activeDuelSimulation);
+                    //console.log('this.activeDuelSimulation', this.activeDuelSimulation);
                     // Remove alert and handle notifications count
                     // If user has not closed the active alert
                     if (this.notification.type) {
@@ -664,7 +664,7 @@ if (location.href.indexOf('duels') == -1
             },
             declineChallenge: async function (pendingIndex) {
                 let pendingDuel = this.pendingDuelRequests[pendingIndex];
-                console.log('Declining duel request =>', pendingDuel);
+                //console.log('Declining duel request =>', pendingDuel);
                 this.chat.declineInvite(pendingDuel.inviteId, () => {
                     this.pendingDuelRequests.splice(pendingIndex, 1);
                     // Remove alert and handle notifications count
@@ -723,7 +723,7 @@ if (location.href.indexOf('duels') == -1
                         }, 100);
                         break;
                     case VIEW_ALL_WIZARDS:
-                        console.log('Wizards browsing mode enabled');
+                        //console.log('Wizards browsing mode enabled');
                         this.isBgAnimated = false;
                         this.navigation.state = VIEW_ALL_WIZARDS;
                         this.getAllWizards();
@@ -743,7 +743,7 @@ if (location.href.indexOf('duels') == -1
                     // Show match prediction
                     case PREDICT_MATCHES:
                         this.isBgAnimated = false;
-                        console.log('Match prediction mode enabled');
+                        //console.log('Match prediction mode enabled');
                         this.navigation.state = PREDICT_MATCHES;
 
                         // Handle state entry
@@ -799,8 +799,8 @@ if (location.href.indexOf('duels') == -1
             // Active Dueling
             proceedToDuel: function () {
 
-                console.log('duel??', this.activeDuelWizard);
-                console.log('chatDuelConfig??', this.chatDuelChallengeConfig);
+                //console.log('duel??', this.activeDuelWizard);
+                //console.log('chatDuelConfig??', this.chatDuelChallengeConfig);
 
                 // Note, since Duels are a route option
                 // there is no need to update chat counter
@@ -912,7 +912,7 @@ if (location.href.indexOf('duels') == -1
                 }
 
                 if (index < 0 || index > 4) {
-                    console.log("Warning: affinity should be an index between 0 and 4");
+                    //console.log("Warning: affinity should be an index between 0 and 4");
                     return "";
                 }
 
@@ -998,7 +998,7 @@ if (location.href.indexOf('duels') == -1
                                 this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
                             }
 
-                            console.log('Wizards of owner =>', this.selectedWizardsByAddress);
+                            //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
                         }
                     } else {
                         this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
@@ -1009,7 +1009,7 @@ if (location.href.indexOf('duels') == -1
                             this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
                         }
 
-                        console.log('Wizards of owner =>', this.selectedWizardsByAddress);
+                        //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
                     }
 
 
@@ -1029,11 +1029,11 @@ if (location.href.indexOf('duels') == -1
                     // Show browse single Wizard modal
                     this.selectedWizardsByAddressModalShown = true;
                 } else if (isComparisonMode && !self)  {
-                    console.log('show opponent wizards');
+                    //console.log('show opponent wizards');
                     // Show comparison opponent Wizards
                     this.comparisonWizardsByAddressModalShown = true;
                 } else {
-                    console.log('show my wizards');
+                    //console.log('show my wizards');
                     // Show all my Wizards
                     this.comparisonMyWizardsModalShown = true;
                 }
@@ -1061,7 +1061,7 @@ if (location.href.indexOf('duels') == -1
 
                 // Disable loading
                 this.isLoading = false;
-                console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
+                //console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
             },
             showComparisonWizard: async function (wizardId = null) {
                 // Nothing to do..
@@ -1126,7 +1126,7 @@ if (location.href.indexOf('duels') == -1
 
                 // Compare Wizard powers and affinities
                 this.matchPrediction = this.wizardUtils.predictWinner(this.currentWizard, currentOpposingWizard);
-                console.log('Prediction =>', this.matchPrediction);
+                //console.log('Prediction =>', this.matchPrediction);
 
                 // Prediction type
                 if (!this.matchPrediction) {
@@ -1157,7 +1157,7 @@ if (location.href.indexOf('duels') == -1
 
                 // Disable loading
                 this.isLoading = false;
-                console.log('Wizards Compared =>', [this.currentWizard, this.currentOpposingWizard]);
+                //console.log('Wizards Compared =>', [this.currentWizard, this.currentOpposingWizard]);
 
                 // Scroll to top of page (useful when running predictions from modal pop-ups)
                 window.scrollTo(0,0);

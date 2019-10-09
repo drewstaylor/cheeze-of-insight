@@ -118,7 +118,7 @@ const validMove=  {
       
   
     }catch(err){
-      console.log(err)
+      //console.log(err)
     }
     
 }
@@ -140,13 +140,13 @@ const validMove=  {
         let MS2= generateMoveSet(moves2[0],moves2[1],moves2[2],moves2[3],moves2[4])
         
         let result =await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract,web3)
-        console.log(result)
+        //console.log(result)
         result=web3.eth.abi.decodeParameters(['int256', 'int256'], result);
         return result
 
         }catch(e){
-            console.log('this is the error')
-            console.log(e)
+            //console.log('this is the error')
+            //console.log(e)
         }
     }
     module.exports = {

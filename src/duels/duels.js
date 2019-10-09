@@ -133,14 +133,14 @@ if (location.href.indexOf('duels') !== -1) {
             // prior to any 'await' call, we need to determine whether we are in
             // offline mode or not
             this.mode = (this.isOfflineMode() ? 'offline' : 'challenge');
-            console.log("early detection of mode: "+ this.mode);
+            //console.log("early detection of mode: "+ this.mode);
 
             const duelParams = await this.readConfig();
-            console.log("duelParams => ", duelParams);
+            //console.log("duelParams => ", duelParams);
 
             // this.mode = duelParams.mode;
             if (this.mode !== duelParams.mode) {
-                console.log(`WARNING: detected mode (${this.mode}) != duelParams.mode (${duelParams.mode})!!`);
+                //console.log(`WARNING: detected mode (${this.mode}) != duelParams.mode (${duelParams.mode})!!`);
             }
 
             this.ourWizardId = duelParams.ourWizardId;
@@ -149,11 +149,11 @@ if (location.href.indexOf('duels') !== -1) {
 
             // determine which wizard is which
             if (this.duel.wizardChallenged.id === this.ourWizardId) {
-                console.log("We're the challenged wizard");
+                //console.log("We're the challenged wizard");
                 this.opposingWizard = this.duel.wizardChallenging;
                 this.ourWizard = this.duel.wizardChallenged;
             } else {
-                console.log("We're the challenging wizard");
+                //console.log("We're the challenging wizard");
                 this.opposingWizard = this.duel.wizardChallenged;
                 this.ourWizard = this.duel.wizardChallenging;
             }
@@ -171,11 +171,11 @@ if (location.href.indexOf('duels') !== -1) {
                     // Wallets
                     this.wallets.rinkeby = false;
                     this.wallets.mainnet = accounts[0];
-                    console.log('Accounts =>', this.wallets);
+                    //console.log('Accounts =>', this.wallets);
                     
                     // ERC721 Instances
                     this.contracts.mainnet.wizards = await this.Provider.mainnetWizardsInstance();
-                    console.log('ERC721 Contract', this.contracts.mainnet.wizards);
+                    //console.log('ERC721 Contract', this.contracts.mainnet.wizards);
                 }
             } else {
                 this.isWeb3Enabled = false;
@@ -203,29 +203,29 @@ if (location.href.indexOf('duels') !== -1) {
 
                 // TODO: we should not even connec to firebase in (mode == "offline")
                 if (this.mode === "offline") {
-                    console.log("Ignoring firebaseDuels update");
+                    //console.log("Ignoring firebaseDuels update");
                     return;
                 }
 
-                console.log("firebaseDuels change => ", value);
+                //console.log("firebaseDuels change => ", value);
 
                 // 'duel-simulations' is an array of all active duels; we need to loop through each to find ours
                 let thisDuel = null;
                 for (const duel of value) {
                     if (duel && duel['.key'] && duel['.key'] === this.duel.roomId) {
-                        console.log("Found our duel => ", duel);
+                        //console.log("Found our duel => ", duel);
                         thisDuel = duel;
                         break;
                     }
                 }
 
                 if (! thisDuel) {
-                    console.log("Did not find our duel");
+                    //console.log("Did not find our duel");
                     return;
                 }
 
                 if (! thisDuel.moves) {
-                    console.log("No moves yet");
+                    //console.log("No moves yet");
                     return;
                 }
 
@@ -233,7 +233,7 @@ if (location.href.indexOf('duels') !== -1) {
                 const opponentMoves = thisDuel.moves[this.opposingWizardId];
 
                 if (opponentMoves) {
-                    console.log("Setting opponentMoves", opponentMoves);
+                    //console.log("Setting opponentMoves", opponentMoves);
                     this.opponentMoves = opponentMoves;
                     this.opponentMovesReceived = true;
                 }
@@ -243,11 +243,11 @@ if (location.href.indexOf('duels') !== -1) {
                 }
             },
             ourMoves(value) {
-                console.log("our moves updated => ", value);
+                //console.log("our moves updated => ", value);
                 this.processOfflineSimulation(this.ourMoves, this.opponentMoves);
             },
             opponentMoves(value) {
-                console.log("opponent moves updated => ", value);
+                //console.log("opponent moves updated => ", value);
                 this.processOfflineSimulation(this.ourMoves, this.opponentMoves);
             },
         },
@@ -270,25 +270,25 @@ if (location.href.indexOf('duels') !== -1) {
                 // Only call, when valid args are present
                 if (!ourMoves || !opponentMoves || !this.duel ||
                         (!this.opponentMovesReceived && this.mode === 'challeng')) {
-                    console.log("processDuelSimulation(): preconditions not met => ",
+                    /*console.log("processDuelSimulation(): preconditions not met => ",
                         {
                             ourMoves,
                             opponentMoves,
                             duel: this.duel,
                             opponentMovesReceived: this.opponentMovesReceived
-                        });
+                        });*/
                     throw new Error("processDuelSimulation(): preconditions not met (see console)");
                 }
 
                 // even more pedantic... 
                 if (! this.ourWizardId || ! this.ourWizard || ! this.opposingWizardId || ! this.opposingWizard) {
-                    console.log("processDuelSimulation(): don't have correct wizard ids, how did we even get here? => ",
+                    /*console.log("processDuelSimulation(): don't have correct wizard ids, how did we even get here? => ",
                         {
                             ourWizardId: this.ourWizardId,
                             ourWizard: this.ourWizard,
                             opposingWizardId: this.opposingWizardId,
                             opposingWizard: this.opposingWizard,
-                        });
+                        });*/
                     throw new Error("processDuelSimulation(): incorrect wizard(s) in duel config");
                 }
 
@@ -307,7 +307,7 @@ if (location.href.indexOf('duels') !== -1) {
                 );
 
                 // Debug
-                console.log('Resolved Duel =>', result);
+                //console.log('Resolved Duel =>', result);
 
                 const power = Math.round(parseInt(result[0]) / 1000000000000);
                 const score = parseInt(result[1]);
@@ -319,7 +319,7 @@ if (location.href.indexOf('duels') !== -1) {
                     outcome: outcome,
                 };
 
-                console.log("Compiled duel results:", this.duelResults);
+                //console.log("Compiled duel results:", this.duelResults);
                 this.clearSessionStorage();
             },
 
@@ -382,12 +382,12 @@ if (location.href.indexOf('duels') !== -1) {
             async submitTurn() {
 
                 if (!(this.ourMoves[0] && this.ourMoves[1] && this.ourMoves[2] && this.ourMoves[3] && this.ourMoves[4])) {
-                    console.log("Error: not all turns are set");
+                    //console.log("Error: not all turns are set");
                     return;
                 }
 
                 if (this.ourMovesSubmitted) {
-                    console.log("Error: can't submit our turns more than once");
+                    //console.log("Error: can't submit our turns more than once");
                     return;
                 }
                 this.ourMovesSubmitted = true;

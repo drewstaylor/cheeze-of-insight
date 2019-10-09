@@ -18,13 +18,13 @@ const login = async function () {
 
     // Online persistence
     await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(function(error) {
-        console.log('Error authenticating user =>', error);
+        //console.log('Error authenticating user =>', error);
         response = false;
     });
 
     // Create login
     await firebase.auth().signInWithPopup(provider).catch(function(error) {
-        console.log('Error authenticating user =>', error);
+        //console.log('Error authenticating user =>', error);
         response = false;
     });
 
@@ -43,7 +43,7 @@ const logout = async function () {
     try {
         await firebase.auth().signOut();
     } catch (e) {
-        console.log('Error logging out user =>', e);
+        //console.log('Error logging out user =>', e);
     } 
 };
 
@@ -67,7 +67,7 @@ const listenForChatUser = async function () {
         // Once authenticated, instantiate Firechat with the logged in user
         if (user) {
             chatUser = user;
-            console.log('Auth state changed =>', chatUser);
+            //console.log('Auth state changed =>', chatUser);
         } else {
             chatUser = false;
         }
@@ -126,13 +126,13 @@ const getChat = async function (user, wizards = [], wallet = null) {
         console.log('inviteResponse', inviteResponse);
     });*/
     chat.on('room-enter', (roomEntered) => {
-        console.log('roomEntered', roomEntered);
+        //console.log('roomEntered', roomEntered);
     });
     chat.on('room-exit', (roomExited) => {
-        console.log('roomExited', roomExited);
+        //console.log('roomExited', roomExited);
     });
     chat.on('message-add', (message) => {
-        console.log('Message Received =>', message);
+        //console.log('Message Received =>', message);
     });
 
     return chat;
@@ -150,7 +150,7 @@ const getRooms = async function (chat) {
     let rooms;
     await chat.getRoomList((roomArray) => {
         rooms = roomArray;
-        console.log('Chat Rooms =>', rooms);
+        //console.log('Chat Rooms =>', rooms);
     });
     return rooms;
 };
@@ -172,7 +172,7 @@ const createRoom = async function (chat, roomName, type = 'private') {
     }
     await chat.createRoom(roomName, type, (roomId) => {
         room = roomId;
-        console.log('Created Room =>', room);
+        //console.log('Created Room =>', room);
     });
     // Return ID of created room
     return room;
