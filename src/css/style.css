@@ -178,10 +178,6 @@ div.view-single-wizard {
     display: inline;
 }
 
-div.paginated-wizards {
-    min-width: 1140px;
-}
-
 div.cheese-wizard-image.selected-opponent-img,
 div.cheese-wizard-image.my-wizard-img {
     margin: auto;

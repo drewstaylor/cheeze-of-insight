@@ -17,8 +17,8 @@ if (location.href.indexOf('learn') !== -1) {
                 'Unknown',
                 'Neutral',
                 'Fire',
-                'Wind',
-                'Water'
+                'Water',
+                'Wind'
             ],
             matchUpReady: false,
             steps: [0,1,2],

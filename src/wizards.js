@@ -19,15 +19,15 @@ const affinities = [
     'Unknown',
     'Neutral',
     'Fire',
-    'Wind',
-    'Water'
+    'Water',
+    'Wind'
 ];
 
 const UKNOWN = affinities[0];
 const NEUTRAL = affinities[1];
 const FIRE = affinities[2];
-const WIND = affinities[3];
-const WATER = affinities[4];
+const WATER = affinities[3];
+const WIND = affinities[4];
 
 /**
  * Get the vulnerability of a given affinity
@@ -38,13 +38,13 @@ const getVulnerability = function (affinity) {
     switch(affinities[affinity]) {
         // Fire < Water
         case FIRE:
-            return affinities[4];
+            return affinities[3];
         // Wind < Fire
         case WIND:
             return affinities[2];
         // Water < Wind
         case WATER:
-            return affinities[3];
+            return affinities[4];
         // Unknown input => Unknown output
         // Will apply to enum types
         // 'Neutral' and 'Unknown'
@@ -62,10 +62,10 @@ const getOptimalOponent = function (affinity) {
     switch(affinities[affinity]) {
         // Fire > Wind
         case FIRE:
-            return affinities[3];
+            return affinities[4];
         // Wind > Water
         case WIND:
-            return affinities[4];
+            return affinities[3];
         // Water > Fire
         case WATER:
             return affinities[2];

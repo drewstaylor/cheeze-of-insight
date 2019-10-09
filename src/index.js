@@ -166,8 +166,8 @@ if (location.href.indexOf('duels') == -1
                 'Unknown',
                 'Neutral',
                 'Fire',
-                'Wind',
-                'Water'
+                'Water',
+                'Wind'
             ],
 
             // Notifications
