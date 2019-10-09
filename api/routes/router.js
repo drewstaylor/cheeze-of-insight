@@ -10,13 +10,16 @@ let augur = Augur.node;
 augur.connect({
   ethereumNode: {
     httpAddresses: [
-      "https://rinkeby.infura.io" // hosted HTTP address for Ethereum Rinkeby test network
+      //"https://rinkeby.infura.io" // hosted HTTP address for Ethereum Rinkeby test network
+      "https://mainnet.infura.io"
     ],
     wsAddresses: [
-      "wss://rinkeby.infura.io/ws" // hosted WebSocket address Ethereum Rinkeby test network
+      //"wss://rinkeby.infura.io/ws" // hosted WebSocket address Ethereum Rinkeby test network
+      "wss://mainnet.infura.io/ws"
     ]
   },
-  augurNode: "wss://dev.augur.net/augur-node" // WebSocket address for an Augur Node on Rinkeby
+  //augurNode: "wss://dev.augur.net/augur-node" // WebSocket address for an Augur Node on Rinkeby
+  augurNode: "wss://eth-mainnet.alchemyapi.io/jsonrpc/-vPGIFwUyjlMRF9beTLXiGQUK6Nf3k8z"
 }, (error, connectionInfo) => {
   console.log(connectionInfo);
 });
