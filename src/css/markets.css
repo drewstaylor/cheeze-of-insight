@@ -86,3 +86,14 @@ div.wrapper.mount-wrapper.exit-coi {
 div.wrapper.mount-wrapper.exit-coi .jumbotron {
     background-color: #ffffff;
 }
+
+div.augur-logo {
+    display: block;
+}
+
+div.augur-logo  > img {
+    margin: auto;
+    max-width: 400px;
+    height: auto;
+    display: block;
+}

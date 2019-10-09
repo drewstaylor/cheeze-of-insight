@@ -64,7 +64,7 @@
                     <strong>But wait, there's more!</strong>
                 </p>
                 <p>Think our prediction markets are cool? Why not launch your own Augur market and have it appear in the "Community Markets" section of this page</p>
-                <p>We've open sourced our market creator to make it easy for you to launch markets that will appear on our platform. Just clone the repo <a href="#">here</a> and follow the instructions of the README to get started!</p>
+                <p>We've open sourced our market creator to make it easy for you to launch markets that will appear on our platform. Just clone the repo <a href="https://github.com/drewstaylor/coi-market-creation">here</a> and follow the instructions of the README to get started!</p>
                 <hr class="my-4">
                 <p>The Wizards used by our markets are chosen according to either of the following 2 principals, and refer to that Wizard's power after the previous day's Duels have resolved.</p>
                 <ul>
@@ -74,79 +74,87 @@
                 <p>
                     <strong>*Note: we take "volatile" to mean Wizards power levels that fluctuated by the greatest margin during the previous day's dueling window</strong>
                 </p>
-                <div class="read-less">
+                <div class="read-less" v-if="isPhaseThreeTournament">
                     <button class="btn btn-inverse" @click="descrReadMore = false;">Read less</button>
                 </div>
             </div>
-        
 
-            <!-- COI Markets -->
-            <div class="coi-markets markets wrapper" v-if="coiMarkets">
-                <h5>COI Markets:</h5>
-                <div class="markets-not-found" v-if="!coiMarkets.length">
-                    <p>No COI markets found</p>
+            <!-- Markets Wrapper-->
+            <div v-if="isPhaseThreeTournament">
+                <!-- COI Markets -->
+                <div class="coi-markets markets wrapper" v-if="coiMarkets">
+                    <h5>COI Markets:</h5>
+                    <div class="markets-not-found" v-if="!coiMarkets.length">
+                        <p>No COI markets found</p>
+                    </div>
+                    <div v-else>
+                        <!-- Market Data-->
+                        <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+                                    </div>
+                                    <h5 class="card-title">{{ market.description }}</h5>
+                                    <p class="card-text">{{ market.details }}</p>
+                                    <div class="category">
+                                        <label>
+                                            <strong>CATEGORY:</strong>
+                                        </label> <span class="category">{{ market.category }}</span>
+                                    </div>
+                                    <div class="tags">
+                                        <label>
+                                            <strong>TAGS:</strong>
+                                        </label>
+                                        <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
+                                    </div>
+                                    <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div v-else>
-                    <!-- Market Data-->
-                    <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+
+                <!-- Community Markets -->
+                <div class="community-markets markets wrapper" v-if="communityMarkets">
+                    <h5>Community Markets:</h5>
+                    <div class="markets-not-found" v-if="!communityMarkets.length">
+                        <p>No community markets found. Want to create some? Clone <a class="underline" href="#">this</a> repo and follow the README to get started!</p>
+                    </div>
+                    <div v-else>
+                        <!-- Market Data-->
+                        <div v-for="(market, index) in communityMarkets" @click="doMarketNavigation(market.id)">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+                                    </div>
+                                    <h5 class="card-title">{{ market.description }}</h5>
+                                    <p class="card-text">{{ market.details }}</p>
+                                    <div class="category">
+                                        <label>
+                                            <strong>CATEGORY:</strong>
+                                        </label> <span class="category">{{ market.category }}</span>
+                                    </div>
+                                    <div class="tags">
+                                        <label>
+                                            <strong>TAGS:</strong>
+                                        </label>
+                                        <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
+                                    </div>
+                                    <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
                                 </div>
-                                <h5 class="card-title">{{ market.description }}</h5>
-                                <p class="card-text">{{ market.details }}</p>
-                                <div class="category">
-                                    <label>
-                                        <strong>CATEGORY:</strong>
-                                    </label> <span class="category">{{ market.category }}</span>
-                                </div>
-                                <div class="tags">
-                                    <label>
-                                        <strong>TAGS:</strong>
-                                    </label>
-                                    <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
-                                </div>
-                                <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Community Markets -->
-            <div class="community-markets markets wrapper" v-if="communityMarkets">
-                <h5>Community Markets:</h5>
-                <div class="markets-not-found" v-if="!communityMarkets.length">
-                    <p>No community markets found. Want to create some? Clone <a class="underline" href="#">this</a> repo and follow the README to get started!</p>
-                </div>
-                <div v-else>
-                    <!-- Market Data-->
-                    <div v-for="(market, index) in communityMarkets" @click="doMarketNavigation(market.id)">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
-                                </div>
-                                <h5 class="card-title">{{ market.description }}</h5>
-                                <p class="card-text">{{ market.details }}</p>
-                                <div class="category">
-                                    <label>
-                                        <strong>CATEGORY:</strong>
-                                    </label> <span class="category">{{ market.category }}</span>
-                                </div>
-                                <div class="tags">
-                                    <label>
-                                        <strong>TAGS:</strong>
-                                    </label>
-                                    <span class="tag" v-for="(tag) in market.tags">{{ tag }}</span>
-                                </div>
-                                <button @click="doMarketNavigation(market.id)" class="btn btn-inverse">Go To Market Betting</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Augur Markets Unavailable (Not Phase III Tournament) -->
+            <div class="augur-logo" v-else>
+                <img class="img-fluid" src="../img/augur-logo.svg">
             </div>
+
         </div>
 
         <!-- EXIT COI STATE (Redirection Warning) -->

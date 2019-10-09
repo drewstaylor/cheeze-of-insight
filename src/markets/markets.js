@@ -84,11 +84,12 @@ if (location.href.indexOf('markets') !== -1) {
                     wizards: []
                 }
             },
-            isMainnetAugur: false,
+            isMainnetAugur: true,
+            isPhaseThreeTournament: false,
             coiMarkets: [],
             communityMarkets: [],
             applicationState: MAIN_STATE,
-            descrReadMore: false,
+            descrReadMore: true,
             exitTimer: null,
             isBgAnimated: false
         }),
@@ -138,6 +139,10 @@ if (location.href.indexOf('markets') !== -1) {
             },
             // Load COI Markets
             getCoiMarkets: async function () {
+                // Do not fetch markets unless the BM has arrived!
+                if (!this.isPhaseThreeTournament) {
+                    return;
+                }
                 let coiMarkets = await this.apiQuery('markets/owned');
                 if (coiMarkets) {
                     if (coiMarkets.hasOwnProperty('data')) {
@@ -151,6 +156,10 @@ if (location.href.indexOf('markets') !== -1) {
 
             // Load Comunnity Markets
             getCommunityMarkets: async function () {
+                // Do not fetch markets unless the BM has arrived!
+                if (!this.isPhaseThreeTournament) {
+                    return;
+                }
                 let communityMarkets = await this.apiQuery('markets/community');
                 if (communityMarkets) {
                     if (communityMarkets.hasOwnProperty('data')) {
