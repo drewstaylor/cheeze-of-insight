@@ -56,9 +56,14 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
         });
 
     if (endpoint.indexOf('cheezeofinsight') > -1) {
-        await parse(response).then( async (data) => {
-            response = await JSON.stringify(data);
-        });
+        if (response) {
+            await parse(response).then(async (data) => {
+                response = await JSON.stringify(data);
+            });
+        } else {
+            response = null;
+            return response;
+        }
     }
     
     // Handle response
@@ -153,16 +158,14 @@ const getWizardTraitsById = async (id = null) => {
 
     // Fetch data
     let wizardSvgUrl = getWizardImageUrlById(id, true);
-    //let traitsData = await apiQuery(config.openSeaTraits + '?format=json');
     let wizardSvg = await apiQuery(wizardSvgUrl);
-    wizardSvg = wizardSvg.children;
 
     if (!traitsData.collection || !wizardSvg) {
         return false;
+    } else if (!traitsData.collection.traits) {
+        return false;
     } else {
-        if (!traitsData.collection.traits) {
-            return false;
-        }
+        wizardSvg = wizardSvg.children;
 
         let traitsCollection = traitsData.collection.traits;
         //console.log(traitsCollection);
