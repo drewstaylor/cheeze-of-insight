@@ -46,6 +46,16 @@ if (location.href.indexOf('learn') !== -1) {
             goHome: function () {
                 return window.location.href = "/";
             },
+            goPlay: async function () {
+                // Fetch random wizards
+                if (!this.wizards) {
+                    await this.getAllWizards();
+                }
+                let wizardA = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                let wizardB = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                // Return a random duel
+                return window.location.href = "/duels/?wiz1=" + wizardA.id + "&wiz2=" + wizardB.id;
+            },
             goPredict: function () {
                 return window.location.href = "/markets";
             },

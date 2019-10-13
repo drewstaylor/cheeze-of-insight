@@ -65,6 +65,8 @@ if (location.href.indexOf('markets') !== -1) {
             apiQuery: apiQuery,
             // Dependencies
             Provider: require('../providers'),
+            api: require('../api'),
+            wizardUtils: require('../wizards'),
             // Web3
             web3Providers: {
                 rinkeby: null,
@@ -94,7 +96,8 @@ if (location.href.indexOf('markets') !== -1) {
             applicationState: MAIN_STATE,
             descrReadMore: true,
             exitTimer: null,
-            isBgAnimated: false
+            isBgAnimated: false,
+            wizards: null
         }),
         mounted: async function () {
             // Animate Cheeze Melt
@@ -139,6 +142,23 @@ if (location.href.indexOf('markets') !== -1) {
             goHere: function () {
                 //return window.location.href = "/markets";
                 this.descrReadMore = !this.descrReadMore;
+            },
+            goPlay: async function () {
+                // Fetch random wizards
+                if (!this.wizards) {
+                    await this.getAllWizards();
+                }
+                let wizardA = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                let wizardB = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                // Return a random duel
+                return window.location.href = "/duels/?wiz1=" + wizardA.id + "&wiz2=" + wizardB.id;
+            },
+            getAllWizards: async function () {
+                // Get Wizards
+                let wizardsQuery = await this.api.getAllWizards();
+                // Sort Wizards
+                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                //console.log('All wizards', this.wizards);
             },
             // Load COI Markets
             getCoiMarkets: async function () {

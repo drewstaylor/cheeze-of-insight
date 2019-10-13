@@ -116,7 +116,9 @@ if (location.href.indexOf('duels') !== -1) {
             opponentMovesReceived: false,
             firebaseDuels: [],
             // UI
-            isBgAnimated: false
+            isBgAnimated: false,
+            // Navigation
+            wizards: null
         }),
         firebase: {
             // TODO: subscribe to "duel-simulations/"+ duelId
@@ -258,6 +260,23 @@ if (location.href.indexOf('duels') !== -1) {
             // Menu Nav
             goHome: function () {
                 return window.location.href = "/";
+            },
+            goPlay: async function () {
+                // Fetch random wizards
+                if (!this.wizards) {
+                    await this.getAllWizards();
+                }
+                let wizardA = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                let wizardB = this.wizards[Math.floor(Math.random() * this.wizards.length)];
+                // Return a random duel
+                return window.location.href = "/duels/?wiz1=" + wizardA.id + "&wiz2=" + wizardB.id;
+            },
+            getAllWizards: async function () {
+                // Get Wizards
+                let wizardsQuery = await this.api.getAllWizards();
+                // Sort Wizards
+                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                //console.log('All wizards', this.wizards);
             },
             /**
              * @param {Object} ourMoves: An array of turn commitments (enums) for our wizard
