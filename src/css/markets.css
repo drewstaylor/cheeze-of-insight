@@ -91,7 +91,7 @@ div.augur-logo {
     display: block;
 }
 
-div.augur-logo  > img {
+div.augur-logo a > img {
     margin: auto;
     max-width: 400px;
     height: auto;
