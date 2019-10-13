@@ -4,6 +4,10 @@ require('./duels/duels.js');
 require('./markets/markets.js');
 require('./learn/learn.js');
 
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
+
+
 // Navigation states
 const HOME_STATE = -1;
 const VIEW_ALL_WIZARDS = 0;

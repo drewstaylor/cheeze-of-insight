@@ -36,6 +36,9 @@ const firebaseConfig = config.firebaseConfig;
 
 window.jQuery = require('jquery');
 
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
+
 const randomTurn = () => { return Math.floor(Math.random() * 3) + 2; };
 const randomTurns = () => {
     return [

@@ -2,6 +2,9 @@
 
 window.jQuery = require('jquery');
 
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
+
 // Create application
 if (location.href.indexOf('learn') !== -1) {
     let learnVm = new Vue({

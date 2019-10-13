@@ -11,6 +11,9 @@ const EXIT_COI_STATE = 1;
 
 window.jQuery = require('jquery');
 
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
+
 // Query helper
 const apiQuery = async (endpoint = null, method = "GET") => {
     let options;
