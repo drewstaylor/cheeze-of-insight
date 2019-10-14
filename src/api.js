@@ -132,7 +132,7 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
      * @param {Number} id : The ID of the wizard to build an image endpoint for
      */
     function isContractTwo (id) {
-        if (id > 100 && id < 213) {
+        if (id > 100 && id < 214) {
             return true;
         } else if (id > 255 && id < 363) {
             return true;
