@@ -247,6 +247,7 @@ div.selected-wizard-right {
 .icon.icon-search {
     height: 20px;
     margin: 0.5rem;
+    margin-left: 0;
 }
 
 div.traits.traits-container {
@@ -748,4 +749,64 @@ a.footer-link:hover {
 
 .navbar-brand.mb-0 h1.tk-exocet.footer {
     cursor: auto;
+}
+
+/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+@media (max-width:320px)  {
+    div.wrapper.mount-wrapper {
+        padding: 1rem;
+    }
+    .footer.left {
+        width: auto;
+        position: relative;
+        padding-left: 2rem;
+        float: none;
+        text-align: center;
+    }
+    .footer.right {
+        float: none;
+        margin-top: 0;
+        width: auto;
+        text-align: center;
+    }
+}
+
+/* smartphones, Android phones, landscape iPhone */
+@media (max-width:480px)  {
+    div.wrapper.mount-wrapper {
+        padding: 1rem;
+    }
+    .footer.left {
+        width: auto;
+        position: relative;
+        padding-left: 2rem;
+        float: none;
+        text-align: center;
+    }
+    .footer.right {
+        float: none;
+        margin-top: 0;
+        width: auto;
+        text-align: center;
+    }
+}
+
+/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+@media (max-width:600px)  {
+    div.wrapper.mount-wrapper {
+        padding: 1rem;
+    }
+    .footer.left {
+        width: auto;
+        position: relative;
+        padding-left: 2rem;
+        float: none;
+        text-align: center;
+    }
+    .footer.right {
+        float: none;
+        margin-top: 0;
+        width: auto;
+        text-align: center;
+    }
 }

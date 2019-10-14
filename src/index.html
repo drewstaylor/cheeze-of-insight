@@ -391,13 +391,13 @@
             <div class="img-main" v-if="navigation.state < 0">
                 <img class="img-fluid" src="img/holiness.jpg">
             </div>
-            <div class="back-btn" v-else-if="navigation.state == VIEW_SELECTED_WIZARD">
+            <div class="back-btn row" v-else-if="navigation.state == VIEW_SELECTED_WIZARD">
                 <a v-on:click="setNavigation(VIEW_ALL_WIZARDS)">Back</a>
             </div>
-            <div class="back-btn" v-else-if="navigation.state == PREDICT_MATCHES && currentWizard">
+            <div class="back-btn row" v-else-if="navigation.state == PREDICT_MATCHES && currentWizard">
                 <a v-on:click="setNavigation(VIEW_SELECTED_WIZARD)">Back</a>
             </div>
-            <div class="back-btn" v-else>
+            <div class="back-btn row" v-else>
                 <a v-on:click="setNavigation(HOME_STATE)">Back</a>
             </div>
 
@@ -475,54 +475,29 @@
                         </p>
                     </div>
 
-                    <!-- <div class="wizard" v-for="(wizard, index) in wizardsPage">
-                        <ul class="wizards-list">
-                            <li v-if="currentWizardsPage !== 1">
-                                <a v-on:click="showWizard(wizard.id);">{{index + (currentWizardsPage * wizardsPageSize) +  1 }}) Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a>
-                            </li>
-                            <li v-else>
-                                <a v-on:click="showWizard(wizard.id);">{{index +  1 }}) Cheeze Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</a> -- image: {{ getWizardImageUrl(wizard.id) }}
-                            </li>
-                        </ul>
-                    </div> -->
-
-                    <!-- <div class="card" style="width: 18rem;" v-for="(wizard, index) in wizardsPage">
-                      <div class="card-img"
-                        :style="'background-image: url(' + getWizardImageUrl(wizard.id) + '); height: 150px;background-size: 475px;background-repeat: no-repeat;background-position: center -100px;'"
-                      ></div>
-                      <div class="card-img-overlay d-flex justify-content-end"><img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"></div>
-                      <div class="card-body">
-                        <h5 class="card-title">Cheeze Wizard #{{ wizard.id }}</h5>
-                      </div>
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Affinity: <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"></li>
-                        <li class="list-group-item">Power: {{ getPrettyPowerLevel(wizard.power) }}</li>
-                    </ul>
-                    </div> -->
-
                     <div class="row paginated-wizards">
 
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in wizardsPage">
-                    <div :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase()" v-on:click="showWizard(wizard.id);">
-                        <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
-                            <div class="card-img-overlay d-flex justify-content-end">
-                                <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">
+                            <div :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase()" v-on:click="showWizard(wizard.id);">
+                                <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
+                                    <div class="card-img-overlay d-flex justify-content-end">
+                                        <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
+                                    <dl class="card-text row text-muted">
+                                        <dt class="col-sm-4">Power</dt>
+                                        <dd class="col-sm-8">{{ getPrettyPowerLevel(wizard.power) }}</dd>
+                                        <dt class="col-sm-4">Owner</dt>
+                                        <dd class="col-sm-8"><a v-on:click="showAllWizardsOfOwner(wizard.owner)">{{ wizard.owner.substring(0, 12) }}&hellip;</a></dd>
+                                    </dl>
+                                </div>
                             </div>
                         </div>
 
-                          <div class="card-body">
-                            <h5 class="card-title">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
-                            <dl class="card-text row text-muted">
-                                <dt class="col-sm-4">Power</dt>
-                                <dd class="col-sm-8">{{ getPrettyPowerLevel(wizard.power) }}</dd>
-                                <dt class="col-sm-4">Owner</dt>
-                                <dd class="col-sm-8"><a v-on:click="showAllWizardsOfOwner(wizard.owner)">{{ wizard.owner.substring(0, 12) }}&hellip;</a></dd>
-                            </dl>
-                          </div>
                     </div>
-                </div>
-
-                </div>
 
 
 
