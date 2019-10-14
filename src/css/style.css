@@ -757,6 +757,9 @@ a.footer-link:hover {
 
 /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 @media (max-width:320px)  {
+    body, html {
+        overflow-x: hidden;
+    }
     div.wrapper.mount-wrapper {
         padding: 1rem;
     }
@@ -795,6 +798,9 @@ a.footer-link:hover {
 
 /* smartphones, Android phones, landscape iPhone */
 @media (max-width:480px)  {
+    body, html {
+        overflow-x: hidden;
+    }
     div.wrapper.mount-wrapper {
         padding: 1rem;
     }
