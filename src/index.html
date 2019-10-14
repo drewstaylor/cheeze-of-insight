@@ -48,8 +48,8 @@
       <span class="notification-count" v-if="notificationsCount > 0">
           <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
       </span>
-      <a v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
-      <a v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
+      <a class="auth-main" v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
+      <a class="auth-main" v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
     </nav>
     <nav class="nav subnav justify-content-center">
         <a class="nav-link" v-on:click="setNavigation(LEARN);">Learn</a>

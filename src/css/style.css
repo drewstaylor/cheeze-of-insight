@@ -111,6 +111,10 @@ ul.wizards-list {
     list-style: none;
 }
 
+div.back-btn {
+    margin-bottom: 1rem;
+}
+
 div.page-controls {
     margin-bottom: 1.75rem;
 }
@@ -756,6 +760,9 @@ a.footer-link:hover {
     div.wrapper.mount-wrapper {
         padding: 1rem;
     }
+    a.auth-main {
+        margin-right: 1rem;
+    }
     .footer.left {
         width: auto;
         position: relative;
@@ -768,6 +775,21 @@ a.footer-link:hover {
         margin-top: 0;
         width: auto;
         text-align: center;
+    }
+    .footer.list-inline {
+        clear: both;
+        text-align: center;
+        padding-right: 0;
+    }
+    div.selected-wizard-right {
+        position: relative;
+        top: 0;
+        margin-top: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+    div.cheese-wizard-image.selected-opponent-img, 
+    div.cheese-wizard-image.my-wizard-img {
+        background-position: -100px;
     }
 }
 
@@ -776,6 +798,9 @@ a.footer-link:hover {
     div.wrapper.mount-wrapper {
         padding: 1rem;
     }
+    a.auth-main {
+        margin-right: 0.5rem;
+    }
     .footer.left {
         width: auto;
         position: relative;
@@ -788,13 +813,34 @@ a.footer-link:hover {
         margin-top: 0;
         width: auto;
         text-align: center;
+    }
+    .footer.list-inline {
+        clear: both;
+        text-align: center;
+        padding-right: 0;
+    }
+    div.selected-wizard-right {
+        position: relative;
+        top: 0;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    div.cheese-wizard-image.selected-opponent-img, 
+    div.cheese-wizard-image.my-wizard-img {
+        background-position: -100px;
     }
 }
 
 /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-@media (max-width:600px)  {
+@media (max-width:610px)  {
     div.wrapper.mount-wrapper {
         padding: 1rem;
+    }
+    div.container.container-fluid.main-content {
+        width: 90%;
+    }
+    div.wrapper.mount-wrapper.container.container-fluid.main-content > div.jumbotron {
+        margin-top: 1.5rem;
     }
     .footer.left {
         width: auto;
@@ -807,6 +853,29 @@ a.footer-link:hover {
         float: none;
         margin-top: 0;
         width: auto;
+        text-align: center;
+    }
+    .footer.list-inline {
+        clear: both;
+        text-align: center;
+        padding-right: 0;
+    }
+    
+    div.selected-wizard-left, div.selected-wizard-right {
+        width: 100%;
+    }
+    div.selected-wizard-right {
+        position: relative;
+        top: 0;
+        margin-top: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+    div.owner {
+        word-break: break-word;
+    }
+    div.block-item.block-item-outer,
+    div.block-item.block-item-inner {
+        width: 100%;
         text-align: center;
     }
 }
