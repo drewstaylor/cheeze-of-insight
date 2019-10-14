@@ -127,18 +127,39 @@ const getWizardById = async (id = null, mainnet = true) => {
  * @return {String} image : Returns the string image URL of the wizard
  */
 const getWizardImageUrlById = (id = null, proxy = false) => {
-    let imageUrl;
+    /**
+     * Determines if the image is storage endpoint will be the original contract or the more recently released one
+     * @param {Number} id : The ID of the wizard to build an image endpoint for
+     */
+    function isContractTwo (id) {
+        if (id > 100 && id < 213) {
+            return true;
+        } else if (id > 255 && id < 363) {
+            return true;
+        } else if (id > 1013 && id < 1224) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    let imageUrl,
+        isWizardsContractTwo;
     // Nothing to do here...
     if (!id) {
         return false;
     } else if (typeof id !== "number") {
         id = parseInt(id);
     }
+
+    isWizardsContractTwo = isContractTwo(id);
+
     // Set image path
     if (proxy) {
-        imageUrl = config.proxyImageStorageUrl + '?id=' + id;
+        let contract = (isWizardsContractTwo) ? config.mainnetTournamentContract[1] : config.mainnetTournamentContract[0];
+        imageUrl = config.proxyImageStorageUrl + '?id=' + id + '&contract=' + contract;
     } else {
-        imageUrl = config.imageStorageUrl + id + '.svg';
+        imageUrl = (isWizardsContractTwo) ? config.imageStorageUrlTwo + id + '.svg' : config.imageStorageUrl + id + '.svg';
     }
     return imageUrl;
 };
