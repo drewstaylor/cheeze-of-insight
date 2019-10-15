@@ -89,7 +89,7 @@
                     <button class="btn btn-inverse" @click="generateMatchUp();">"Choose" Wisely (lol)</button>
                 </p>
 
-                <div v-if="matchUpReady">
+                <div class="matchup" v-if="matchUpReady">
                         <vs-row>
                             <!-- Your Wizard -->
                             <vs-col vs-type="flex" vs-justify="center" vs-align="left" vs-w="12" v-if="currentWizard">
@@ -99,12 +99,12 @@
                                     <vs-avatar class="pending-wizard" size="300px" :src="currentWizard.image" v-if="currentWizard.image"/>
                                 </vs-row>
 
-                                <vs-row>#{{ currentWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</vs-row>
+                                <vs-row class="wizard-challenge-insights mine">#{{ currentWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</vs-row>
                             </vs-col>
                         </vs-row>
 
                         <!-- VS. -->
-                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <vs-col class="vs-div" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                             <span class="pending-vs">
                                 <strong>VS.</strong>
                             </span>
@@ -119,7 +119,7 @@
                                     <vs-avatar class="pending-opponnent" size="300px" :src="currentOpposingWizard.image" v-if="currentOpposingWizard.image"/>
                                 </vs-row>
 
-                                <vs-row>#{{ currentOpposingWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</vs-row>
+                                <vs-row class="wizard-challenge-insights opponent">#{{ currentOpposingWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</vs-row>
                             </vs-col>
                         </vs-row>
                 </div>

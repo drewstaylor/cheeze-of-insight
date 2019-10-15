@@ -24,3 +24,56 @@ div.generate-matchup {
 .btn-step {
 	margin-top: 1.5rem;
 }
+
+.vs-row.pending-type-label {
+    text-align: right;
+    justify-content: flex-end;
+    margin-left: -3rem;
+}
+
+.vs-row.pending-type-label {
+    text-align: right;
+}
+
+span.pending-vs {
+    margin: 1.5rem;
+}
+
+div.wizard-challenge-insights {
+    display: inline-block !important;
+}
+
+div.matchup {
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width:610px)  {
+    .vs-row {
+        clear: both;
+        -ms-flex-flow: unset;
+        flex-flow: unset;
+        flex: unset;
+        flex-direction: unset;
+        flex-flow: unset;
+        text-align: center;
+        margin-left: auto;
+        display: block !important;
+    }
+    .vs-col {
+        float: none;
+        display: block !important;
+        text-align: center;
+    }
+    .vs-div {
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+    .vs-row.pending-type-label {
+        text-align: center;
+        width: auto !important;
+        margin-left: 0.25rem;
+    }
+    .con-vs-avatar {
+        margin-left: -1.2rem !important;
+    }
+}

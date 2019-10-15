@@ -871,7 +871,7 @@ a.footer-link:hover {
         padding: 1rem;
     }
     div.container.container-fluid.main-content {
-        width: 90%;
+        width: 95%;
     }
     div.wrapper.mount-wrapper.container.container-fluid.main-content > div.jumbotron {
         margin-top: 1.5rem;
@@ -911,5 +911,15 @@ a.footer-link:hover {
     div.block-item.block-item-inner {
         width: 100%;
         text-align: center;
+    }
+}
+
+@media (max-width:1275px)  {
+    div.footer.left {
+        width: auto;
+    }
+    div.footer.right {
+        min-width: 320px;
+        width:auto;
     }
 }
