@@ -821,6 +821,9 @@ a.footer-link:hover {
     a.auth-main {
         margin-right: 0.5rem;
     }
+    h3.home-title {
+        margin-top: -1rem;
+    }
     .footer.left {
         width: auto;
         position: relative;
