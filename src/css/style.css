@@ -794,6 +794,20 @@ a.footer-link:hover {
     div.cheese-wizard-image.my-wizard-img {
         background-position: -100px;
     }
+    footer {
+        margin-top: 0;
+        left: auto;
+        right: auto;
+        bottom: auto;
+    }
+    div.container.container-fluid.main-content {
+        min-height: 70vh;
+    }
+    .footer-descr.home {
+        background: none;
+        background-image: none;
+        border: none;
+    }
 }
 
 /* smartphones, Android phones, landscape iPhone */
@@ -834,6 +848,20 @@ a.footer-link:hover {
     div.cheese-wizard-image.selected-opponent-img, 
     div.cheese-wizard-image.my-wizard-img {
         background-position: -100px;
+    }
+    footer {
+        margin-top: 0;
+        left: auto;
+        right: auto;
+        bottom: auto;
+    }
+    div.container.container-fluid.main-content {
+        min-height: 70vh;
+    }
+    .footer-descr.home {
+        background: none;
+        background-image: none;
+        border: none;
     }
 }
 
