@@ -164,7 +164,11 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
         }
         imageUrl = config.proxyImageStorageUrl + '?id=' + id + '&contract=' + contract;
     } else {
-        imageUrl = (isWizardsContractTwo) ? config.imageStorageUrlTwo + id + '.svg' : config.imageStorageUrl + id + '.svg';
+        if (id > 5974) {
+            imageUrl = config.imageStorageUrlThree + id + '.svg';
+        } else {
+            imageUrl = (isWizardsContractTwo) ? config.imageStorageUrlTwo + id + '.svg' : config.imageStorageUrl + id + '.svg';
+        }
     }
     return imageUrl;
 };
