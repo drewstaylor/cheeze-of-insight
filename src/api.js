@@ -284,10 +284,10 @@ const getWizardTraitsById = async (id = null) => {
                                                                 traits.rarities.push({cape: "Spellraiser", rarity: traitsCollection[trait]['Spellraiser']});
                                                                 break;
                                                             case 'cape02_eviltier7':
-                                                                traits.rarities.push({cape: "Mold Wizard Tier 7 - Style 2", rarity: traitsCollection[trait]['[cape 02 tier 7]'], extraRare: "Mold Wizard"});
+                                                                traits.rarities.push({cape: "Molding Thaumaturge", rarity: traitsCollection[trait]['[cape 02 tier 7]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             case 'cape04_eviltier7':
-                                                                traits.rarities.push({cape: "Mold Wizard Tier 7 - Style 4", rarity: (traitsCollection[trait]['[cape 04 tier 7]'] + traitsCollection[trait]['[cape 03 tier 7]']), extraRare: "Mold Wizard"});
+                                                                traits.rarities.push({cape: "Moldy Undetaker", rarity: (traitsCollection[trait]['[cape 04 tier 7]'] + traitsCollection[trait]['[cape 03 tier 7]']), extraRare: "Mold Wizard"});
                                                                 break;
                                                             // "Big Cheese" / "[cape 01 tier 1]"
                                                             case 'cape01_sorctier1':
