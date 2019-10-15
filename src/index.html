@@ -930,6 +930,7 @@
             </div>
             <div class="predict predict-btn">
                 <button class="btn btn-inverse" v-on:click="predictMatchOutcome(currentWizard.selectedId, currentOpposingWizard.selectedId);" :disabled="!currentWizard || !currentOpposingWizard">Compare These Wizards</button>
+                <button class="btn btn-inverse" v-on:click="window.location.href = '/duels/?wiz1=' + currentWizard.selectedId + '&wiz2=' + currentOpposingWizard.selectedId" v-if="currentWizard && currentOpposingWizard && matchPrediction !== 'undefined'">Play This Duel Simulation</button>
             </div>
 
             <!-- Prediction Results -->
