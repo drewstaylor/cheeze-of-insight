@@ -755,6 +755,13 @@ a.footer-link:hover {
     cursor: auto;
 }
 
+.tk-exocet > a,
+.tk-exocet > a:hover,
+.tk-exocet > a:focus {
+    color: #000000;
+    text-decoration: none !important;
+}
+
 /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 @media (max-width:320px)  {
     body, html {

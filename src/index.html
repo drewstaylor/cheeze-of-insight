@@ -44,12 +44,14 @@
         <div class="melter" v-bind:class="{melts: isBgAnimated}"></div>
     </div>
     <nav class="navbar navbar-light">
-      <span class="navbar-brand mb-0 h1 tk-exocet" v-on:click="setNavigation(HOME_STATE)">Cheeze of Insight</span>
-      <span class="notification-count" v-if="notificationsCount > 0">
-          <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
-      </span>
-      <a class="auth-main" v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
-      <a class="auth-main" v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
+        <span class="navbar-brand mb-0 h1 tk-exocet" >
+            <a href="https://twitter.com/cheezeofinsight" target="_blank">Cheeze of Insight</a>
+        </span>
+        <span class="notification-count" v-if="notificationsCount > 0">
+            <vs-icon icon="fiber_manual_record" size="small" round>{{ notificationsCount }}</vs-icon>
+        </span>
+        <a class="auth-main" v-on:click="login();" v-if="!userIsLoggedIn">Login</a>
+        <a class="auth-main" v-on:click="logout();" v-if="userIsLoggedIn">Logout</a>
     </nav>
     <nav class="nav subnav justify-content-center">
         <a class="nav-link" v-on:click="setNavigation(LEARN);">Learn</a>
@@ -1561,7 +1563,9 @@
         <footer class="home" v-if="navigation.state == HOME_STATE">
             <div class="footer-descr home">
                 <div class="footer left">
-                    <span class="navbar-brand mb-0 h1 tk-exocet footer">COI</span>2019
+                    <span class="navbar-brand mb-0 h1 tk-exocet footer">
+                        <a href="https://twitter.com/cheezeofinsight" target="_blank">COI</a>
+                    </span>2019
                 </div>
                 <div class="footer right">
                     <ul class="footer list-inline">
