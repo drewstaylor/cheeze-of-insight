@@ -284,10 +284,10 @@ const getWizardTraitsById = async (id = null) => {
                                                                 traits.rarities.push({cape: "Spellraiser", rarity: traitsCollection[trait]['Spellraiser']});
                                                                 break;
                                                             case 'cape02_eviltier7':
-                                                                traits.rarities.push({cape: "Evil Wizard Tier 7 - Style 2", rarity: traitsCollection[trait]['[cape 02 tier 7]'], extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({cape: "Mold Wizard Tier 7 - Style 2", rarity: traitsCollection[trait]['[cape 02 tier 7]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             case 'cape04_eviltier7':
-                                                                traits.rarities.push({cape: "Evil Wizard Tier 7 - Style 4", rarity: (traitsCollection[trait]['[cape 04 tier 7]'] + traitsCollection[trait]['[cape 03 tier 7]']), extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({cape: "Mold Wizard Tier 7 - Style 4", rarity: (traitsCollection[trait]['[cape 04 tier 7]'] + traitsCollection[trait]['[cape 03 tier 7]']), extraRare: "Mold Wizard"});
                                                                 break;
                                                             // "Big Cheese" / "[cape 01 tier 1]"
                                                             case 'cape01_sorctier1':
@@ -551,19 +551,19 @@ const getWizardTraitsById = async (id = null) => {
                                                              */
                                                             // "Unpleasantly Surprised" / "[head 08 exp t1 01]"
                                                             case 'head08exp_t1_01':
-                                                                traits.rarities.push({expression: "Unleasantly Surprised", rarity: traitsCollection[trait]['[head 08 exp t1 01]'], extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({expression: "Unleasantly Surprised", rarity: traitsCollection[trait]['[head 08 exp t1 01]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             // "Pleasantly Surprised" / "[head 08 exp t1 02]"
                                                             case 'head08exp_t1_02':
-                                                                traits.rarities.push({expression: "Pleasantly Surprised", rarity: traitsCollection[trait]['[head 08 exp t1 02]'], extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({expression: "Pleasantly Surprised", rarity: traitsCollection[trait]['[head 08 exp t1 02]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             // "Villainous" / "[head 08 exp t1 03]"
                                                             case 'head08exp_t1_03':
-                                                                traits.rarities.push({expression: "Villainous", rarity: traitsCollection[trait]['[head 08 exp t1 03]'], extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({expression: "Villainous", rarity: traitsCollection[trait]['[head 08 exp t1 03]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             // "Blissful" / "[head 08 exp t1 04]"
                                                             case 'head08exp_t1_04':
-                                                                traits.rarities.push({expression: "Blissful", rarity: traitsCollection[trait]['[head 08 exp t1 04]'], extraRare: "Evil Wizard"});
+                                                                traits.rarities.push({expression: "Blissful", rarity: traitsCollection[trait]['[head 08 exp t1 04]'], extraRare: "Mold Wizard"});
                                                                 break;
                                                             //default:
                                                                 //console.log('Unknown expression =>', foundExp);
@@ -656,15 +656,15 @@ const getWizardTraitsById = async (id = null) => {
 
                                                         // "Blue Emmentaler" / "[head 09]"
                                                         case 'head09':
-                                                            traits.rarities.push({head: "Blue Emmentaler", rarity: traitsCollection[trait]['[head 09]'], extraRare: 'Evil Wizard'});
+                                                            traits.rarities.push({head: "Blue Emmentaler", rarity: traitsCollection[trait]['[head 09]'], extraRare: 'Mold Wizard'});
                                                             break;
                                                         // "Blue Baby" / "[head 10]"
                                                         case 'head10':
-                                                            traits.rarities.push({head: "Blue Baby", rarity: traitsCollection[trait]['[head 10]'], extraRare: 'Evil Wizard'});
+                                                            traits.rarities.push({head: "Blue Baby", rarity: traitsCollection[trait]['[head 10]'], extraRare: 'Mold Wizard'});
                                                             break;
                                                         // "Blue Tilsiter" / "[head 11]"
                                                         case 'head11':
-                                                            traits.rarities.push({head: "Blue Tilsiter", rarity: traitsCollection[trait]['[head 11]'], extraRare: 'Evil Wizard'});
+                                                            traits.rarities.push({head: "Blue Tilsiter", rarity: traitsCollection[trait]['[head 11]'], extraRare: 'Mold Wizard'});
                                                             break;
                                                         // "Big Cheeez" / "[head 16]"
                                                         case 'head16':
@@ -827,7 +827,7 @@ const getWizardTraitsById = async (id = null) => {
                                                             break;
                                                         // "[mold mag hat 18]"
                                                         case 'hat18':
-                                                            traits.rarities.push({hat: "Magic Mold Hat - Style 18", rarity: traitsCollection[trait]['[mold mag hat 18]'], extraRare: "Evil Wizard"});
+                                                            traits.rarities.push({hat: "Magic Mold Hat - Style 18", rarity: traitsCollection[trait]['[mold mag hat 18]'], extraRare: "Mold Wizard"});
                                                             break;
                                                         //default:
                                                             //console.log('Unknown hat =>', foundHat);
@@ -964,7 +964,7 @@ const getWizardTraitsById = async (id = null) => {
                                                             break;
                                                         // "Skinny Legs" / [legs 02]
                                                         case 'legs02':
-                                                            traits.rarities.push({legs: "Skinny Legs", rarity: traitsCollection[trait]['[legs 02]'], extraRare: "Evil Wizard"});
+                                                            traits.rarities.push({legs: "Skinny Legs", rarity: traitsCollection[trait]['[legs 02]'], extraRare: "Mold Wizard"});
                                                             break;
                                                         //default:
                                                             //console.log('Unknown legs =>', foundLegs);
@@ -1072,7 +1072,7 @@ const getWizardTraitsById = async (id = null) => {
 
                                                         // "Unholy Cheeze Fork"
                                                         case 'wand08':
-                                                            traits.rarities.push({wand: "Unholy Cheeze Fork", rarity: traitsCollection[trait]['[wand 08]'], extraRare: "Evil Wizard"});
+                                                            traits.rarities.push({wand: "Unholy Cheeze Fork", rarity: traitsCollection[trait]['[wand 08]'], extraRare: "Mold Wizard"});
                                                             break;
                                                         // "Epic Scepter" / "[wand 15]"
                                                         case 'wand15':
