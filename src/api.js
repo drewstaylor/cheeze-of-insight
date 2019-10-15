@@ -144,7 +144,7 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
     };
 
     let imageUrl,
-        isWizardsContractTwo;
+        isWizardsContractTwo,
         contract;
     // Nothing to do here...
     if (!id) {
