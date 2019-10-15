@@ -33,9 +33,6 @@ const PREDICTION_TYPE_MIXED_REVIEWS = 2;
 const PRIMARY_SEARCH = 1;
 const VULNERABILITY_SEARCH = 2;
 
-// Total Wizards
-const TOTAL_WIZARDS = 4882;
-
 // Contract constants
 const MAINNET = 0;
 const RINKEBY = 1;
@@ -115,7 +112,7 @@ if (location.href.indexOf('duels') == -1
             PREDICTION_TYPE_MIXED_REVIEWS: PREDICTION_TYPE_MIXED_REVIEWS,
             PRIMARY_SEARCH: PRIMARY_SEARCH,
             VULNERABILITY_SEARCH: VULNERABILITY_SEARCH,
-            TOTAL_WIZARDS: TOTAL_WIZARDS,
+            TOTAL_WIZARDS: null,
             MAINNET: MAINNET,
             RINKEBY: RINKEBY,
             // Dependencies
@@ -878,17 +875,17 @@ if (location.href.indexOf('duels') == -1
             },
             getPrettyRarity: function (rarity) {
                 if (!rarity) {
-                    rarity = TOTAL_WIZARDS;
+                    rarity = this.TOTAL_WIZARDS;
                 } else if (isNaN(rarity)) {
                     return '';
                 }
-                let rarityValue = Math.round(100 * (parseInt(rarity) / TOTAL_WIZARDS));
+                let rarityValue = Math.round(100 * (parseInt(rarity) / this.TOTAL_WIZARDS));
                 // Don't show 0% rarity, rare stats are important!
                 if (rarityValue > 0) {
                     return rarityValue;
                 } else {
                     // Fix decimal length to the first non-zero value
-                    rarityValue = 100 * (parseInt(rarity) / TOTAL_WIZARDS);
+                    rarityValue = 100 * (parseInt(rarity) / this.TOTAL_WIZARDS);
                     // Make a string from rarity stat
                     let nonZeroWorker = rarityValue.toString();
                     // Split the string at the decimal place
@@ -934,6 +931,9 @@ if (location.href.indexOf('duels') == -1
 
                 // Get Wizards
                 let wizardsQuery = await this.api.getAllWizards();
+
+                // Define total Wizards
+                this.TOTAL_WIZARDS = wizardsQuery.wizards.length;
 
                 // Sort Wizards
                 this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
