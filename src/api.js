@@ -158,9 +158,9 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
     // Set image path
     if (proxy) {
         if (id > 5974) {
-            contract = config.mainnetTournamentContract[2];
+            contract = config.mainnetImageContracts[2];
         } else {
-            contract = (isWizardsContractTwo) ? config.mainnetTournamentContract[1] : config.mainnetTournamentContract[0];
+            contract = (isWizardsContractTwo) ? config.mainnetImageContracts[1] : config.mainnetImageContracts[0];
         }
         imageUrl = config.proxyImageStorageUrl + '?id=' + id + '&contract=' + contract;
     } else {

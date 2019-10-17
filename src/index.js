@@ -944,11 +944,11 @@ if (location.href.indexOf('duels') == -1
                 this.totalAllWizardsPages = this.totalWizardsPages;
 
                 // Set user Wizards as required
-                if (this.userOwnsWizards && !this.tokens.mainnet.wizards.length) {
+                if (this.wallets.mainnet) {
                     this.tokens.mainnet.wizards = await this.wizardUtils.getWizardsByOwnerAddress(this.wallets.mainnet, this.wizards);
-
                     // Add meta properties to owned wizards
                     if (this.tokens.mainnet.wizards.length) {
+                        this.userOwnsWizards = this.tokens.mainnet.wizards.length;
                         for (let i = 0; i < this.tokens.mainnet.wizards.length; i++) {
                             this.tokens.mainnet.wizards[i].image = this.api.getWizardImageUrlById(this.tokens.mainnet.wizards[i].id);
                             this.tokens.mainnet.wizards[i] = this.wizardUtils.getWizardMetadata(this.tokens.mainnet.wizards[i]);
@@ -971,8 +971,11 @@ if (location.href.indexOf('duels') == -1
                     // XXX TODO: Get Rinkeby Wizards
                 } else {
                     // Get Mainnet Wizards
-                    userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(this.wallets.mainnet).call();
+                    //userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(this.wallets.mainnet).call();
                     // If user has Wizards -> get wizards
+                    let userTotalWizards = 0;
+                    //here
+
                     if (userTotalWizards > 0) {
                         this.userOwnsWizards = userTotalWizards;
                     }
