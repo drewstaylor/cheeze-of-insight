@@ -987,40 +987,16 @@ if (location.href.indexOf('duels') == -1
                 if (!ownerAddress) {
                     return;
                 }
-                let userTotalWizards = null;
-                if (provider !== MAINNET) {
-                    // XXX TODO: Get Rinkeby Wizards
-                } else {
-                    if (this.isWeb3Enabled) {
-                        // Get Mainnet Wizards
-                        userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(ownerAddress).call();
+                    
+                this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
 
-                        // If user has Wizards -> get wizards
-                        if (userTotalWizards > 0) {
-                            this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
-
-                            // Add metadata properties
-                            for (let i = 0; i < this.selectedWizardsByAddress.length; i++) {
-                                this.selectedWizardsByAddress[i].image = this.api.getWizardImageUrlById(this.selectedWizardsByAddress[i].id);
-                                this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
-                            }
-
-                            //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
-                        }
-                    } else {
-                        this.selectedWizardsByAddress = await this.wizardUtils.getWizardsByOwnerAddress(ownerAddress, this.wizards);
-
-                        // Add metadata properties
-                        for (let i = 0; i < this.selectedWizardsByAddress.length; i++) {
-                            this.selectedWizardsByAddress[i].image = this.api.getWizardImageUrlById(this.selectedWizardsByAddress[i].id);
-                            this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
-                        }
-
-                        //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
-                    }
-
-
+                // Add metadata properties
+                for (let i = 0; i < this.selectedWizardsByAddress.length; i++) {
+                    this.selectedWizardsByAddress[i].image = this.api.getWizardImageUrlById(this.selectedWizardsByAddress[i].id);
+                    this.selectedWizardsByAddress[i] = this.wizardUtils.getWizardMetadata(this.selectedWizardsByAddress[i]);
                 }
+
+                //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
             },
             // View worker
             showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false, self = false) {
