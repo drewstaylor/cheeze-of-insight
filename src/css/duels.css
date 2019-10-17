@@ -74,3 +74,32 @@ a.back {
 .affinitySelectedWind {
 	background-color: #8bea63;
 }
+
+/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+@media (max-width:320px)  {
+	.main-match-container {
+		display: inline-block;
+	}
+}
+
+/* smartphones, Android phones, landscape iPhone */
+@media (max-width:480px)  {
+	.main-match-container {
+		display: inline-block;
+	}
+}
+
+/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+@media (max-width:610px)  {
+	.main-match-container {
+		display: inline-block;
+	}
+	.container.container-fluid.main-content {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+	h3 {
+		text-align: center;
+	}
+}
+
