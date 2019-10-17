@@ -101,5 +101,8 @@ a.back {
 	h3 {
 		text-align: center;
 	}
+	.forecast-panel {
+		margin-right: 0.3rem;
+	}
 }
 
