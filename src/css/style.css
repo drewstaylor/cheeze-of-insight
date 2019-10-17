@@ -565,9 +565,9 @@ div.duel-requests {
     margin-left: 1rem;
 }
 
-
-
-
+.all-wizards {
+    width: 100%;
+}
 
 .all-wizards .card {
     border: 1px solid #000;
