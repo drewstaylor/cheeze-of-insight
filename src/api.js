@@ -157,15 +157,19 @@ const getWizardImageUrlById = (id = null, proxy = false) => {
 
     // Set image path
     if (proxy) {
-        if (id > 5974) {
+        if (id > 5974 && id < 6134) {
             contract = config.mainnetImageContracts[2];
+        } else if (id > 6134) {
+            contract = config.mainnetImageContracts[3];
         } else {
             contract = (isWizardsContractTwo) ? config.mainnetImageContracts[1] : config.mainnetImageContracts[0];
         }
         imageUrl = config.proxyImageStorageUrl + '?id=' + id + '&contract=' + contract;
     } else {
-        if (id > 5974) {
+        if (id > 5974 && id < 6134) {
             imageUrl = config.imageStorageUrlThree + id + '.svg';
+        } else if (id > 6134) {
+            imageUrl = config.imageStorageUrlFour + id + '.svg';
         } else {
             imageUrl = (isWizardsContractTwo) ? config.imageStorageUrlTwo + id + '.svg' : config.imageStorageUrl + id + '.svg';
         }

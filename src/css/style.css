@@ -611,6 +611,7 @@ div.duel-requests {
 }
 
 .all-wizards .card {
+    min-height: 316px;
     background-color: #E0DBFC;
 }
 .all-wizards .affinity-water {
