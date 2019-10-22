@@ -295,13 +295,17 @@ p.trait-name {
     border-collapse: collapse;
 }
 
-.duels-winner.fire {
+
+.duels-winner.fire,
+.duels-loser.fire {
 	background-color: #ff809b;
 }
-.duels-winner.water {
+.duels-winner.water,
+.duels-loser.water {
 	background-color: #35d1e7;
 }
-.duels-winner.wind {
+.duels-winner.wind,
+.duels-loser.wind {
 	background-color: #8bea63;
 }
 
@@ -415,8 +419,7 @@ p.trait-name {
     z-index: +1;
 }
 
-.duels-winner:not(.card-image),
-.duels-loser:not(.card-image) {
+.duels-winner:not(.card-image) {
     background-color: #ff809b;
 }
 
