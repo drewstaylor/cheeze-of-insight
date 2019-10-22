@@ -909,12 +909,15 @@ if (location.href.indexOf('duels') == -1
                 }
             },
             getIconUrlForAffinity: function(affinity) {
+                if (!affinity) {
+                    return "";
+                }
                 let index = affinity;
                 if (typeof(affinity) === 'string') {
                     index = parseInt(affinity);
                 }
 
-                if (index < 0 || index > 4) {
+                if (index < 0 || index > 4 || !index || index == 'undefined') {
                     //console.log("Warning: affinity should be an index between 0 and 4");
                     return "";
                 }
@@ -1043,6 +1046,8 @@ if (location.href.indexOf('duels') == -1
                 // Add duels
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
+
+                //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 
                 // Disable loading
                 this.isLoading = false;

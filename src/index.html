@@ -862,10 +862,10 @@
                     <div class="duels-card-rounds">
                         <div class="duels-card-round" v-for="move in duel.moveResults">
                             <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
-                                <img :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
+                                <img v-if="move.p1" :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
                             </div>
                             <div :class="'duels-card-round-p2 '+ (move.winner == 'p2' ? 'duels-winner' : (move.winner == 'p1' ? 'duels-loser' : ''))">
-                                <img :src="getIconUrlForAffinity(move.p2)" class="duels-card-round-icon"></img>
+                                <img v-if="move.p2" :src="getIconUrlForAffinity(move.p2)" class="duels-card-round-icon"></img>
                             </div>
                         </div>
                     </div>

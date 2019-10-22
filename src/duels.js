@@ -79,6 +79,7 @@ const addDuelDisplayDataArray = (arr) => {
  */
 const convertMovesetToIntArray = (moveset) => {
     if (! moveset || typeof(moveset) !== 'string') {
+        //console.log('no moveset or not string', [moveset, typeof moveset]);
         return [];
     }
 
@@ -136,6 +137,7 @@ const getMoveResults = (move1, move2) => {
  * @param moveset2 should be a hex-represented moveset (see convertMovesetToIntArray())
  */
 const getMovesetResults = (moveset1, moveset2) => {
+    //console.log('getMovesetResults', [moveset1, moveset2]);
     const moves1 = convertMovesetToIntArray(moveset1);
     const moves2 = convertMovesetToIntArray(moveset2);
 
