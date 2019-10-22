@@ -224,12 +224,16 @@ if (location.href.indexOf('duels') == -1
             usersOnline: usersOnline
         },
         mounted: async function () {
+            // Go to "Insights"
+            this.setNavigation(VIEW_ALL_WIZARDS);
+            
             // Animate Cheeze Melt
             setTimeout(() => {
                 this.isBgAnimated = true;
                 setTimeout(() => {
                     jQuery('document').ready(function () {
                         jQuery('#cheese-of-insight').removeClass('hidden');
+                        jQuery('#holiness-logo').removeClass('hidden');
                     });
                 }, 0);
             }, 0);
@@ -267,9 +271,6 @@ if (location.href.indexOf('duels') == -1
                     await this.setupChat(user);
                 }
             });
-
-            // Go straight to "Insights"
-            this.setNavigation(VIEW_ALL_WIZARDS);
         },
         methods: {
             // Chat / Login

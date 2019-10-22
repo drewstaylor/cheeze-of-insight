@@ -850,7 +850,7 @@
             <!-- Duels -->
             <div class="duels-block" v-if="currentOpposingWizard.duels">
                 <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
-                <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels">
+                <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels" v-if="!duel.timedOut">
 
                     <div class="duels-card-left-container">
                         <div
@@ -876,7 +876,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Else, if no rounds: Duel In Progress -->
+
+                    <!-- Duel In Progress -->
                     <div class="duels-card-rounds" v-if="!duel.moveSet1 || !duel.moveSet2">
                         <p class="duel-in-progress">
                             <strong>Duel in progress...</strong>
