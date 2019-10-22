@@ -1232,15 +1232,10 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
                             let affinity2 = duel.affinity2;
                             let endPower1 = duel.endPower1;
                             let endPower2 = duel.endPower2;
-                            //let moveResults = duel.moveResults;
                             let moveSet1 = duel.moveSet1;
                             let moveSet2 = duel.moveSet2;
                             let startPower1 = duel.startPower1;
                             let startPower2 = duel.startPower2;
-                            //let wizard1DidWin = duel.wizard1DidWin;
-                            //let wizard2DidWin = duel.wizard2DidWin;
-                            //let wizard1Gain = duel.wizard1Gain;
-                            //let wizard2Gain = duel.wizard2Gain;
                             let wizard1Id = duel.wizard1Id;
                             let wizard2Id = duel.wizard2Id;
 
@@ -1249,23 +1244,10 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
                             duels.duels[i].affinity2 = affinity1;
                             duels.duels[i].endPower1 = endPower2;
                             duels.duels[i].endPower2 = endPower1;
-                            /*for (let j = 0; j < moveResults.length; j++) {
-                                //0: {p1: 4, p2: 4, winner: "tie"}
-                                if (duels.duels[i].moveResults[j]) {
-                                    if (duels.duels[i].moveResults[j].p1 && duels.duels[i].moveResults[j].p2) {
-                                        duels.duels[i].p1 = moveResultsp[j].p2;
-                                        duels.duels[i].p2 = moveResultsp[j].p1;
-                                    }
-                                }
-                            }*/
                             duels.duels[i].moveSet1 = moveSet2;
                             duels.duels[i].moveSet2 = moveSet1;
                             duels.duels[i].startPower1 = startPower2;
                             duels.duels[i].startPower2 = startPower1;
-                            //duels.duels[i].wizard1DidWin = wizard2DidWin;
-                            //duels.duels[i].wizard2DidWin = wizard1DidWin;
-                            //duels.duels[i].wizard1Gain = wizard2Gain;
-                            //duels.duels[i].wizard2Gain = wizard1Gain;
                             duels.duels[i].wizard1Id = wizard2Id;
                             duels.duels[i].wizard2Id = wizard1Id;
                         }
