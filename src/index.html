@@ -487,7 +487,9 @@
                     <div class="row paginated-wizards">
 
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in wizardsPage">
-                            <div :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase()" v-on:click="showWizard(wizard.id);">
+                            <div 
+                                :class="'card mb-3 affinity-' + affinities[wizard.affinity].toLowerCase() + ' power-' + wizard.power" 
+                                v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
                                         <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">

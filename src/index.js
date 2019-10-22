@@ -268,6 +268,8 @@ if (location.href.indexOf('duels') == -1
                 }
             });
 
+            // Go straight to "Insights"
+            this.setNavigation(VIEW_ALL_WIZARDS);
         },
         methods: {
             // Chat / Login
@@ -858,6 +860,10 @@ if (location.href.indexOf('duels') == -1
                         this.wizards = this.wizards.reverse();
                         this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_WEAKEST;
                         break;
+                    case SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST:
+                        this.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
+                        this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST;
+                        break;
                     case SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST:
                         this.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
                         this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST;
@@ -980,7 +986,6 @@ if (location.href.indexOf('duels') == -1
                     //userTotalWizards = await this.contracts.mainnet.wizards.methods.balanceOf(this.wallets.mainnet).call();
                     // If user has Wizards -> get wizards
                     let userTotalWizards = 0;
-                    //here
 
                     if (userTotalWizards > 0) {
                         this.userOwnsWizards = userTotalWizards;

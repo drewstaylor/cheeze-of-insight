@@ -96,12 +96,39 @@ const sortByPowerLevel = function (a, b) {
 };
 
 /**
- * Sort the Wizards array by Wizard power level growth
+ * Sort the Wizards array by Wizard power level growth (strongest first)
  * e.g. Wizards that have accummulated the highest power gains througout the tournament duration
  * @param {Number} a 
  * @param {Number} b 
  */
 const sortByPowerLevelGrowth = function (a, b) {
+    // Initialization params
+    let initialPowerLevelA = Number(a.initialPower);
+    let powerLevelA = Number(a.power);
+    let initialPowerLevelB = Number(b.initialPower);
+    let powerLevelB = Number(b.power);
+    // Get growth rates
+    let growthMarginA = powerLevelA - initialPowerLevelA;
+    let growthMarginB = powerLevelB - initialPowerLevelB;
+    // Set growth rate on sorted el.
+    a.powerGrowth = growthMarginA;
+    // Compare
+    let comparison = 0;
+    if (growthMarginA > growthMarginB) {
+        comparison = -1;
+    } else if (growthMarginA < growthMarginB) {
+        comparison = 1;
+    }
+    return comparison;
+};
+
+/**
+ * Sort the Wizards array by Wizard power level growth (weakest first)
+ * e.g. Wizards that have lost the most power througout the tournament duration
+ * @param {Number} a 
+ * @param {Number} b 
+ */
+const sortByPowerLevelGrowthReverse = function (a, b) {
     // Initialization params
     let initialPowerLevelA = Number(a.initialPower);
     let powerLevelA = Number(a.power);
@@ -402,6 +429,7 @@ module.exports = {
     getOptimalOponent: getOptimalOponent,
     sortByPowerLevel: sortByPowerLevel,
     sortByPowerLevelGrowth: sortByPowerLevelGrowth,
+    sortByPowerLevelGrowthReverse: sortByPowerLevelGrowthReverse,
     sortByWizardId: sortByWizardId,
     groupWizardsByAffinity: groupWizardsByAffinity,
     compareWizardPowerLevels: compareWizardPowerLevels,
