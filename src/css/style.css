@@ -295,17 +295,13 @@ p.trait-name {
     border-collapse: collapse;
 }
 
-
-.duels-winner.fire,
-.duels-loser.fire {
+.duels-winner.fire {
 	background-color: #ff809b;
 }
-.duels-winner.water,
-.duels-loser.water {
+.duels-winner.water {
 	background-color: #35d1e7;
 }
-.duels-winner.wind,
-.duels-loser.wind {
+.duels-winner.wind {
 	background-color: #8bea63;
 }
 
