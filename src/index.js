@@ -861,7 +861,7 @@ if (location.href.indexOf('duels') == -1
                         this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_WEAKEST;
                         break;
                     case SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST:
-                        this.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
+                        this.wizards.sort(this.wizardUtils.sortByPowerLevelGrowthReverse);
                         this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST;
                         break;
                     case SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST:
