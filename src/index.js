@@ -948,8 +948,10 @@ if (location.href.indexOf('duels') == -1
                 this.TOTAL_WIZARDS = wizardsQuery.wizards.length;
 
                 // Sort Wizards
-                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                if (!this.wizardsSortedBy) {
+                    this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                    this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                }
 
                 // Get pagination args.
                 this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
