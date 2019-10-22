@@ -718,6 +718,7 @@ if (location.href.indexOf('duels') == -1
                     case HOME_STATE:
                         this.isBgAnimated = false;
                         this.navigation.state = HOME_STATE;
+                        this.currentOpposingWizard = {};
                         // Animate Cheeze Melt
                         setTimeout(() => {
                             this.isBgAnimated = true;
@@ -725,6 +726,7 @@ if (location.href.indexOf('duels') == -1
                         break;
                     case VIEW_ALL_WIZARDS:
                         //console.log('Wizards browsing mode enabled');
+                        this.currentOpposingWizard = {};
                         this.isBgAnimated = false;
                         this.navigation.state = VIEW_ALL_WIZARDS;
                         this.getAllWizards();

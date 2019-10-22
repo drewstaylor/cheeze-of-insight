@@ -3,6 +3,7 @@
 const config = require('./config');
 const wizardUtils = require('./wizards');
 const Constants = require('./constants');
+const api = require('./api')
 
 const { AffinityIndexes, AffinityRelationships } = Constants;
 
@@ -35,8 +36,8 @@ const { AffinityIndexes, AffinityRelationships } = Constants;
 const addDuelDisplayData = (duel) => {
     const duelDisplayObj = {...duel};
 
-    duelDisplayObj.wizard1SvgUrl = config.imageStorageUrl + duel.wizard1Id +".svg";
-    duelDisplayObj.wizard2SvgUrl = config.imageStorageUrl + duel.wizard2Id +".svg";
+    duelDisplayObj.wizard1SvgUrl = api.getWizardImageUrlById(duel.wizard1Id);
+    duelDisplayObj.wizard2SvgUrl = api.getWizardImageUrlById(duel.wizard2Id);
 
     // calculate gain or loss
     const gain1 = (duel.endPower1 - duel.startPower1);

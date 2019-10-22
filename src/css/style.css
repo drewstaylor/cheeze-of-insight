@@ -296,22 +296,34 @@ p.trait-name {
 }
 
 
+.duels-winner.fire,
+.duels-loser.fire {
+	background-color: #ff809b;
+}
+.duels-winner.water,
+.duels-loser.water {
+	background-color: #35d1e7;
+}
+.duels-winner.wind,
+.duels-loser.wind {
+	background-color: #8bea63;
+}
 
+.duels-block {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
 
 .duels-card-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    border: 1.5px solid black;
     border-radius: 5px;
-    background-color: #DDD;
-
+    background-color: #ffd45a;
     width: 100%;
     height: 160px;
-
     padding: 3px;
-    margin: 3px;
+    margin: 0.5rem;
 }
 .duels-card-left-container, .duels-card-right-container {
     height: 100%;
@@ -356,7 +368,7 @@ p.trait-name {
     color: black;
 }
 .duels-outcome-loss-points {
-    color: red;
+    color: #ff809b;
     font-weight: 600;
 }
 .duels-outcome-gain-points {
@@ -402,12 +414,19 @@ p.trait-name {
     width: 90%;
 }
 .duels-winner {
-    border: 2px solid green;
-    background-color: #CFC;
+    border: 2px solid #8bea63;
+    background-color: #ccc;
     z-index: +1;
 }
+
+.duels-winner:not(.card-image),
+.duels-loser:not(.card-image) {
+    background-color: #ff809b;
+}
+
+
 .duels-loser {
-    border: 1px solid red;
+    border: 1px solid #ff809b;
 }
 
 
@@ -418,7 +437,6 @@ p.trait-name {
 .duels-table th {
     border: 1px solid gray;
     padding: 3px;
-    background-color: #CCC;
 }
 
 /* Modal */
