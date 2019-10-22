@@ -246,6 +246,7 @@ div.selected-wizard-right {
 .btn-inverse {
     border: 1px solid black;
     background-color: #ffd45a;
+    margin-top: 1rem;
 }
 
 .icon.icon-search {
@@ -259,10 +260,10 @@ div.traits.traits-container {
     position: relative;
 }
 
-div.traits.traits-container.select-wizard {
-    /*z-index: -1;*/
+/*div.traits.traits-container.select-wizard {
+    z-index: -1;
     top: -50px;
-}
+}*/
 
 div.traits.traits-container.wizards-compare {
     margin-top: 1.75rem;
@@ -285,6 +286,12 @@ p.label > strong {
 p.trait-name {
     font-weight: 500;
     color: #333333;
+}
+
+.duel-title {
+    margin: auto;
+    position: relative;
+    width: 100px;
 }
 
 .duels-table-container {

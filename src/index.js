@@ -214,6 +214,7 @@ if (location.href.indexOf('duels') == -1
             wizardsVulnerabilityFilter: '',
             wizardsMineFilter: false,
             showSearch: false,
+            showSelectedOpponentTraits: false,
             showMyWizardTraits: false,
             showOpponentTraits: false,
             manualCurrentWizardSelection: false,

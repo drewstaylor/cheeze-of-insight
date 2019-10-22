@@ -598,6 +598,11 @@
                                 <a :href="'https://www.cheezewizards.com/wizard/' + currentOpposingWizard.id" target="_blank">View on cheezewizards.com <img class="icon external-link" src="img/icons/external_link.svg"></a>
                             </p>
                         </div>
+                        <!-- Show / Hide Traits -->
+                        <div class="show-selected-opponent-traits">
+                            <a v-on:click="showSelectedOpponentTraits = true" v-if="!showSelectedOpponentTraits">Show unique traits</a>
+                            <a v-on:click="showSelectedOpponentTraits = false" v-if="showSelectedOpponentTraits">Hide traits</a>
+                        </div>
                         <!-- Comparison -->
                         <div class="comparison">
                             <button class="btn btn-inverse btn-selected-compare" @click="setNavigation(PREDICT_MATCHES, currentOpposingWizard.id)">Compare With This Wizard</button>
@@ -613,8 +618,9 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Traits -->
-                <div class="traits traits-container select-wizard" v-if="currentOpposingWizard.traits">
+                <div class="traits traits-container select-wizard" v-if="currentOpposingWizard.traits && showSelectedOpponentTraits">
                     <div class="traits traits-container-inner" v-if="currentOpposingWizard.traits.rarities">
                         <div class="block-grid-xs-2 block-grid-sm-3 block-grid-md-4" v-if="currentOpposingWizard.traits.rarities.length">
                             <div class="block-item block-item-outer" v-if="currentOpposingWizard.traits.affinityStats && currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
