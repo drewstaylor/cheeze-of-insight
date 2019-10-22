@@ -326,19 +326,36 @@ p.trait-name {
     justify-content: space-between;
     align-items: center;
     border-radius: 5px;
-    background-color: #ffd45a;
     width: 100%;
-    height: 160px;
+    height: 180px;
     padding: 3px;
-    margin: 0.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
 }
+
+.duel-player-id {
+    margin: auto;
+}
+
+.duels-card-container:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.duels-card-container.winner {
+    background-color: #ffd45a;
+}
+
+.duels-card-container.loser {
+    background-color: rgb(228, 224, 252);
+}
+
 .duels-card-left-container, .duels-card-right-container {
     height: 100%;
 }
 .duels-card-left-wizard, .duels-card-right-wizard {
     border: 1px solid #666;
     border-radius: 3px;
-    background-color: #CCC;
+    background-color: #b79afc;
 
     margin: 3px;
 
@@ -422,7 +439,6 @@ p.trait-name {
 }
 .duels-winner {
     border: 2px solid #8bea63;
-    background-color: #ccc;
     z-index: +1;
 }
 
@@ -946,6 +962,19 @@ a.footer-link:hover {
     div.block-item.block-item-inner {
         width: 100%;
         text-align: center;
+    }
+    /*here*/
+    .duels-card-container {
+        display: inline-block;
+        flex: unset;
+        height: 100%;
+    }
+    .duels-card-left-container, .duels-card-right-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
     }
 }
 

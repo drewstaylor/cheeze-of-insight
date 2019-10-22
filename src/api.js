@@ -1171,6 +1171,8 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
     // Nothing to do here...
     if (!id) {
         return false;
+    } else {
+        id = parseInt(id);
     }
 
     let duelsEndpoint = 'duels/?wizardIds=' + id,
@@ -1182,7 +1184,99 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
         duels = await apiQuery(duelsEndpoint, 'GET', 'https://', false);
     }
 
+    /*
+    affinity1: 3
+    affinity2: 3
+    endBlock: 8790074
+    endPower1: "879183481938903"
+    endPower2: "682714692572648"
+    id: "0xf39bfb7f7b546d5abd45dd7d8d9295b58480f0974a68fc4585df5a952a090da2"
+    isAscensionBattle: false
+    
+    moveResults: Array(5)
+        0: {p1: 4, p2: 4, winner: "tie"}
+        1: {p1: 4, p2: 4, winner: "tie"}
+        2: {p1: 4, p2: 3, winner: "p1"}
+        3: {p1: 4, p2: 3, winner: "p1"}
+        4: {p1: 4, p2: 4, winner: "tie"}
+
+    moveSet1: "0x0404040404000000000000000000000000000000000000000000000000000000"
+    moveSet2: "0x0404030304000000000000000000000000000000000000000000000000000000"
+    startBlock: 8790045
+    startPower1: "356553613831567"
+    startPower2: "1205344560679984"
+    timedOut: false
+    timeoutBlock: 8790448
+    wizard1DidWin: true
+    wizard1Gain: 522629868107336
+    wizard1Id: "3683"
+    wizard1SvgUrl: "https://storage.googleapis.com/cheeze-wizards-production/original/0xec2203e38116f09e21bc27443e063b623b01345a/3683.svg"
+    wizard2DidWin: false
+    wizard2Gain: -522629868107336
+    wizard2Id: "5261"
+    wizard2SvgUrl: "https://storage.googleapis.com/cheeze-wizards-production/original/0xec2203e38116f09e21bc27443e063b623b01345a/5261.svg"
+    */
+
+    // Ensure requested Wizard is assigned to `wizard1`
+    // this keeps the the wizard on the left pane side
+    // of duel history in our UI
+    if (duels.hasOwnProperty('duels')) {
+        if (duels.duels) {
+            if (duels.duels.length) {
+                for (let i = 0; i < duels.duels.length; i++) {
+                    if (duels.duels[i].wizard2Id) {
+                        if (id == parseInt(duels.duels[i].wizard2Id)) {
+                            // References
+                            let duel = duels.duels[i];
+                            let affinity1 = duel.affinity1;
+                            let affinity2 = duel.affinity2;
+                            let endPower1 = duel.endPower1;
+                            let endPower2 = duel.endPower2;
+                            //let moveResults = duel.moveResults;
+                            let moveSet1 = duel.moveSet1;
+                            let moveSet2 = duel.moveSet2;
+                            let startPower1 = duel.startPower1;
+                            let startPower2 = duel.startPower2;
+                            //let wizard1DidWin = duel.wizard1DidWin;
+                            //let wizard2DidWin = duel.wizard2DidWin;
+                            //let wizard1Gain = duel.wizard1Gain;
+                            //let wizard2Gain = duel.wizard2Gain;
+                            let wizard1Id = duel.wizard1Id;
+                            let wizard2Id = duel.wizard2Id;
+
+                            // Now flip the stats
+                            duels.duels[i].affinity1 = affinity2;
+                            duels.duels[i].affinity2 = affinity1;
+                            duels.duels[i].endPower1 = endPower2;
+                            duels.duels[i].endPower2 = endPower1;
+                            /*for (let j = 0; j < moveResults.length; j++) {
+                                //0: {p1: 4, p2: 4, winner: "tie"}
+                                if (duels.duels[i].moveResults[j]) {
+                                    if (duels.duels[i].moveResults[j].p1 && duels.duels[i].moveResults[j].p2) {
+                                        duels.duels[i].p1 = moveResultsp[j].p2;
+                                        duels.duels[i].p2 = moveResultsp[j].p1;
+                                    }
+                                }
+                            }*/
+                            duels.duels[i].moveSet1 = moveSet2;
+                            duels.duels[i].moveSet2 = moveSet1;
+                            duels.duels[i].startPower1 = startPower2;
+                            duels.duels[i].startPower2 = startPower1;
+                            //duels.duels[i].wizard1DidWin = wizard2DidWin;
+                            //duels.duels[i].wizard2DidWin = wizard1DidWin;
+                            //duels.duels[i].wizard1Gain = wizard2Gain;
+                            //duels.duels[i].wizard2Gain = wizard1Gain;
+                            duels.duels[i].wizard1Id = wizard2Id;
+                            duels.duels[i].wizard2Id = wizard1Id;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // duels.wizards = [id]; // TODO: why was this here?
+    console.log('duels =>', duels);
     return duels;
 };
 

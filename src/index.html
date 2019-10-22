@@ -850,9 +850,16 @@
             <!-- Duels -->
             <div class="duels-block" v-if="currentOpposingWizard.duels">
                 <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
-                <div class="duels-card-container" v-for="duel in currentOpposingWizard.duels" v-if="!duel.timedOut">
+                <div 
+                    :class="'duels-card-container '+ (duel.wizard1DidWin ? 'winner' : 'loser')" 
+                    v-for="duel in currentOpposingWizard.duels" 
+                    v-if="!duel.timedOut"
+                >
 
                     <div class="duels-card-left-container">
+                        <div class="duels-card-left-outcome">
+                            <span class="duel-player-id" v-if="duel.wizard1Id">#{{ duel.wizard1Id }}</span>
+                        </div>
                         <div
                             :class="'duels-card-left-wizard card-image '+ (duel.wizard1DidWin ? 'duels-winner' : 'duels-loser') + ' ' + affinities[duel.affinity1].toLowerCase()"
                             :style="'background-image: url('+ duel.wizard1SvgUrl +')'"
@@ -885,6 +892,9 @@
                     </div>
 
                     <div class="duels-card-right-container">
+                        <div class="duels-card-right-outcome">
+                            <span class="duel-player-id" v-if="duel.wizard2Id">#{{ duel.wizard2Id }}</span>
+                        </div>
                         <div
                             :class="'duels-card-left-wizard card-image '+ (duel.wizard2DidWin ? 'duels-winner' : 'duels-loser') + ' ' + affinities[duel.affinity2].toLowerCase()"
                             :style="'background-image: url('+duel.wizard2SvgUrl+')'"
