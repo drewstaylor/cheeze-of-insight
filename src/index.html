@@ -860,14 +860,13 @@
                         </div>
                         <div class="duels-card-left-outcome">
                             <img class="icon" :src="getIconUrlForAffinity(duel.affinity1)"></img>
-                            <span class="duels-outcome-base-points">
-                                {{ getPrettyPowerLevel(duel.startPower1) }}
-                            </span>
-                            <span :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}</span>
+                            <span class="duels-outcome-base-points">{{ getPrettyPowerLevel(duel.startPower1) }}</span>
+                            <span v-if="duel.moveSet1 && duel.moveSet2" :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}</span>
                         </div>
                     </div>
 
-                    <div class="duels-card-rounds">
+                    <!-- Duel Round Results -->
+                    <div class="duels-card-rounds" v-if="duel.moveSet1 && duel.moveSet2">
                         <div class="duels-card-round" v-for="move in duel.moveResults">
                             <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
                                 <img v-if="move.p1" :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
@@ -876,6 +875,12 @@
                                 <img v-if="move.p2" :src="getIconUrlForAffinity(move.p2)" class="duels-card-round-icon"></img>
                             </div>
                         </div>
+                    </div>
+                    <!-- Else, if no rounds: Duel In Progress -->
+                    <div class="duels-card-rounds" v-if="!duel.moveSet1 || !duel.moveSet2">
+                        <p class="duel-in-progress">
+                            <strong>Duel in progress...</strong>
+                        </p>
                     </div>
 
                     <div class="duels-card-right-container">
@@ -886,12 +891,8 @@
                         </div>
                         <div class="duels-card-right-outcome">
                             <img class="icon" :src="getIconUrlForAffinity(duel.affinity2)"></img>
-                            <span class="duels-outcome-base-points">
-                                {{ getPrettyPowerLevel(duel.startPower2) }}
-                            </span>
-                            <span :class="duel.wizard2DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">
-                                {{ (duel.wizard2Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard2Gain) }}
-                            </span>
+                            <span class="duels-outcome-base-points">{{ getPrettyPowerLevel(duel.startPower2) }}</span>
+                            <span v-if="duel.moveSet1 && duel.moveSet2" :class="duel.wizard2DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard2Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard2Gain) }}</span>
                         </div>
                     </div>
 
