@@ -1258,7 +1258,7 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
     }
 
     // duels.wizards = [id]; // TODO: why was this here?
-    //console.log('duels =>', duels);
+    console.log('duels =>', duels);
     return duels;
 };
 

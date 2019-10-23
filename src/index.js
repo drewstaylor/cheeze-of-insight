@@ -1055,6 +1055,7 @@ if (location.href.indexOf('duels') == -1
                 // Add duels
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
+                this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
 
                 //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 

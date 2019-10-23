@@ -79,8 +79,8 @@ const getOptimalOponent = function (affinity) {
 
 /**
  * Sort the Wizards array by Wizard power level
- * @param {Number} a 
- * @param {Number} b 
+ * @param {Object} a 
+ * @param {Object} b 
  */
 const sortByPowerLevel = function (a, b) {
     let powerLevelA = Number(a.power);
@@ -98,8 +98,8 @@ const sortByPowerLevel = function (a, b) {
 /**
  * Sort the Wizards array by Wizard power level growth (strongest first)
  * e.g. Wizards that have accummulated the highest power gains througout the tournament duration
- * @param {Number} a 
- * @param {Number} b 
+ * @param {Object} a 
+ * @param {Object} b 
  */
 const sortByPowerLevelGrowth = function (a, b) {
     // Initialization params
@@ -125,8 +125,8 @@ const sortByPowerLevelGrowth = function (a, b) {
 /**
  * Sort the Wizards array by Wizard power level growth (weakest first)
  * e.g. Wizards that have lost the most power througout the tournament duration
- * @param {Number} a 
- * @param {Number} b 
+ * @param {Object} a 
+ * @param {Object} b 
  */
 const sortByPowerLevelGrowthReverse = function (a, b) {
     // Initialization params
@@ -151,8 +151,8 @@ const sortByPowerLevelGrowthReverse = function (a, b) {
 
 /**
  * Sort the Wizards array by Wizard unique ID
- * @param {Number} a 
- * @param {Number} b 
+ * @param {Object} a 
+ * @param {Object} b 
  */
 const sortByWizardId = function (a, b) {
     let wizardIdA = Number(a.id);
@@ -186,8 +186,8 @@ const sortByWizardId = function (a, b) {
  *   optimalOpponent: 'Fire' 
  * }
  * 
- * @param {Number} a 
- * @param {Number} b 
+ * @param {Object} a 
+ * @param {Object} b 
  */
 const groupWizardsByAffinity = function (a, b) {
     let wizardAffinityA = Number(a.affinity);
@@ -207,6 +207,24 @@ const groupWizardsByAffinity = function (a, b) {
     a.optimalOpponent = getOptimalOponent(a.affinity);
     // Return
     return comparison;
+};
+
+/**
+ * Sort a Wizard's duels array by time (recent first)
+ * @param {Object} a : Duel `{Object}`
+ * @param {Object} b : Duel `{Object}`
+ */
+const sortByDuelTimeRecentFirst = function (a, b) {
+    let endBlockA = Number(a.endBlock);
+    let endBlockB = Number(b.endBlock);
+    // Compare
+    if (endBlockA < endBlockB) {
+        return 1;
+    } else if (endBlockA > endBlockB) {
+        return -1;
+    } else {
+        return 0;
+    }
 };
 
 /**
@@ -432,6 +450,7 @@ module.exports = {
     sortByPowerLevelGrowthReverse: sortByPowerLevelGrowthReverse,
     sortByWizardId: sortByWizardId,
     groupWizardsByAffinity: groupWizardsByAffinity,
+    sortByDuelTimeRecentFirst: sortByDuelTimeRecentFirst,
     compareWizardPowerLevels: compareWizardPowerLevels,
     compareWizardAffinities: compareWizardAffinities,
     getWizardMetadata: getWizardMetadata,
