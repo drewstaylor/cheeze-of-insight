@@ -160,7 +160,7 @@ if (location.href.indexOf('duels') == -1
                 'Most powerful first',
                 'Push-overs first',
                 'Most growth',
-                'Least growth',
+                'Most power lost',
                 'Group by Affinity'
             ],
             affinities: [
