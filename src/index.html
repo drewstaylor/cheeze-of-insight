@@ -891,9 +891,11 @@
                         </p>
                     </div>
 
-                    <div class="duels-card-right-container">
+                    <div class="duels-card-right-container view-opponent-history" v-on:click="showWizard(duel.wizard2Id)">
                         <div class="duels-card-right-outcome">
-                            <span class="duel-player-id" v-if="duel.wizard2Id">#{{ duel.wizard2Id }}</span>
+                            <span class="duel-player-id" v-if="duel.wizard2Id">
+                                <a class="duel-view-opponent" v-on:click="showWizard(duel.wizard2Id)">#{{ duel.wizard2Id }}</a>
+                            </span>
                         </div>
                         <div
                             :class="'duels-card-left-wizard card-image '+ (duel.wizard2DidWin ? 'duels-winner' : 'duels-loser') + ' ' + affinities[duel.affinity2].toLowerCase()"

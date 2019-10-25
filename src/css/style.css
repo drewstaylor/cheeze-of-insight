@@ -461,6 +461,10 @@ p.trait-name {
     padding: 3px;
 }
 
+.duels-card-right-container.view-opponent-history {
+    cursor: pointer;
+}
+
 /* Modal */
 .modal-mask {
     position: fixed;

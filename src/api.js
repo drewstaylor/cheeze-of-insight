@@ -3,7 +3,7 @@
 // Dependencies
 //require('dotenv').config({path: __dirname + '/.env'}); // <- Won't work in a browser extension
 const request = require('request-promise');
-const { parse, stringify } = require('svgson')
+const { parse, stringify } = require('svgson');
 const config = require('./config');
 const traitsData = require('./json/wizardTraits.json');
 
