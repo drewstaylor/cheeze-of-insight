@@ -215,6 +215,15 @@ const groupWizardsByAffinity = function (a, b) {
  * @param {Object} b : Duel `{Object}`
  */
 const sortByDuelTimeRecentFirst = function (a, b) {
+    // account for duels in progress
+    if (a.endBlock == null && b.endBlock == null) {
+        return 0;
+    } else if (a.endBlock == null) {
+        return -1;
+    } else if (b.endBlock == null) {
+        return 1;
+    }
+
     let endBlockA = Number(a.endBlock);
     let endBlockB = Number(b.endBlock);
     // Compare
