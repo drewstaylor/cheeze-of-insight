@@ -345,15 +345,15 @@ p.trait-name {
     background-color: #ffd45a;
 }
 
+.duels-card-container.loser {
+    background-color: rgb(228, 224, 252);
+}
+
 .duels-card-container.timed-out,
 .duels-card-left-outcome.timed-out,
 .duels-card-right-outcome.timed-out {
     background-color: #333333;
     color: #ffffff;
-}
-
-.duels-card-container.loser {
-    background-color: rgb(228, 224, 252);
 }
 
 .duels-card-left-container, .duels-card-right-container {
@@ -418,6 +418,11 @@ p.trait-name {
 
 .timed-out > .duels-outcome-gain-points {
     color: #8bea63;
+}
+
+img.frowned-out {
+    width: auto;
+    height: 75px;
 }
 
 .duels-card-rounds {
