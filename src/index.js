@@ -1057,7 +1057,7 @@ if (location.href.indexOf('duels') == -1
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
 
-                //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
+                console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 
                 // Disable loading
                 this.isLoading = false;

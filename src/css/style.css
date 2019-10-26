@@ -345,6 +345,13 @@ p.trait-name {
     background-color: #ffd45a;
 }
 
+.duels-card-container.timed-out,
+.duels-card-left-outcome.timed-out,
+.duels-card-right-outcome.timed-out {
+    background-color: #333333;
+    color: #ffffff;
+}
+
 .duels-card-container.loser {
     background-color: rgb(228, 224, 252);
 }
@@ -398,6 +405,19 @@ p.trait-name {
 .duels-outcome-gain-points {
     color: green;
     font-weight: 600;
+}
+
+.timed-out > .duels-outcome-base-points {
+    color: #ffffff;
+}
+
+.timed-out > img {
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.timed-out > .duels-outcome-gain-points {
+    color: #8bea63;
 }
 
 .duels-card-rounds {
