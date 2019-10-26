@@ -115,6 +115,10 @@ div.back-btn {
     margin-bottom: 1rem;
 }
 
+span.back-btn {
+    cursor: pointer;
+}
+
 div.page-controls {
     margin-bottom: 1.75rem;
 }
