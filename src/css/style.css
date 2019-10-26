@@ -813,10 +813,12 @@ img.footer.footer-bg {
     padding-right: 2rem;
 }
 
+a.home-back,
 a.footer-link {
     color: #000;
 }
 
+a.home-back:hover,
 a.footer-link:hover {
     color: #000;
 }

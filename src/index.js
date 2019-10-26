@@ -3,6 +3,8 @@
 require('./duels/duels.js');
 require('./markets/markets.js');
 require('./learn/learn.js');
+require('./insights/index');
+require('./insights/wizard/index');
 
 Vue.config.devtools = false;
 Vue.config.productionTip = false;
@@ -90,7 +92,8 @@ let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 if (location.href.indexOf('duels') == -1
     && location.href.indexOf('markets') == -1
     && location.href.indexOf('learn') == -1
-    && location.href.indexOf('play') == -1) {
+    && location.href.indexOf('play') == -1
+    && location.href.indexOf('insights') == -1) {
     let vm = new Vue({
         el: '#cheese-of-insight',
         data: () => ({
