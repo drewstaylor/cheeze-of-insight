@@ -1200,7 +1200,7 @@ if (location.href.indexOf('duels') == -1
                         wizards = this.tokens.mainnet.wizards;
                         // Return owned Wizards
                         if (wizards && this.currentWizardsPage) {//
-                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                             let wizardsLength = wizards.length;
                             this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                             return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
@@ -1213,7 +1213,7 @@ if (location.href.indexOf('duels') == -1
                         wizards = this.wizards;
                         // Return all Wizards
                         if (wizards && this.currentWizardsPage) {
-                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                             this.totalWizardsPages = this.totalAllWizardsPages;
                             return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                         } else {
@@ -1232,7 +1232,7 @@ if (location.href.indexOf('duels') == -1
                         }
                     });
                     if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                         let wizardsLength = wizards.length;
                         this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
@@ -1249,7 +1249,7 @@ if (location.href.indexOf('duels') == -1
                         }
                     });
                     if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                         let wizardsLength = wizards.length;
                         this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
@@ -1261,7 +1261,7 @@ if (location.href.indexOf('duels') == -1
                     wizards = this.wizards;
                     //return wizards;
                     if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                         this.totalWizardsPages = this.totalAllWizardsPages;
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                     } else {
