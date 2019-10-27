@@ -204,7 +204,13 @@ if (location.href.indexOf('wizard') !== -1) {
             showMyWizardTraits: false,
             showOpponentTraits: false,
             manualCurrentWizardSelection: false,
-            isBgAnimated: false
+            isBgAnimated: false,
+            duelData: [],
+            wizardWinRate: {
+                wins: 0,
+                losses: 0,
+                tied: 0
+            }
         }),
         firebase: {
             usersOnline: usersOnline
@@ -1050,7 +1056,7 @@ if (location.href.indexOf('wizard') !== -1) {
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
-
+                this.duelData = this.currentOpposingWizard.duels;
                 //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 
                 // Disable loading
@@ -1171,6 +1177,67 @@ if (location.href.indexOf('wizard') !== -1) {
                 }
             }
         },
+        watch: {
+            // Computed Win rate
+            duelData: {
+                immediate: true,
+                async handler (duels) {
+                    await duels;
+                    if (!duels) {
+                        return;
+                    } else if (!duels.length) {
+                        return;
+                    }
+                    let wins = 0;
+                    let losses = 0;
+                    let tied = 0;
+                    // Set win rate stats
+                    for (let i = 0; i < duels.length; i++) {
+                        //let duel = this.duelUtils.addDuelDisplayDataArray([duels[i]]);
+                        if (duels[i].timedOut) {
+                            continue;
+                        }
+                        // Match duel.wizard1
+                        if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {//here
+                            if (!duels[i].wizard1DidWin) {
+                                // Losses
+                                ++losses;
+                            } else {
+                                // Ties
+                                if (duels[i].wizard2DidWin) {
+                                    ++tied;
+                                // Wins
+                                } else {
+                                    ++wins;
+                                }
+                            }
+                        }
+                        // Match duel.wizard2
+                        if (parseInt(duels[i].wizard2Id) == parseInt(this.wizardId)) {
+                            if (!duels[i].wizard2DidWin) {
+                                // Losses
+                                ++losses;
+                            } else {
+                                // Ties
+                                if (duels[i].wizard1DidWin) {
+                                    ++tied;
+                                // Wins
+                                } else {
+                                    ++wins;
+                                }
+                            }
+                        }
+                        if (i == (duels.length - 1)) {
+                            // Set win rate in UI
+                            this.wizardWinRate.wins = wins;
+                            this.wizardWinRate.losses = losses;
+                            this.wizardWinRate.tied = tied;
+                            //console.log([this.wizardWinRate, this.wizardId, duels]);
+                        }
+                    }
+                }
+            }
+        },
         computed: {
             // Get list of online users (Twitter login)
             // That have a web3 wallet
@@ -1182,90 +1249,6 @@ if (location.href.indexOf('wizard') !== -1) {
                         return user;
                     }
                 });
-            },
-            // Get paginated list of all or filtered Wizards
-            wizardsPage: function () {
-                let wizards,
-                    filter;
-
-                // Returns Wizards filter => owned by current DApp user
-                if (this.wizardsMineFilter) {
-                    if (this.userOwnsWizards) {
-                        // Show requesting user Wizards
-                        wizards = this.tokens.mainnet.wizards;
-                        // Return owned Wizards
-                        if (wizards && this.currentWizardsPage) {//
-                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
-                            let wizardsLength = wizards.length;
-                            this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
-                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
-                        } else {
-                            return [];
-                        }
-                    } else {
-                        // Defaulting to all Wizards browse
-                        this.wizardsMineFilter = false;
-                        wizards = this.wizards;
-                        // Return all Wizards
-                        if (wizards && this.currentWizardsPage) {
-                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
-                            this.totalWizardsPages = this.totalAllWizardsPages;
-                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
-                        } else {
-                            return [];
-                        }
-                    }
-                // Returns Wizards filtered by ID or by Affinity
-                } else if (this.wizardsPrimaryFilter.length) {
-                    filter = this.wizardsPrimaryFilter.toLowerCase();
-                    wizards = this.wizards.filter((wizard) => {
-                        if (wizard.id.toString().indexOf(filter) > -1) {
-                                return wizard;
-                        }
-                        if (this.affinities[wizard.affinity].toString().toLowerCase().indexOf(filter) > -1) {
-                            return wizard;
-                        }
-                    });
-                    if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
-                        let wizardsLength = wizards.length;
-                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
-                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
-                    } else {
-                        return [];
-                    }
-                // Returns Wizards filtered by Vulnerability
-                } else if (this.wizardsVulnerabilityFilter.length > 2) {
-                    filter = this.wizardsVulnerabilityFilter.toLowerCase();
-                    wizards = this.wizards.filter((wizard) => {
-                        let weakness = this.wizardUtils.getVulnerability(parseInt(wizard.affinity));
-                        if (weakness.indexOf(filter) > -1) {
-                            return wizard;
-                        }
-                    });
-                    if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
-                        let wizardsLength = wizards.length;
-                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
-                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
-                    } else {
-                        return [];
-                    }
-                // Returns Wizards
-                } else {
-                    wizards = this.wizards;
-                    //return wizards;
-                    if (wizards && this.currentWizardsPage) {
-                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
-                        this.totalWizardsPages = this.totalAllWizardsPages;
-                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
-                    } else {
-                        return [];
-                    }
-                }
-            },
-            getSortedBy: function () {
-                return this.sortedBy[this.wizardsSortedBy];
             }
         }
     });
