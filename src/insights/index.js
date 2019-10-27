@@ -19,6 +19,10 @@ const SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST = 2;
 const SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST = 3;
 const SORTED_BY_AFFINITY_GROUPINGS = 4;
 
+const ALL_WIZARDS_CONTEXT = 0;
+const MY_WIZARDS_CONTEXT = 1;
+const CLEAR_SEARCH_CONTEXT = 2;
+
 // Prediction types
 const PREDICTION_UNAVAILABLE = 0;
 const PREDICTION_TYPE_CLEAR_WINNER = 1;
@@ -106,6 +110,9 @@ if (location.href.indexOf('insights') !== -1
             PREDICTION_TYPE_MIXED_REVIEWS: PREDICTION_TYPE_MIXED_REVIEWS,
             PRIMARY_SEARCH: PRIMARY_SEARCH,
             VULNERABILITY_SEARCH: VULNERABILITY_SEARCH,
+            ALL_WIZARDS_CONTEXT: ALL_WIZARDS_CONTEXT,
+            MY_WIZARDS_CONTEXT: MY_WIZARDS_CONTEXT,
+            CLEAR_SEARCH_CONTEXT: CLEAR_SEARCH_CONTEXT,
             TOTAL_WIZARDS: null,
             MAINNET: MAINNET,
             RINKEBY: RINKEBY,
@@ -223,6 +230,13 @@ if (location.href.indexOf('insights') !== -1
             this.isBgAnimated = false;
             this.navigation.state = VIEW_ALL_WIZARDS;
             this.getAllWizards();
+
+            // Load historic search history, as required
+            if (sessionStorage.getItem('search')) {
+                this.wizardsPrimaryFilter = sessionStorage.getItem('search');
+                this.showSearch = true;
+            }
+
             // Animate Cheeze Melt
             setTimeout(() => {
                 this.isBgAnimated = true;
@@ -735,6 +749,11 @@ if (location.href.indexOf('insights') !== -1
                         } else if (typeof comparisonId !== 'number') {
                             comparisonId = parseInt(comparisonId);
                         }
+                        // Remember search historic setting
+                        if (this.wizardsPrimaryFilter.length) {
+                            sessionStorage.setItem('search', this.wizardsPrimaryFilter);
+                        }
+                        // Navigate to wizard
                         window.location.href = "/insights/wizard?id=" + comparisonId;
                         break;
                     // Show match prediction
@@ -1033,105 +1052,6 @@ if (location.href.indexOf('insights') !== -1
                     this.setNavigation(VIEW_SELECTED_WIZARD, wizardId);
                 }
             },
-            /*showComparisonWizard: async function (wizardId = null) {
-                // Nothing to do..
-                if (!wizardId) {
-                    return;
-                }
-                // Else
-                this.currentOpposingWizard.selectedId = wizardId;
-                this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
-            },
-            showMyComparisonWizard: async function (wizardId = null) {
-                // Nothing to do..
-                if (!wizardId) {
-                    return;
-                }
-                // Else
-                this.currentWizard.selectedId = wizardId;
-                this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
-            },
-            showPredictMatchOutcome: async function () {
-                if (!this.wizards) {
-                    await this.getAllWizards();
-                }
-                // Handle pre-setting values
-                if (this.currentWizard.id) {
-                    this.currentWizard.selectedId = this.currentWizard.id;
-                }
-                if (this.currentOpposingWizard.id) {
-                    this.currentOpposingWizard.selectedId = this.currentOpposingWizard.id;
-                }
-                // If both Wizards are selected, run prediction routine immediately
-                if (this.currentWizard.selectedId && this.currentOpposingWizard.selectedId) {
-                    this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
-                }
-                this.setNavigation(PREDICT_MATCHES);
-            },
-            predictMatchOutcome: async function (wizardId = null, opposingWizardId = null) {
-                let currentOpposingWizard;
-                if (!wizardId || !opposingWizardId) {
-                    return false;
-                } else {
-                    // Enable loading
-                    wizardId = parseInt(wizardId);
-                    opposingWizardId = parseInt(opposingWizardId);
-                    this.isLoading = true;
-                }
-
-                // Load Wizard metrics as required
-                // Current Wizard
-                if (this.currentWizard.id) {
-                    if (this.currentWizard.id !== this.currentWizard.selectedId) {
-                        // Load Wizard
-                        this.currentWizard = await this.api.getWizardById(wizardId);
-                    }
-                } else {
-                    // Load Wizard
-                    this.currentWizard = await this.api.getWizardById(wizardId);
-                }
-                // Opposing Wizard
-                // Load Wizard
-                currentOpposingWizard = await this.api.getWizardById(opposingWizardId);
-
-                // Compare Wizard powers and affinities
-                this.matchPrediction = this.wizardUtils.predictWinner(this.currentWizard, currentOpposingWizard);
-                //console.log('Prediction =>', this.matchPrediction);
-
-                // Prediction type
-                if (!this.matchPrediction) {
-                    this.predictionType = PREDICTION_UNAVAILABLE;
-                } else if (Array.isArray(this.matchPrediction)) {
-                    this.predictionType = PREDICTION_TYPE_MIXED_REVIEWS;
-                } else {
-                    this.predictionType = PREDICTION_TYPE_CLEAR_WINNER;
-                }
-                //console.log('Prediction type', this.predictionType);
-
-                // Retain model properties
-                currentOpposingWizard.selectedId = opposingWizardId;
-                this.currentWizard.selectedId = wizardId;
-
-                // Add the Wizards' image urls and metadata
-                this.currentWizard.image = (this.currentWizard.hasOwnProperty('image')) ? this.currentWizard.image : this.api.getWizardImageUrlById(wizardId);
-                this.currentWizard = this.wizardUtils.getWizardMetadata(this.currentWizard);
-                currentOpposingWizard.image = this.api.getWizardImageUrlById(opposingWizardId);
-                this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(currentOpposingWizard);
-                // Add Traits data
-                if (!this.currentWizard.traits) {
-                    this.currentWizard.traits = await this.api.getWizardTraitsById(wizardId);
-                }
-                if (!this.currentOpposingWizard.traits) {
-                    this.currentOpposingWizard.traits = await this.api.getWizardTraitsById(opposingWizardId);
-                }
-
-                // Disable loading
-                this.isLoading = false;
-                //console.log('Wizards Compared =>', [this.currentWizard, this.currentOpposingWizard]);
-
-                // Scroll to top of page (useful when running predictions from modal pop-ups)
-                window.scrollTo(0,0);
-            },*/
             // Paging
             nextWizardsPage: function () {
                 // Handle next page as required
@@ -1143,6 +1063,37 @@ if (location.href.indexOf('insights') !== -1
                 // Handle previous page as required
                 if (this.currentWizardsPage > 1) {
                     --this.currentWizardsPage;
+                }
+            },
+            toggleSearchType: function (context) {
+                switch (context) {
+                    case MY_WIZARDS_CONTEXT:
+                        // Handle historic searches
+                        if (this.wizardsPrimaryFilter.length) {
+                            this.wizardsPrimaryFilter = sessionStorage.setItem('search', this.wizardsPrimaryFilter);
+                        }
+                        this.wizardsPrimaryFilter = '';
+                        this.wizardsMineFilter = true;
+                        this.currentWizardsPage = 1;
+                        break;
+                    case ALL_WIZARDS_CONTEXT:
+                        // Handle historic searches
+                        if (sessionStorage.getItem('search')) {
+                            this.wizardsPrimaryFilter = sessionStorage.getItem('search');
+                            this.showSearch = true;
+                        }
+                        this.currentWizardsPage = 1;
+                        this.wizardsMineFilter = false;
+                        break;
+                    case CLEAR_SEARCH_CONTEXT:
+                        this.wizardsPrimaryFilter = '';
+                        if (sessionStorage.getItem('search')) {
+                            sessionStorage.removeItem('search');
+                        }
+                        break;
+                    default:
+                        this.wizardsMineFilter = false;
+                        this.currentWizardsPage = 1;
                 }
             }
         },
@@ -1164,7 +1115,7 @@ if (location.href.indexOf('insights') !== -1
                     filter;
 
                 // Returns Wizards filter => owned by current DApp user
-                if (this.wizardsMineFilter) {
+                if (this.wizardsMineFilter && !this.wizardsPrimaryFilter) {
                     if (this.userOwnsWizards) {
                         // Show requesting user Wizards
                         wizards = this.tokens.mainnet.wizards;
@@ -1192,6 +1143,10 @@ if (location.href.indexOf('insights') !== -1
                     }
                 // Returns Wizards filtered by ID or by Affinity
                 } else if (this.wizardsPrimaryFilter.length) {
+                    // Set UI to filter mode
+                    this.wizardsMineFilter = false;
+                    this.showSearch = true;
+                    // Parse / Filter
                     filter = this.wizardsPrimaryFilter.toLowerCase();
                     wizards = this.wizards.filter((wizard) => {
                         if (wizard.id.toString().indexOf(filter) > -1) {
@@ -1205,6 +1160,7 @@ if (location.href.indexOf('insights') !== -1
                         let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                         let wizardsLength = wizards.length;
                         this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
+                        // Return result
                         return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
                     } else {
                         return [];

@@ -411,28 +411,32 @@
                         <a v-on:click="showSearch = false;" v-if="showSearch"><img class="icon icon-search" src="/img/icons/search.svg">Hide Search Options</a>
                         <!-- Show Only My Owned Wizards -->
                         <span class="search-my-wizards-toggle" v-if="userOwnsWizards"> /
-                            <a v-on:click="wizardsMineFilter = true;currentWizardsPage = 1;" v-if="!wizardsMineFilter">Show only my Wizards</a>
-                            <a v-on:click="wizardsMineFilter = false;" v-if="wizardsMineFilter">Show all Wizards</a>
+                            <a v-on:click="toggleSearchType(MY_WIZARDS_CONTEXT);" v-if="!wizardsMineFilter">Show only my Wizards</a>
+                            <a v-on:click="toggleSearchType(ALL_WIZARDS_CONTEXT);" v-if="wizardsMineFilter">Show all Wizards</a>
                         </span>
                     </div>
 
                     <div class="row container search-controls" v-if="showSearch">
                         <!-- Search Wizards by ID or Affinity -->
                         <div class="search-wizards" v-if="wizardsSearchType == PRIMARY_SEARCH">
+                            <!--
                             <h3>Lost your Wizard again? Cheeze.</h3>
+                            -->
                             <p class="descr">Type an Affinity or Wizard ID in the search box to search Wizards.</p>
                             <p class="descr">Example searches: "Fire", "1614".</p>
                             <div>
                                 <input type="text" name="search_wizards_by_id_or_affinity" v-model="wizardsPrimaryFilter" placeholder="Search Wizards">
                                 <p v-if="wizardsPrimaryFilter.length">
-                                    <a v-on:click="wizardsPrimaryFilter = ''">Clear search</a>
+                                    <a v-on:click="toggleSearchType(CLEAR_SEARCH_CONTEXT);">Clear search</a>
                                 </p>
                             </div>
                             <!-- Search Options -->
                             <div class="search-toggle">
+                                <!--
                                 <p>
                                     <a v-on:click="wizardsSearchType = VULNERABILITY_SEARCH;">Switch to weaklings search mode</a>
                                 </p>
+                                -->
                                 <p>
                                     <a v-on:click="showSearch = false;">Hide Search Options</a>
                                 </p>
