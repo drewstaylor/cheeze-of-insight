@@ -447,11 +447,18 @@
                                 <strong>Lifetime Power Growth:</strong> {{ getPrettyPowerLevel(currentOpposingWizard.power - currentOpposingWizard.initialPower) }}
                             </p>
                         </div>
-                        <!-- Career Stats -->
-                        <div class="growth">
-                            <p>
+                        <!-- Career Stats - Win / Loss record -->
+                        <div class="career" v-if="wizardWinRate">
+                            <p v-if="wizardWinRate.wins > 0 || wizardWinRate.losses > 0 || wizardWinRate.tied > 0">
                                 <strong>Career:</strong>
-                                <span>{{ wizardWinRate.wins }}W</span>&nbsp;/&nbsp;<span>{{ wizardWinRate.losses }}L</span>&nbsp;/&nbsp;<span>{{ wizardWinRate.tied }}T</span>
+                                <span>{{ wizardWinRate.wins }}W</span>&nbsp;-&nbsp;<span>{{ wizardWinRate.losses }}L</span>&nbsp;-&nbsp;<span>{{ wizardWinRate.tied }}T</span>
+                            </p>
+                        </div>
+                        <!-- Career Stats - Win percentage -->
+                        <div class="career" v-if="wizardWinRate">
+                            <p v-if="wizardWinRate.wins > 0 || wizardWinRate.losses > 0 || wizardWinRate.tied > 0">
+                                <strong>Win Rate:</strong>
+                                <span>{{ getWinPercentage(wizardWinRate.wins, wizardWinRate.losses, wizardWinRate.tied) }}%</span>
                             </p>
                         </div>
                         <!-- Owner -->

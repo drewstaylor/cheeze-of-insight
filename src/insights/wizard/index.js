@@ -210,7 +210,8 @@ if (location.href.indexOf('wizard') !== -1) {
                 wins: 0,
                 losses: 0,
                 tied: 0
-            }
+            },
+            wizardWinPercentage: null
         }),
         firebase: {
             usersOnline: usersOnline
@@ -1163,18 +1164,15 @@ if (location.href.indexOf('wizard') !== -1) {
                 // Scroll to top of page (useful when running predictions from modal pop-ups)
                 window.scrollTo(0,0);
             },
-            // Paging
-            nextWizardsPage: function () {
-                // Handle next page as required
-                if (this.currentWizardsPage < this.totalWizardsPages) {
-                    ++this.currentWizardsPage;
+            getWinPercentage: function (wins, losses, tied) {
+                if (isNaN(wins) || isNaN(losses) || isNaN(tied)) {
+                        return '';
                 }
-            },
-            previousWizardsPage: function () {
-                // Handle previous page as required
-                if (this.currentWizardsPage > 1) {
-                    --this.currentWizardsPage;
-                }
+                wins = wins + tied;
+                let total = wins + losses;
+                let percentage = wins / total * 100;
+                //console.log('wins, losses, total, percentage', [wins, losses, total, percentage]);
+                return percentage.toFixed(2);
             }
         },
         watch: {
