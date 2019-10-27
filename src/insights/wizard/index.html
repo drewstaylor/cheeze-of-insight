@@ -400,7 +400,7 @@
                 <span class="back-btn" v-on:click="setChildNavigation(VIEW_SELECTED_WIZARD);">Back</span>
             </div>
             <div class="back-btn row" v-else-if="navigation.state == VIEW_SELECTED_WIZARD">
-                <a class="home-back" href="/insights">Back</a>
+                <span class="back-btn" v-on:click="setChildNavigation('BACK');">Back</span>
             </div>
             <div class="back-btn row" v-else>
                 <span class="back-btn" v-on:click="setChildNavigation(VIEW_SELECTED_WIZARD)">Back</span>

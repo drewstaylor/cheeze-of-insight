@@ -717,9 +717,12 @@ if (location.href.indexOf('wizard') !== -1) {
                 if (this.navigation.state == state) {
                     return;
                 }
-                console.log('???', state, comparisonId);
                 // Handle state change
                 switch(state) {
+                    case 'BACK':
+                        sessionStorage.setItem('search', this.getUrlParameter('id'));
+                        window.location.href = "/insights";
+                        return;
                     case VIEW_SELECTED_WIZARD:
                         this.isBgAnimated = false;
                         this.navigation.state = VIEW_SELECTED_WIZARD;
