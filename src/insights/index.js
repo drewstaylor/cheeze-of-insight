@@ -968,7 +968,7 @@ if (location.href.indexOf('insights') !== -1
 
                 // Disable loading
                 this.isLoading = false;
-                console.log('Wizards =>', this.wizards);
+                //console.log('Wizards =>', this.wizards);
             },
             fetchUserWizards: async function (provider = MAINNET) {
                 let userTotalWizards = null;
@@ -1033,7 +1033,7 @@ if (location.href.indexOf('insights') !== -1
                     this.setNavigation(VIEW_SELECTED_WIZARD, wizardId);
                 }
             },
-            showComparisonWizard: async function (wizardId = null) {
+            /*showComparisonWizard: async function (wizardId = null) {
                 // Nothing to do..
                 if (!wizardId) {
                     return;
@@ -1131,7 +1131,7 @@ if (location.href.indexOf('insights') !== -1
 
                 // Scroll to top of page (useful when running predictions from modal pop-ups)
                 window.scrollTo(0,0);
-            },
+            },*/
             // Paging
             nextWizardsPage: function () {
                 // Handle next page as required
