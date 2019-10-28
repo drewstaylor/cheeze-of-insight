@@ -1066,7 +1066,8 @@ if (location.href.indexOf('wizard') !== -1) {
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
                 this.duelData = this.currentOpposingWizard.duels;
-                console.log('this.duelData =>', this.duelData);
+                
+                //console.log('this.duelData =>', this.duelData);
 
                 // Disable loading
                 this.isLoading = false;
