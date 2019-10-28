@@ -1240,8 +1240,6 @@ if (location.href.indexOf('wizard') !== -1) {
                         // Match duel.wizard1
                         if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {
                             
-                            console.log('Matched wizard1Id =>', [parseInt(duels[i].wizard1Id), parseInt(this.wizardId)]);
-                            
                             if (!duels[i].wizard1DidWin) {
                                 // Losses
                                 ++losses;
