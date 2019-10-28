@@ -1044,6 +1044,26 @@ if (location.href.indexOf('duels') == -1
                 }
 
                 //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
+            },
+            // single wizard view
+            showWizard: function (wizardId = null) {
+                if (wizardId == null) {
+                    return;
+                } else {
+                    window.location.href = '/insights/wizard?id=' + wizardId
+                }
+            },
+            getPrettyRank: function (rank) {
+                let finalChar = String(rank).slice(-1);
+                if (finalChar == '1') {
+                    return rank + 'st';
+                } else if (finalChar == '2') {
+                    return rank + 'nd';
+                } else if (finalChar == '3') {
+                    return rank + 'rd';
+                } else {
+                    return rank + 'th';
+                }
             }
         },
         computed: {
@@ -1068,7 +1088,7 @@ if (location.href.indexOf('duels') == -1
                 } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
                     this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                return this.wizards.slice(0,3);
+                return this.wizards.slice(0,4);
             },
             // Top 4 Elemental Wizards
             topFourElementalsByPower: function () {
@@ -1084,7 +1104,7 @@ if (location.href.indexOf('duels') == -1
                         }
                     }
                 });
-                return elementals.slice(0,3);
+                return elementals.slice(0,4);
             },
             // Top 4 Neutral Wizards
             topFourNeutralsByPower: function () {
@@ -1099,7 +1119,7 @@ if (location.href.indexOf('duels') == -1
                             return wizard;
                         }
                     }
-                }).slice(0,3);
+                }).slice(0,4);
             },
 
             /**
