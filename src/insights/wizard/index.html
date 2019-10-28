@@ -79,11 +79,19 @@
                     <div v-if="wizardDuelStats">
                         <div class="wizardDuelStatsMain">
                             <div>Total matches: <span>{{ wizardDuelStats.totalMatches }}</span></div>
+                            <div>
+                                Affinity: <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                            </div>
+                            <div>
+                                Vulnerability: <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
+                            </div>
+                            <!--
                             <div>Wins: <span>{{ wizardDuelStats.wins }}</span></div>
                             <div>Losses: <span>{{ wizardDuelStats.losses }}</span></div>
                             <div>Win Rate: <span>{{ 100 * wizardDuelStats.winRate }}%</span></div>
                             <div>Max Power: <span>{{ wizardDuelStats.powerLow }}</span></div>
                             <div>Min Power: <span>{{ wizardDuelStats.powerLow }}</span></div>
+                            -->
                         </div>
 
                         <div class="wizardDuelStatsTable">
@@ -99,7 +107,15 @@
                                     <td class="duel-stats-total-column">Total</td>
                                 </thead>
                                 <tr>
-                                    <td><div>...used its own affinity vs. Neutral Wizard:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> vs. </span>
+                                            <img class="icon" src="../img/icons/neutral.svg">
+                                            <span> wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnAffinityVsNeutral }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnAffinityVsNeutral }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnAffinityVsNeutral }}</td>
@@ -108,7 +124,15 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityVsNeutral }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its own affinity vs. same affinity Wizard:</div><//td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> vs. </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnAffinityVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnAffinityVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnAffinityVsSame }}</td>
@@ -117,7 +141,13 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityVsSame }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its own affinity while at advantage:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> vs. weaker power wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnAffinityWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnAffinityWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnAffinityWhileAdvantaged }}</td>
@@ -126,7 +156,13 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityWhileAdvantaged }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its own affinity while at disadvantage:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> vs. stronger power wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnAffinityWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnAffinityWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnAffinityWhileDisadvantaged }}</td>
@@ -136,7 +172,15 @@
                                 </tr>
 
                                 <tr>
-                                    <td><div>...used its opponent's weakness vs. same affinity Wizard:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> vs. </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnAffinityVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnAffinityVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnAffinityVsSame }}</td>
@@ -145,7 +189,13 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityVsSame }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its opponent's weakness while at advantage:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
+                                            <span> vs. stronger power wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnWeaknessWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnWeaknessWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnWeaknessWhileAdvantaged }}</td>
@@ -154,7 +204,9 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessWhileAdvantaged }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its opponent's weakness while at disadvantage:</div></td>
+                                    <td>
+                                        <div>Cast opponent's vulnerability vs. stronger power wizard:</div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOpponentsWeaknessWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOpponentsWeaknessWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOpponentsWeaknessWhileDisadvantaged }}</td>
@@ -164,7 +216,15 @@
                                 </tr>
 
                                 <tr>
-                                    <td><div>...used its own weakness vs. same affinity Wizard:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
+                                            <span> vs. </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
+                                            <span> wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnWeaknessVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnWeaknessVsSame }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnWeaknessVsSame }}</td>
@@ -173,7 +233,13 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessVsSame }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its own weakness while at advantage:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
+                                            <span> vs. weaker power wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnWeaknessWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnWeaknessWhileAdvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnWeaknessWhileAdvantaged }}</td>
@@ -182,7 +248,13 @@
                                     <td class="duel-stats-total-column">{{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessWhileAdvantaged }}</td>
                                 </tr>
                                 <tr>
-                                    <td><div>...used its own weakness while at disadvantage:</div></td>
+                                    <td>
+                                        <div>
+                                            <span>Cast </span>
+                                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
+                                            <span> vs. stronger power wizard:</span>
+                                        </div>
+                                    </td>
                                     <td>{{ wizardDuelStats.moveStats[0].usesOwnWeaknessWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[1].usesOwnWeaknessWhileDisadvantaged }}</td>
                                     <td>{{ wizardDuelStats.moveStats[2].usesOwnWeaknessWhileDisadvantaged }}</td>
@@ -192,22 +264,6 @@
                                 </tr>
                             </table>
                         </div>
-
-                        <!--
-                        <p>
-                            <div>...used its own affinity vs. Neutral Wizard: {{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityVsNeutral }}</div>
-                            <div>...used its own affinity vs. same affinity Wizard: {{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityVsSame }}</div>
-                            <div>...used its own affinity while at advantage: {{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityWhileAdvantaged }}</div>
-                            <div>...used its own affinity while at disadvantage: {{ wizardDuelStats.aggregateMoveStats.usesOwnAffinityWhileDisadvantaged }}</div>
-                            <div>...used its opponent's weakness vs. same affinity Wizard: {{ wizardDuelStats.aggregateMoveStats.usesOpponentsWeaknessVsSame }}</div>
-                            <div>...used its opponent's weakness while at advantage: {{ wizardDuelStats.aggregateMoveStats.usesOpponentsWeaknessWhileAdvantaged }}</div>
-                            <div>...used its opponent's weakness while at disadvantage: {{ wizardDuelStats.aggregateMoveStats.usesOpponentsWeaknessWhileDisadvantaged }}</div>
-                            <div>...used its own weakness vs. same affinity Wizard: {{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessVsSame }}</div>
-                            <div>...used its own weakness vs. same affinity Wizard: {{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessVsSame }}</div>
-                            <div>...used its own weakness while at advantage: {{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessWhileAdvantaged }}</div>
-                            <div>...used its own weakness while at disadvantage: {{ wizardDuelStats.aggregateMoveStats.usesOwnWeaknessWhileDisadvantaged }}</div>
-                        </p>
-                        -->
                     </div>
                 </div>
             </modal>
@@ -609,7 +665,7 @@
                                 <!-- View Other Wizards By This Owner -->
                                 <a class="real-styled" v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner)">View all Wizards from this owner</a>
                             </p>
-                            <p>
+                            <p v-if="parseInt(currentOpposingWizard.affinity) > 1">
                                 <!-- Show wizard's duel stats -->
                                 <a class="real-styled" v-on:click="showWizardDuelStats(currentOpposingWizard.id)">View Wizard's Duel Statistics</a>
                             </p>

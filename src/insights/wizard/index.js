@@ -1032,13 +1032,18 @@ if (location.href.indexOf('wizard') !== -1) {
                     this.comparisonMyWizardsModalShown = true;
                 }
             },
-            showWizard: async function (wizardId = null) {
+            showWizard: async function (wizardId = null) {//here
                 if (wizardId == null) {
                     return;
                 } else {
                     wizardId = parseInt(wizardId);
                     this.setChildNavigation(VIEW_SELECTED_WIZARD);
                     this.isLoading = true;
+                    this.wizardWinRate = {
+                        wins: 0,
+                        losses: 0,
+                        tied: 0
+                    }
                 }
 
                 // Update state tracker and query args
@@ -1219,7 +1224,6 @@ if (location.href.indexOf('wizard') !== -1) {
             duelData: {
                 immediate: true,
                 async handler (duels) {
-                    await duels;
                     if (!duels) {
                         return;
                     } else if (!duels.length) {
