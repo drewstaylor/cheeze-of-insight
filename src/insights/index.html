@@ -13,8 +13,8 @@
     <meta content="Want to out manoeuvre your opponents? Predict their turns before they've been forecasted? Sharpen your rind in a free-to-play testnet environment? Grate no further, Cheeze of Insight is for you!" name="twitter:description">
     <meta content="@cheezeofinsight" name="twitter:creator">
     <meta content="https://cheezeofinsight.com/img/holiness.jpg" name="twitter:image:src">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <title>Cheeze of Insight</title>
 
     <!-- CSS Imports -->
@@ -593,7 +593,7 @@
                         <!-- External Link -->
                         <div class="external-link">
                             <p>
-                                <a :href="'https://www.cheezewizards.com/wizard/' + currentOpposingWizard.id" target="_blank">View on cheezewizards.com <img class="icon external-link" src="img/icons/external_link.svg"></a>
+                                <a :href="'https://www.cheezewizards.com/wizard/' + currentOpposingWizard.id" target="_blank">View on cheezewizards.com <img class="icon external-link" src="../img/icons/external_link.svg"></a>
                             </p>
                         </div>
                         <!-- Show / Hide Traits -->
@@ -889,7 +889,7 @@
                     <div class="duels-card-rounds" v-if="(!duel.moveSet1 || !duel.moveSet2) && duel.timedOut">
                         <p class="duel-in-progress">
                             <span>Timed out</span><br/>
-                            <img class="frowned-out" src="img/frown.png"></img>
+                            <img class="frowned-out" src="../img/frown.png"></img>
                         </p>
                     </div>
 
@@ -1619,7 +1619,7 @@
     <script type="text/x-template" id="sidebar-template">
         <div id="parentx">
             <slot name="menu-items"></slot>
-            <img id="close_sidebar" src="img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
+            <img id="close_sidebar" src="../img/icons/chat.svg" class="icon chat-icon sidebar-ctrlr" @click="showSidebar = !showSidebar;">
             <vs-sidebar position-right parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="showSidebar">
 
                 <!-- Sidebar Header -->
