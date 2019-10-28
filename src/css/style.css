@@ -845,11 +845,40 @@ a.footer-link:hover {
     text-decoration: none !important;
 }
 
-#duel-stats-table tbody tr:nth-child(odd) {background-color: #ffef57;}
-#duel-stats-table tbody tr:nth-child(even) {background-color: #ffd45a;}
-#duel-stats-table thead tr {background-color: #ffc033;}
-.duel-stats-total-column { font-weight: 700; }
+/*.duel-stats-modal .modal-wrapper .modal-container {
+    background-color: rgba(255, 239, 87, 0.95);
+    background-color: #333333;
+    background-image: url(../img/gridPatternWhite.svg);
+    background-position: top -10px center;
+    background-size: 2rem auto;
+    background-repeat: repeat;
+}*/
+
+.duel-stats-modal-header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#duel-stats-table tbody tr:nth-child(odd) {
+    background-color: #ffef57;
+}
+#duel-stats-table tbody tr:nth-child(even) {
+    background-color: #ffd45a;
+}
+#duel-stats-table thead tr {
+    background-color: #ffc033;
+}
+#duel-stats-table thead tr td,
+#duel-stats-table tbody tr td {
+    padding: 1.5rem;
+}
+.duel-stats-total-column { 
+    font-weight: 700; 
+}
 .wizardDuelStatsMain {
+    padding: 1.5rem;
     font-size: 1.4em;
 }
 .wizardDuelStatsMain span {
@@ -858,6 +887,7 @@ a.footer-link:hover {
 .wizardDuelStatsTable {
     margin-top: 20px;
     font-size: 1.2em;
+    border-radius: 0.3rem;
 }
 .wizardDuelStatsTable td {
     padding: 3px;
