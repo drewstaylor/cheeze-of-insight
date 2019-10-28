@@ -168,6 +168,32 @@ const sortByWizardId = function (a, b) {
 };
 
 /**
+ * Sort the Accounts array by win rate
+ * @param {Object} a 
+ * @param {Object} b 
+ */
+const sortAccountsByWinRate = function (a, b) {
+    /*
+    this.accounts[wizard.owner] = [{
+        wizards: [wizard.id],
+        wins: 0,
+        losses: 0,
+        tied: 0
+    }];
+     */
+    let winRateA = (Number(a.wins) +  Number(a.tied)) / (Number(a.wins) + Number(a.losses) + Number(a.tied));
+    let winRateB = (Number(b.wins) +  Number(b.tied)) / (Number(b.wins) + Number(b.losses) + Number(a.tied));
+    // Compare
+    if (winRateA < winRateB) {
+        return 1;
+    } else if (winRateA > winRateB) {
+        return -1;
+    } else {
+        return 0;
+    }
+};
+
+/**
  * Group the Wizards by their Affinity type and add helper props: 
  * `a.specialPower`, `a.vulnerablity`, `a.optimalOpponent`
  * 
@@ -458,6 +484,7 @@ module.exports = {
     sortByPowerLevelGrowth: sortByPowerLevelGrowth,
     sortByPowerLevelGrowthReverse: sortByPowerLevelGrowthReverse,
     sortByWizardId: sortByWizardId,
+    sortAccountsByWinRate: sortAccountsByWinRate,
     groupWizardsByAffinity: groupWizardsByAffinity,
     sortByDuelTimeRecentFirst: sortByDuelTimeRecentFirst,
     compareWizardPowerLevels: compareWizardPowerLevels,

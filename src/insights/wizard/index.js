@@ -1,18 +1,6 @@
 'use strict';
 
-require('./duels/duels.js');
-require('./markets/markets.js');
-require('./learn/learn.js');
-require('./insights/index');
-require('./insights/wizard/index');
-
-Vue.config.devtools = false;
-Vue.config.productionTip = false;
-
-
 // Navigation states
-const HOME_STATE = -1;
-const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
 const PREDICTION_MARKETS = 3;
@@ -40,7 +28,7 @@ const MAINNET = 0;
 const RINKEBY = 1;
 
 // Config
-const config = require('./config');
+const config = require('../../config');
 const firebaseConfig = config.firebaseConfig;
 
 // Modal component
@@ -85,24 +73,18 @@ const contextMenuOptions = [
 Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
 
 // Online users ref.
-const FIREBASE = require('./firebase');
+const FIREBASE = require('../../firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
-if (location.href.indexOf('duels') == -1
-    && location.href.indexOf('markets') == -1
-    && location.href.indexOf('learn') == -1
-    && location.href.indexOf('play') == -1
-    && location.href.indexOf('insights') == -1) {
+if (location.href.indexOf('wizard') !== -1) {
     let vm = new Vue({
-        el: '#cheese-of-insight',
+        el: '#wizard',
         data: () => ({
             // App constants
-            VIEW_ALL_WIZARDS: VIEW_ALL_WIZARDS,
             VIEW_SELECTED_WIZARD: VIEW_SELECTED_WIZARD,
             PREDICT_MATCHES: PREDICT_MATCHES,
             PREDICTION_MARKETS: PREDICTION_MARKETS,
-            HOME_STATE: HOME_STATE,
             LEARN: LEARN,
             PLAY: PLAY,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
@@ -119,10 +101,11 @@ if (location.href.indexOf('duels') == -1
             MAINNET: MAINNET,
             RINKEBY: RINKEBY,
             // Dependencies
-            Provider: require('./providers'),
-            api: require('./api'),
-            duelUtils: require('./duels'),
-            wizardUtils: require('./wizards'),
+            Provider: require('../../providers'),
+            api: require('../../api'),
+            duelUtils: require('../../duels'),
+            duelStats: require('../../stats'),
+            wizardUtils: require('../../wizards'),
             // Firebase
             firebase: FIREBASE,
             // Web3
@@ -149,7 +132,7 @@ if (location.href.indexOf('duels') == -1
             },
             // App
             navigation: {
-                state: HOME_STATE
+                state: VIEW_SELECTED_WIZARD
             },
             userIsLoggedIn: false,
             isLoading: false,
@@ -202,6 +185,7 @@ if (location.href.indexOf('duels') == -1
             chatChallengeModal_step3: false,
 
             userOwnsWizards: 0,
+            wizardId: null,
             currentWizard: {},
             currentOpposingWizard: {},
             activeDuelWizard: {},
@@ -222,48 +206,37 @@ if (location.href.indexOf('duels') == -1
             showOpponentTraits: false,
             manualCurrentWizardSelection: false,
             isBgAnimated: false,
-            winRatesReady: false,
-            accountsSorted: false,
-            duels: [],
-            elementals: null,
-            elementalsGrowth: null,
-            wizardsGrowth: null,
-            neutrals: null,
-            neutralsGrowth: null,
-            accounts: []
+            duelData: [],
+            wizardDuelStatsShown: false,
+            wizardDuelStats: {},
+            wizardWinRate: {
+                wins: 0,
+                losses: 0,
+                tied: 0
+            },
+            wizardWinPercentage: null
         }),
         firebase: {
             usersOnline: usersOnline
         },
         mounted: async function () {
+            // Load Wizards and User state
+            this.currentOpposingWizard = {};
+            this.isBgAnimated = false;
+            this.getAllWizards();
             // Animate Cheeze Melt
             setTimeout(() => {
                 this.isBgAnimated = true;
+            }, 100);
+
+            // Animate Cheeze Melt
+            setTimeout(() => {
                 setTimeout(() => {
                     jQuery('document').ready(function () {
-                        jQuery('#cheese-of-insight').removeClass('hidden');
-                        jQuery('#holiness-logo').removeClass('hidden');
+                        jQuery('#wizard').removeClass('hidden');
                     });
                 }, 0);
             }, 0);
-
-            // Load all duels
-            let duels = await this.api.getAllDuels();
-            this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
-            // Sort by historical time
-            this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
-
-            // Load all wizards
-            this.getAllWizards();
-
-            // Load all accounts and merge win record
-            //await this.getAllAccounts();
-
-            // Sort accounts
-            //this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
-
-            //console.log('All duels =>', this.duels);
-            //console.log('All accounts =>', this.accounts);
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -298,8 +271,19 @@ if (location.href.indexOf('duels') == -1
                     await this.setupChat(user);
                 }
             });
+
+            // Load wizard
+            this.wizardId = this.getUrlParameter('id');
+            this.showWizard(this.wizardId);
         },
         methods: {
+            // Get Wizard param
+            getUrlParameter: function (arg) {
+                arg = arg.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                var regex = new RegExp('[\\?&]' + arg + '=([^&#]*)');
+                var results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            },
             // Chat / Login
             login: async function () {
                 // Process login as required
@@ -738,25 +722,63 @@ if (location.href.indexOf('duels') == -1
                 // If cancelled, don't dispatch our event
                 let canceled = !elem.dispatchEvent(evt);
             },
-            setNavigation: async function (state = null, comparisonId = null) {
+            setChildNavigation: async function (state = null, comparisonId = null) {
                 // Change navigation state as required
                 if (this.navigation.state == state) {
                     return;
                 }
                 // Handle state change
                 switch(state) {
-                    // Show all Wizards
-                    case HOME_STATE:
+                    case 'BACK':
+                        sessionStorage.setItem('search', this.getUrlParameter('id'));
+                        window.location.href = "/insights";
+                        return;
+                    case VIEW_SELECTED_WIZARD:
                         this.isBgAnimated = false;
-                        this.navigation.state = HOME_STATE;
-                        this.currentOpposingWizard = {};
+                        this.navigation.state = VIEW_SELECTED_WIZARD;
                         // Animate Cheeze Melt
                         setTimeout(() => {
                             this.isBgAnimated = true;
                         }, 100);
-                        break;
-                    case VIEW_ALL_WIZARDS:
-                        window.location.href = "/insights";
+                        
+                        this.showWizard(this.wizardId);
+
+                        return false;
+                    // Show match prediction
+                    case PREDICT_MATCHES:
+                        this.isBgAnimated = false;
+                        //console.log('Match prediction mode enabled');
+                        this.navigation.state = PREDICT_MATCHES;
+
+                        // Handle state entry
+                        // User's owned wizard
+                        if (!this.currentWizard.selectedId && this.userOwnsWizards) {
+                            if (this.tokens.mainnet.wizards) {
+                                if (this.tokens.mainnet.wizards.length) {
+                                    this.currentWizard.selectedId = this.tokens.mainnet.wizards[0].id;
+                                }
+                            }
+                        }
+
+                        // Comparison wizard
+                        if (this.currentOpposingWizard.id && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = this.currentOpposingWizard.id;
+                        } else if (comparisonId && !this.currentOpposingWizard.hasOwnProperty('selectedId')) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        } else if (comparisonId && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        }
+
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
+
+                        // Run predictor automatically on state resolultion
+                        if (this.currentWizard.selectedId && this.currentOpposingWizard.selectedId) {
+                            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+                        }
+
                         break;
                     case PREDICTION_MARKETS:
                         window.location.href = "/markets";
@@ -923,17 +945,11 @@ if (location.href.indexOf('duels') == -1
                 // Define total Wizards
                 this.TOTAL_WIZARDS = wizardsQuery.wizards.length;
 
-                // Populate Wizards
-                //here
-                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.wizardsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-                this.elementals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.elementalsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-                this.neutrals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.neutralsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-
-                // XXX TODO: Legacy, remove this?:
-                this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                // Sort Wizards
+                if (!this.wizardsSortedBy) {
+                    this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                    this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                }
 
                 // Get pagination args.
                 this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
@@ -960,73 +976,6 @@ if (location.href.indexOf('duels') == -1
                 // Disable loading
                 this.isLoading = false;
                 //console.log('Wizards =>', this.wizards);
-            },
-            getAllAccounts: async function () {
-                if (this.wizards) {
-                    // Iterate Accounts
-                    for (let i = 0; i < this.wizards.length; i++) {
-                        if (this.accounts.indexOf(this.wizards[i].owner) < 0) {
-                            this.accounts[this.wizards[i].owner] = [{
-                                wizards: [this.wizards[i].id],
-                                wins: 0,
-                                losses: 0,
-                                tied: 0
-                            }];
-                        } else {
-                            if (accounts.indexOf(this.wizards[i].owner) < 0) {
-                                this.accounts[this.wizards[i].owner].wizards.push(this.wizards[i].id);
-                            }
-                        }
-
-                        if (i == (this.wizards.length - 1)) {
-                            this.getWinRates();
-                        }
-                    };
-                }
-            },
-            getWinRates: async function () {
-                if (!this.duels) {
-                    return;
-                }
-                let i;
-                let j;
-                // Iterate Duels
-                for (i = 0; i < this.duels.length; i++) {
-                    // Merge with Accounts
-                    for (j = 0; j < this.accounts.length; j++) {
-                        // Match Duel Wizard 1
-                        if (this.accounts[j].wizards.indexOf(this.duels[i].wizard1) > 0) {
-                            // Lost
-                            if (!this.duels[i].wizard1DidWin) {
-                                ++this.accounts[j].losses;
-                            } else {
-                                // Tied
-                                if (this.duels[i].wizard2DidWin) {
-                                    ++this.accounts[j].tied;
-                                } else {
-                                    ++this.accounts[j].wins;
-                                }
-                            }
-                        // Match Duel Wizard 2
-                        } else if (this.accounts[j].wizards.indexOf(this.duels[i].wizard2) > 0) {
-                            // Lost
-                            if (!this.duels[i].wizard2DidWin) {
-                                ++this.accounts[j].losses;
-                            } else {
-                                // Tied
-                                if (this.duels[i].wizard1DidWin) {
-                                    ++this.accounts[j].tied;
-                                } else {
-                                    ++this.accounts[j].wins;
-                                }
-                            }
-                        }
-                    }
-                    // Final Iteration
-                    if (i == (this.duels.length - 1)) {
-                        this.winRatesReady = true;
-                    }
-                }
             },
             fetchUserWizards: async function (provider = MAINNET) {
                 let userTotalWizards = null;
@@ -1060,24 +1009,274 @@ if (location.href.indexOf('duels') == -1
 
                 //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
             },
-            // single wizard view
-            showWizard: function (wizardId = null) {
+            // View worker
+            showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false, self = false) {
+                // Nothing to do here...
+                if (!ownerAddress) {
+                    return;
+                }
+                // Fetch Wizards
+                this.fetchWizardsOwnedByAddress(ownerAddress);
+
+                // Launch modal
+                if (!isComparisonMode) {
+                    // Show browse single Wizard modal
+                    this.selectedWizardsByAddressModalShown = true;
+                } else if (isComparisonMode && !self)  {
+                    //console.log('show opponent wizards');
+                    // Show comparison opponent Wizards
+                    this.comparisonWizardsByAddressModalShown = true;
+                } else {
+                    //console.log('show my wizards');
+                    // Show all my Wizards
+                    this.comparisonMyWizardsModalShown = true;
+                }
+            },
+            showWizard: async function (wizardId = null) {//here
                 if (wizardId == null) {
                     return;
                 } else {
-                    window.location.href = '/insights/wizard?id=' + wizardId
+                    wizardId = parseInt(wizardId);
+                    this.setChildNavigation(VIEW_SELECTED_WIZARD);
+                    this.isLoading = true;
+                    this.wizardWinRate = {
+                        wins: 0,
+                        losses: 0,
+                        tied: 0
+                    }
+                }
+
+                // Update state tracker and query args
+                if (this.wizardId !== wizardId) {
+                    this.wizardId = wizardId;
+                    //window.location.search = 'id=' + wizardId;
+                }
+
+                // Load Wizard
+                this.currentOpposingWizard = await this.api.getWizardById(wizardId);
+
+                // Add the wizard's image url
+                this.currentOpposingWizard.image = this.api.getWizardImageUrlById(wizardId);
+                // Add traits
+                this.currentOpposingWizard.traits = await this.api.getWizardTraitsById(wizardId);
+                // Add metadata
+                this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(this.currentOpposingWizard);
+                // Add duels
+                const duels = await this.api.getDuelsByWizardId(wizardId);
+                this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
+                this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
+                this.duelData = this.currentOpposingWizard.duels;
+                
+                //console.log('this.duelData =>', this.duelData);
+
+                // Disable loading
+                this.isLoading = false;
+            },
+            getTimeFromBlock: async function (blockNumber) {
+                if (!blockNumber) {
+                    return '';
+                }
+                blockNumber = parseInt(blockNumber);
+                let timestamp = '';
+                if (this.wallets.mainnet) {
+                    let block = await this.web3Providers.mainnet.eth.getBlock(blockNumber);
+                    timestamp = block.timestamp;
+                    return timestamp;
+                } else {
+                    return timestamp;
                 }
             },
-            getPrettyRank: function (rank) {
-                let finalChar = String(rank).slice(-1);
-                if (finalChar == '1') {
-                    return rank + 'st';
-                } else if (finalChar == '2') {
-                    return rank + 'nd';
-                } else if (finalChar == '3') {
-                    return rank + 'rd';
+            prettyTime: function (timestamp) {
+                if (!timestamp) {
+                    return '';
+                }
+                let dateObj = new Date(timestamp * 1000);
+                let date = dateObj.toDateString();
+                let time = dateObj.toLocaleTimeString();
+                return date + ', ' + time;
+            },
+            showComparisonWizard: async function (wizardId = null) {
+                // Nothing to do..
+                if (!wizardId) {
+                    return;
+                }
+                // Else
+                this.currentOpposingWizard.selectedId = wizardId;
+                this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+            },
+            showMyComparisonWizard: async function (wizardId = null) {
+                // Nothing to do..
+                if (!wizardId) {
+                    return;
+                }
+                // Else
+                this.currentWizard.selectedId = wizardId;
+                this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+            },
+            showPredictMatchOutcome: async function () {
+                if (!this.wizards) {
+                    await this.getAllWizards();
+                }
+                // Handle pre-setting values
+                if (this.currentWizard.id) {
+                    this.currentWizard.selectedId = this.currentWizard.id;
+                }
+                if (this.currentOpposingWizard.id) {
+                    this.currentOpposingWizard.selectedId = this.currentOpposingWizard.id;
+                }
+                // If both Wizards are selected, run prediction routine immediately
+                if (this.currentWizard.selectedId && this.currentOpposingWizard.selectedId) {
+                    this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+                }
+                this.setChildNavigation(PREDICT_MATCHES);
+            },
+            predictMatchOutcome: async function (wizardId = null, opposingWizardId = null) {
+                let currentOpposingWizard;
+                if (!wizardId || !opposingWizardId) {
+                    return false;
                 } else {
-                    return rank + 'th';
+                    // Enable loading
+                    wizardId = parseInt(wizardId);
+                    opposingWizardId = parseInt(opposingWizardId);
+                    this.isLoading = true;
+                }
+
+                // Load Wizard metrics as required
+                // Current Wizard
+                if (this.currentWizard.id) {
+                    if (this.currentWizard.id !== this.currentWizard.selectedId) {
+                        // Load Wizard
+                        this.currentWizard = await this.api.getWizardById(wizardId);
+                    }
+                } else {
+                    // Load Wizard
+                    this.currentWizard = await this.api.getWizardById(wizardId);
+                }
+                // Opposing Wizard
+                // Load Wizard
+                currentOpposingWizard = await this.api.getWizardById(opposingWizardId);
+
+                // Compare Wizard powers and affinities
+                this.matchPrediction = this.wizardUtils.predictWinner(this.currentWizard, currentOpposingWizard);
+                //console.log('Prediction =>', this.matchPrediction);
+
+                // Prediction type
+                if (!this.matchPrediction) {
+                    this.predictionType = PREDICTION_UNAVAILABLE;
+                } else if (Array.isArray(this.matchPrediction)) {
+                    this.predictionType = PREDICTION_TYPE_MIXED_REVIEWS;
+                } else {
+                    this.predictionType = PREDICTION_TYPE_CLEAR_WINNER;
+                }
+                //console.log('Prediction type', this.predictionType);
+
+                // Retain model properties
+                currentOpposingWizard.selectedId = opposingWizardId;
+                this.currentWizard.selectedId = wizardId;
+
+                // Add the Wizards' image urls and metadata
+                this.currentWizard.image = (this.currentWizard.hasOwnProperty('image')) ? this.currentWizard.image : this.api.getWizardImageUrlById(wizardId);
+                this.currentWizard = this.wizardUtils.getWizardMetadata(this.currentWizard);
+                currentOpposingWizard.image = this.api.getWizardImageUrlById(opposingWizardId);
+                this.currentOpposingWizard = this.wizardUtils.getWizardMetadata(currentOpposingWizard);
+                // Add Traits data
+                if (!this.currentWizard.traits) {
+                    this.currentWizard.traits = await this.api.getWizardTraitsById(wizardId);
+                }
+                if (!this.currentOpposingWizard.traits) {
+                    this.currentOpposingWizard.traits = await this.api.getWizardTraitsById(opposingWizardId);
+                }
+
+                // Disable loading
+                this.isLoading = false;
+                //console.log('Wizards Compared =>', [this.currentWizard, this.currentOpposingWizard]);
+
+                // Scroll to top of page (useful when running predictions from modal pop-ups)
+                window.scrollTo(0,0);
+            },
+            getWinPercentage: function (wins, losses, tied) {
+                if (isNaN(wins) || isNaN(losses) || isNaN(tied)) {
+                        return '';
+                }
+                wins = wins + tied;
+                let total = wins + losses;
+                let percentage = wins / total * 100;
+                //console.log('wins, losses, total, percentage', [wins, losses, total, percentage]);
+                return percentage.toFixed(2);
+            },
+            showWizardDuelStats: async function(wizardId) {
+                const that = this;
+                this.wizardDuelStatsShown = true;
+
+                // fetch duel stats
+                const response = await this.api.getDuelsByWizardId(wizardId);
+                const duels = response.duels;
+
+                that.wizardDuelStats = that.duelStats.calculateDuelStatsOverall(duels, parseInt(wizardId));
+
+                // TODO: UI should dress this up
+                that.wizardDuelStats.powerHigh = that.getPrettyPowerLevel(that.wizardDuelStats.powerHigh);
+                that.wizardDuelStats.powerLow = that.getPrettyPowerLevel(that.wizardDuelStats.powerLow);
+            },
+        },
+        watch: {
+            // Computed Win rate
+            duelData: {
+                immediate: true,
+                async handler (duels) {
+                    if (!duels) {
+                        return;
+                    } else if (!duels.length) {
+                        return;
+                    }
+                    let wins = 0;
+                    let losses = 0;
+                    let tied = 0;
+                    // Set block time and win rate stats
+                    for (let i = 0; i < duels.length; i++) {
+                        if (duels[i].timedOut) {
+                            continue;
+                        }
+                        // Match duel.wizard1
+                        if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {
+                            
+                            if (!duels[i].wizard1DidWin) {
+                                // Losses
+                                ++losses;
+                            } else {
+                                // Ties
+                                if (duels[i].wizard2DidWin) {
+                                    ++tied;
+                                // Wins
+                                } else {
+                                    ++wins;
+                                }
+                            }
+                        }
+                        // Match duel.wizard2
+                        if (parseInt(duels[i].wizard2Id) == parseInt(this.wizardId)) {
+                            if (!duels[i].wizard2DidWin) {
+                                // Losses
+                                ++losses;
+                            } else {
+                                // Ties
+                                if (duels[i].wizard1DidWin) {
+                                    ++tied;
+                                // Wins
+                                } else {
+                                    ++wins;
+                                }
+                            }
+                        }
+                        //if (i == (duels.length - 1)) {
+                            // Set win rate in UI
+                            this.wizardWinRate.wins = wins;
+                            this.wizardWinRate.losses = losses;
+                            this.wizardWinRate.tied = tied;
+                            //console.log('[this.wizardWinRate, this.wizardId, duels]', [this.wizardWinRate, this.wizardId, duels]);
+                            this.$forceUpdate();
+                        //}
+                    }
                 }
             }
         },
@@ -1092,107 +1291,6 @@ if (location.href.indexOf('duels') == -1
                         return user;
                     }
                 });
-            },
-            /**
-             * Overall Power
-             */
-            // Top 4 Wizards
-            topFourWizardsByPower: function () {//here
-                if (!this.wizards) {
-                    return [];
-                }
-                return this.wizards.slice(0,4);
-            },
-            // Top 4 Elemental Wizards
-            topFourElementalsByPower: function () {
-                if (!this.elementals) {
-                    return [];
-                }
-                let elementals = this.elementals.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) > 1) {
-                            return wizard;
-                        }
-                    }
-                });
-                return elementals.slice(0,4);
-            },
-            // Top 4 Neutral Wizards
-            topFourNeutralsByPower: function () {
-                if (!this.neutrals) {
-                    return [];
-                }
-                return this.neutrals.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) < 2) {
-                            return wizard;
-                        }
-                    }
-                }).slice(0,4);
-            },
-
-            /**
-             * Growth
-             */
-            // Top 4 Wizards by growth
-            topFourWizardsByGrowth: function () {
-                if (!this.wizardsGrowth) {
-                    return [];
-                }
-                return this.wizardsGrowth.slice(0,4);
-            },
-
-            // Top 4 Elemental Wizards by growth
-            topFourElementalsByGrowth: function () {
-                if (!this.elementalsGrowth) {
-                    return [];
-                }
-                return this.elementalsGrowth.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) > 1) {
-                            return wizard;
-                        }
-                    }
-                }).slice(0,4);
-            },
-
-            // Top 4 Neutral Wizards by growth
-            topFourNeutralsByGrowth: function () {
-                if (!this.neutralsGrowth) {
-                    return [];
-                }
-                return this.neutralsGrowth.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) < 2) {
-                            return wizard;
-                        }
-                    }
-                }).slice(0,4);
-            },
-
-
-            /**
-             * Duelists
-             */
-            // Duelist by win rate
-            // XXX (drew): Async issues here atm
-            topFourDuelistByWinRate: function () {
-                if (!this.duels || !this.accounts) {
-                    return [];
-                }
-                console.log('Accounts =>', this.accounts.slice(0,4));
-                // Return slice
-                return this.accounts.slice(0,4);
-            },
-
-            /**
-             * Recent Duel Window
-             * XXX TODO: this
-             * XXX: Need to figure out how calculate block windows and 
-             * query duels per time window
-             */
-            getSortedBy: function () {
-                return this.sortedBy[this.wizardsSortedBy];
             }
         }
     });

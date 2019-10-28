@@ -1,17 +1,10 @@
 'use strict';
 
-require('./duels/duels.js');
-require('./markets/markets.js');
-require('./learn/learn.js');
-require('./insights/index');
-require('./insights/wizard/index');
-
 Vue.config.devtools = false;
 Vue.config.productionTip = false;
 
 
 // Navigation states
-const HOME_STATE = -1;
 const VIEW_ALL_WIZARDS = 0;
 const VIEW_SELECTED_WIZARD = 1;
 const PREDICT_MATCHES = 2;
@@ -25,6 +18,10 @@ const SORTED_BY_POWER_LEVEL_WEAKEST = 1;
 const SORTED_BY_POWER_LEVEL_GROWTH_STRONGEST = 2;
 const SORTED_BY_POWER_LEVEL_GROWTH_WEAKEST = 3;
 const SORTED_BY_AFFINITY_GROUPINGS = 4;
+
+const ALL_WIZARDS_CONTEXT = 0;
+const MY_WIZARDS_CONTEXT = 1;
+const CLEAR_SEARCH_CONTEXT = 2;
 
 // Prediction types
 const PREDICTION_UNAVAILABLE = 0;
@@ -40,7 +37,7 @@ const MAINNET = 0;
 const RINKEBY = 1;
 
 // Config
-const config = require('./config');
+const config = require('../config');
 const firebaseConfig = config.firebaseConfig;
 
 // Modal component
@@ -85,24 +82,22 @@ const contextMenuOptions = [
 Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
 
 // Online users ref.
-const FIREBASE = require('./firebase');
+const FIREBASE = require('../firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
 
 // Create application
-if (location.href.indexOf('duels') == -1
-    && location.href.indexOf('markets') == -1
-    && location.href.indexOf('learn') == -1
-    && location.href.indexOf('play') == -1
-    && location.href.indexOf('insights') == -1) {
+if (location.href.indexOf('insights') !== -1
+    && location.href.indexOf('wizard') == -1
+    && location.href.indexOf('address') == -1
+) {
     let vm = new Vue({
-        el: '#cheese-of-insight',
+        el: '#insights',
         data: () => ({
             // App constants
             VIEW_ALL_WIZARDS: VIEW_ALL_WIZARDS,
             VIEW_SELECTED_WIZARD: VIEW_SELECTED_WIZARD,
             PREDICT_MATCHES: PREDICT_MATCHES,
             PREDICTION_MARKETS: PREDICTION_MARKETS,
-            HOME_STATE: HOME_STATE,
             LEARN: LEARN,
             PLAY: PLAY,
             SORTED_BY_POWER_LEVEL_STRONGEST: SORTED_BY_POWER_LEVEL_STRONGEST,
@@ -115,14 +110,17 @@ if (location.href.indexOf('duels') == -1
             PREDICTION_TYPE_MIXED_REVIEWS: PREDICTION_TYPE_MIXED_REVIEWS,
             PRIMARY_SEARCH: PRIMARY_SEARCH,
             VULNERABILITY_SEARCH: VULNERABILITY_SEARCH,
+            ALL_WIZARDS_CONTEXT: ALL_WIZARDS_CONTEXT,
+            MY_WIZARDS_CONTEXT: MY_WIZARDS_CONTEXT,
+            CLEAR_SEARCH_CONTEXT: CLEAR_SEARCH_CONTEXT,
             TOTAL_WIZARDS: null,
             MAINNET: MAINNET,
             RINKEBY: RINKEBY,
             // Dependencies
-            Provider: require('./providers'),
-            api: require('./api'),
-            duelUtils: require('./duels'),
-            wizardUtils: require('./wizards'),
+            Provider: require('../providers'),
+            api: require('../api'),
+            duelUtils: require('../duels'),
+            wizardUtils: require('../wizards'),
             // Firebase
             firebase: FIREBASE,
             // Web3
@@ -149,7 +147,7 @@ if (location.href.indexOf('duels') == -1
             },
             // App
             navigation: {
-                state: HOME_STATE
+                state: VIEW_ALL_WIZARDS
             },
             userIsLoggedIn: false,
             isLoading: false,
@@ -221,49 +219,37 @@ if (location.href.indexOf('duels') == -1
             showMyWizardTraits: false,
             showOpponentTraits: false,
             manualCurrentWizardSelection: false,
-            isBgAnimated: false,
-            winRatesReady: false,
-            accountsSorted: false,
-            duels: [],
-            elementals: null,
-            elementalsGrowth: null,
-            wizardsGrowth: null,
-            neutrals: null,
-            neutralsGrowth: null,
-            accounts: []
+            isBgAnimated: false
         }),
         firebase: {
             usersOnline: usersOnline
         },
         mounted: async function () {
+            // Load Wizards and User state
+            this.currentOpposingWizard = {};
+            this.isBgAnimated = false;
+            this.navigation.state = VIEW_ALL_WIZARDS;
+            this.getAllWizards();
+
+            // Load historic search history, as required
+            if (sessionStorage.getItem('search')) {
+                this.wizardsPrimaryFilter = sessionStorage.getItem('search');
+                this.showSearch = true;
+            }
+
             // Animate Cheeze Melt
             setTimeout(() => {
                 this.isBgAnimated = true;
+            }, 100);
+
+            // Animate Cheeze Melt
+            setTimeout(() => {
                 setTimeout(() => {
                     jQuery('document').ready(function () {
-                        jQuery('#cheese-of-insight').removeClass('hidden');
-                        jQuery('#holiness-logo').removeClass('hidden');
+                        jQuery('#insights').removeClass('hidden');
                     });
                 }, 0);
             }, 0);
-
-            // Load all duels
-            let duels = await this.api.getAllDuels();
-            this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
-            // Sort by historical time
-            this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
-
-            // Load all wizards
-            this.getAllWizards();
-
-            // Load all accounts and merge win record
-            //await this.getAllAccounts();
-
-            // Sort accounts
-            //this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
-
-            //console.log('All duels =>', this.duels);
-            //console.log('All accounts =>', this.accounts);
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -746,17 +732,65 @@ if (location.href.indexOf('duels') == -1
                 // Handle state change
                 switch(state) {
                     // Show all Wizards
-                    case HOME_STATE:
-                        this.isBgAnimated = false;
-                        this.navigation.state = HOME_STATE;
+                    case VIEW_ALL_WIZARDS:
+                        //console.log('Wizards browsing mode enabled');
                         this.currentOpposingWizard = {};
+                        this.isBgAnimated = false;
+                        this.navigation.state = VIEW_ALL_WIZARDS;
+                        this.getAllWizards();
                         // Animate Cheeze Melt
                         setTimeout(() => {
                             this.isBgAnimated = true;
                         }, 100);
                         break;
-                    case VIEW_ALL_WIZARDS:
-                        window.location.href = "/insights";
+                    case VIEW_SELECTED_WIZARD:
+                        if (!comparisonId) {
+                            return;
+                        } else if (typeof comparisonId !== 'number') {
+                            comparisonId = parseInt(comparisonId);
+                        }
+                        // Remember search historic setting
+                        if (this.wizardsPrimaryFilter.length) {
+                            sessionStorage.setItem('search', this.wizardsPrimaryFilter);
+                        }
+                        // Navigate to wizard
+                        window.location.href = "/insights/wizard?id=" + comparisonId;
+                        break;
+                    // Show match prediction
+                    case PREDICT_MATCHES:
+                        this.isBgAnimated = false;
+                        //console.log('Match prediction mode enabled');
+                        this.navigation.state = PREDICT_MATCHES;
+
+                        // Handle state entry
+                        // User's owned wizard
+                        if (!this.currentWizard.selectedId && this.userOwnsWizards) {
+                            if (this.tokens.mainnet.wizards) {
+                                if (this.tokens.mainnet.wizards.length) {
+                                    this.currentWizard.selectedId = this.tokens.mainnet.wizards[0].id;
+                                }
+                            }
+                        }
+
+                        // Comparison wizard
+                        if (this.currentOpposingWizard.id && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = this.currentOpposingWizard.id;
+                        } else if (comparisonId && !this.currentOpposingWizard.hasOwnProperty('selectedId')) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        } else if (comparisonId && !this.currentOpposingWizard.selectedId) {
+                            this.currentOpposingWizard.selectedId = comparisonId;
+                        }
+
+                        // Animate Cheeze Melt
+                        setTimeout(() => {
+                            this.isBgAnimated = true;
+                        }, 100);
+
+                        // Run predictor automatically on state resolultion
+                        if (this.currentWizard.selectedId && this.currentOpposingWizard.selectedId) {
+                            this.predictMatchOutcome(this.currentWizard.selectedId, this.currentOpposingWizard.selectedId);
+                        }
+
                         break;
                     case PREDICTION_MARKETS:
                         window.location.href = "/markets";
@@ -923,17 +957,11 @@ if (location.href.indexOf('duels') == -1
                 // Define total Wizards
                 this.TOTAL_WIZARDS = wizardsQuery.wizards.length;
 
-                // Populate Wizards
-                //here
-                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.wizardsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-                this.elementals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.elementalsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-                this.neutrals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                this.neutralsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-
-                // XXX TODO: Legacy, remove this?:
-                this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                // Sort Wizards
+                if (!this.wizardsSortedBy) {
+                    this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                    this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
+                }
 
                 // Get pagination args.
                 this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
@@ -960,73 +988,6 @@ if (location.href.indexOf('duels') == -1
                 // Disable loading
                 this.isLoading = false;
                 //console.log('Wizards =>', this.wizards);
-            },
-            getAllAccounts: async function () {
-                if (this.wizards) {
-                    // Iterate Accounts
-                    for (let i = 0; i < this.wizards.length; i++) {
-                        if (this.accounts.indexOf(this.wizards[i].owner) < 0) {
-                            this.accounts[this.wizards[i].owner] = [{
-                                wizards: [this.wizards[i].id],
-                                wins: 0,
-                                losses: 0,
-                                tied: 0
-                            }];
-                        } else {
-                            if (accounts.indexOf(this.wizards[i].owner) < 0) {
-                                this.accounts[this.wizards[i].owner].wizards.push(this.wizards[i].id);
-                            }
-                        }
-
-                        if (i == (this.wizards.length - 1)) {
-                            this.getWinRates();
-                        }
-                    };
-                }
-            },
-            getWinRates: async function () {
-                if (!this.duels) {
-                    return;
-                }
-                let i;
-                let j;
-                // Iterate Duels
-                for (i = 0; i < this.duels.length; i++) {
-                    // Merge with Accounts
-                    for (j = 0; j < this.accounts.length; j++) {
-                        // Match Duel Wizard 1
-                        if (this.accounts[j].wizards.indexOf(this.duels[i].wizard1) > 0) {
-                            // Lost
-                            if (!this.duels[i].wizard1DidWin) {
-                                ++this.accounts[j].losses;
-                            } else {
-                                // Tied
-                                if (this.duels[i].wizard2DidWin) {
-                                    ++this.accounts[j].tied;
-                                } else {
-                                    ++this.accounts[j].wins;
-                                }
-                            }
-                        // Match Duel Wizard 2
-                        } else if (this.accounts[j].wizards.indexOf(this.duels[i].wizard2) > 0) {
-                            // Lost
-                            if (!this.duels[i].wizard2DidWin) {
-                                ++this.accounts[j].losses;
-                            } else {
-                                // Tied
-                                if (this.duels[i].wizard1DidWin) {
-                                    ++this.accounts[j].tied;
-                                } else {
-                                    ++this.accounts[j].wins;
-                                }
-                            }
-                        }
-                    }
-                    // Final Iteration
-                    if (i == (this.duels.length - 1)) {
-                        this.winRatesReady = true;
-                    }
-                }
             },
             fetchUserWizards: async function (provider = MAINNET) {
                 let userTotalWizards = null;
@@ -1060,24 +1021,79 @@ if (location.href.indexOf('duels') == -1
 
                 //console.log('Wizards of owner =>', this.selectedWizardsByAddress);
             },
-            // single wizard view
-            showWizard: function (wizardId = null) {
+            // View worker
+            showAllWizardsOfOwner: async function (ownerAddress, isComparisonMode = false, self = false) {
+                // Nothing to do here...
+                if (!ownerAddress) {
+                    return;
+                }
+                // Fetch Wizards
+                this.fetchWizardsOwnedByAddress(ownerAddress);
+
+                // Launch modal
+                if (!isComparisonMode) {
+                    // Show browse single Wizard modal
+                    this.selectedWizardsByAddressModalShown = true;
+                } else if (isComparisonMode && !self)  {
+                    //console.log('show opponent wizards');
+                    // Show comparison opponent Wizards
+                    this.comparisonWizardsByAddressModalShown = true;
+                } else {
+                    //console.log('show my wizards');
+                    // Show all my Wizards
+                    this.comparisonMyWizardsModalShown = true;
+                }
+            },
+            showWizard: async function (wizardId = null) {
                 if (wizardId == null) {
                     return;
                 } else {
-                    window.location.href = '/insights/wizard?id=' + wizardId
+                    wizardId = parseInt(wizardId);
+                    this.setNavigation(VIEW_SELECTED_WIZARD, wizardId);
                 }
             },
-            getPrettyRank: function (rank) {
-                let finalChar = String(rank).slice(-1);
-                if (finalChar == '1') {
-                    return rank + 'st';
-                } else if (finalChar == '2') {
-                    return rank + 'nd';
-                } else if (finalChar == '3') {
-                    return rank + 'rd';
-                } else {
-                    return rank + 'th';
+            // Paging
+            nextWizardsPage: function () {
+                // Handle next page as required
+                if (this.currentWizardsPage < this.totalWizardsPages) {
+                    ++this.currentWizardsPage;
+                }
+            },
+            previousWizardsPage: function () {
+                // Handle previous page as required
+                if (this.currentWizardsPage > 1) {
+                    --this.currentWizardsPage;
+                }
+            },
+            toggleSearchType: function (context) {
+                switch (context) {
+                    case MY_WIZARDS_CONTEXT:
+                        // Handle historic searches
+                        if (this.wizardsPrimaryFilter.length) {
+                            this.wizardsPrimaryFilter = sessionStorage.setItem('search', this.wizardsPrimaryFilter);
+                        }
+                        this.wizardsPrimaryFilter = '';
+                        this.wizardsMineFilter = true;
+                        this.currentWizardsPage = 1;
+                        break;
+                    case ALL_WIZARDS_CONTEXT:
+                        // Handle historic searches
+                        if (sessionStorage.getItem('search')) {
+                            this.wizardsPrimaryFilter = sessionStorage.getItem('search');
+                            this.showSearch = true;
+                        }
+                        this.currentWizardsPage = 1;
+                        this.wizardsMineFilter = false;
+                        break;
+                    case CLEAR_SEARCH_CONTEXT:
+                        this.wizardsPrimaryFilter = '';
+                        if (sessionStorage.getItem('search')) {
+                            sessionStorage.removeItem('search');
+                        }
+                        break;
+                    default:
+                        this.wizardsMineFilter = false;
+                        this.currentWizardsPage = 1;
                 }
             }
         },
@@ -1093,104 +1109,99 @@ if (location.href.indexOf('duels') == -1
                     }
                 });
             },
-            /**
-             * Overall Power
-             */
-            // Top 4 Wizards
-            topFourWizardsByPower: function () {//here
-                if (!this.wizards) {
-                    return [];
-                }
-                return this.wizards.slice(0,4);
-            },
-            // Top 4 Elemental Wizards
-            topFourElementalsByPower: function () {
-                if (!this.elementals) {
-                    return [];
-                }
-                let elementals = this.elementals.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) > 1) {
-                            return wizard;
+            // Get paginated list of all or filtered Wizards
+            wizardsPage: function () {
+                let wizards,
+                    filter;
+
+                // Returns Wizards filter => owned by current DApp user
+                if (this.wizardsMineFilter && !this.wizardsPrimaryFilter) {
+                    if (this.userOwnsWizards) {
+                        // Show requesting user Wizards
+                        wizards = this.tokens.mainnet.wizards;
+                        // Return owned Wizards
+                        if (wizards && this.currentWizardsPage) {
+                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                            let wizardsLength = wizards.length;
+                            this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
+                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                        } else {
+                            return [];
+                        }
+                    } else {
+                        // Defaulting to all Wizards browse
+                        this.wizardsMineFilter = false;
+                        wizards = this.wizards;
+                        // Return all Wizards
+                        if (wizards && this.currentWizardsPage) {
+                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
+                            this.totalWizardsPages = this.totalAllWizardsPages;
+                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                        } else {
+                            return [];
                         }
                     }
-                });
-                return elementals.slice(0,4);
-            },
-            // Top 4 Neutral Wizards
-            topFourNeutralsByPower: function () {
-                if (!this.neutrals) {
-                    return [];
-                }
-                return this.neutrals.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) < 2) {
+                // Returns Wizards filtered by ID or by Affinity
+                } else if (this.wizardsPrimaryFilter.length) {
+                    // Set UI to filter mode
+                    this.wizardsMineFilter = false;
+                    this.showSearch = true;
+                    // Parse / Filter
+                    filter = this.wizardsPrimaryFilter.toLowerCase();
+                    wizards = this.wizards.filter((wizard) => {
+                        if (filter.length < 4) {
+                            if (filter == wizard.id) {
+                                return wizard;
+                            }
+                        } else if (wizard.id.toString().indexOf(filter) > -1) {
+                                return wizard;
+                        } else if (filter.length == 42) {
+                            if (wizard.owner.toLowerCase() == filter.toLowerCase()) {
+                                return wizard;
+                            }
+                        } else if (this.affinities[wizard.affinity].toString().toLowerCase().indexOf(filter) > -1) {
                             return wizard;
                         }
+                    });
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
+                        let wizardsLength = wizards.length;
+                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
+                        // Return result
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
                     }
-                }).slice(0,4);
-            },
-
-            /**
-             * Growth
-             */
-            // Top 4 Wizards by growth
-            topFourWizardsByGrowth: function () {
-                if (!this.wizardsGrowth) {
-                    return [];
-                }
-                return this.wizardsGrowth.slice(0,4);
-            },
-
-            // Top 4 Elemental Wizards by growth
-            topFourElementalsByGrowth: function () {
-                if (!this.elementalsGrowth) {
-                    return [];
-                }
-                return this.elementalsGrowth.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) > 1) {
+                // Returns Wizards filtered by Vulnerability
+                } else if (this.wizardsVulnerabilityFilter.length > 2) {
+                    filter = this.wizardsVulnerabilityFilter.toLowerCase();
+                    wizards = this.wizards.filter((wizard) => {
+                        let weakness = this.wizardUtils.getVulnerability(parseInt(wizard.affinity));
+                        if (weakness.indexOf(filter) > -1) {
                             return wizard;
                         }
+                    });
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
+                        let wizardsLength = wizards.length;
+                        this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
                     }
-                }).slice(0,4);
-            },
-
-            // Top 4 Neutral Wizards by growth
-            topFourNeutralsByGrowth: function () {
-                if (!this.neutralsGrowth) {
-                    return [];
-                }
-                return this.neutralsGrowth.filter((wizard) => {
-                    if (wizard.affinity) {
-                        if (parseInt(wizard.affinity) < 2) {
-                            return wizard;
-                        }
+                // Returns Wizards
+                } else {
+                    wizards = this.wizards;
+                    //return wizards;
+                    if (wizards && this.currentWizardsPage) {
+                        let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
+                        this.totalWizardsPages = this.totalAllWizardsPages;
+                        return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                    } else {
+                        return [];
                     }
-                }).slice(0,4);
-            },
-
-
-            /**
-             * Duelists
-             */
-            // Duelist by win rate
-            // XXX (drew): Async issues here atm
-            topFourDuelistByWinRate: function () {
-                if (!this.duels || !this.accounts) {
-                    return [];
                 }
-                console.log('Accounts =>', this.accounts.slice(0,4));
-                // Return slice
-                return this.accounts.slice(0,4);
             },
-
-            /**
-             * Recent Duel Window
-             * XXX TODO: this
-             * XXX: Need to figure out how calculate block windows and 
-             * query duels per time window
-             */
             getSortedBy: function () {
                 return this.sortedBy[this.wizardsSortedBy];
             }

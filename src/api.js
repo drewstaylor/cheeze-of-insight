@@ -1175,7 +1175,7 @@ const getDuelsByWizardId = async (id = null, mainnet = true) => {
         id = parseInt(id);
     }
 
-    let duelsEndpoint = 'duels/?wizardIds=' + id,
+    let duelsEndpoint = 'duels/?wizardIds=' + id + '&excludeInProgress=true',
         duels;
 
     if (mainnet) {
