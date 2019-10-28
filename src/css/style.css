@@ -1049,3 +1049,8 @@ a.footer-link:hover {
         width:auto;
     }
 }
+
+.dead {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
