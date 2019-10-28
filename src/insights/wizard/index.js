@@ -1066,7 +1066,7 @@ if (location.href.indexOf('wizard') !== -1) {
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
                 this.duelData = this.currentOpposingWizard.duels;
-                //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
+                console.log('this.duelData =>', this.duelData);
 
                 // Disable loading
                 this.isLoading = false;
@@ -1239,6 +1239,9 @@ if (location.href.indexOf('wizard') !== -1) {
                         }
                         // Match duel.wizard1
                         if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {
+                            
+                            console.log('Matched wizard1Id =>', [parseInt(duels[i].wizard1Id), parseInt(this.wizardId)]);
+                            
                             if (!duels[i].wizard1DidWin) {
                                 // Losses
                                 ++losses;
@@ -1267,13 +1270,14 @@ if (location.href.indexOf('wizard') !== -1) {
                                 }
                             }
                         }
-                        if (i == (duels.length - 1)) {
+                        //if (i == (duels.length - 1)) {
                             // Set win rate in UI
                             this.wizardWinRate.wins = wins;
                             this.wizardWinRate.losses = losses;
                             this.wizardWinRate.tied = tied;
-                            //console.log([this.wizardWinRate, this.wizardId, duels]);
-                        }
+                            //console.log('[this.wizardWinRate, this.wizardId, duels]', [this.wizardWinRate, this.wizardId, duels]);
+                            this.$forceUpdate();
+                        //}
                     }
                 }
             }

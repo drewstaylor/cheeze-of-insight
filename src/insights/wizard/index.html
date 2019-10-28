@@ -79,6 +79,10 @@
                     <div v-if="wizardDuelStats">
                         <div class="wizardDuelStatsMain">
                             <div>Total matches: <span>{{ wizardDuelStats.totalMatches }}</span></div>
+                            <div>Win rate: <span>{{ getWinPercentage(wizardWinRate.wins, wizardWinRate.losses, wizardWinRate.tied) }}%</span></div>
+                            <div>Wins: <span>{{ wizardWinRate.wins }}</span></div>
+                            <div>Losses: <span>{{ wizardWinRate.losses }}</span></div>
+                            <div>Tied: <span>{{ wizardWinRate.tied }}</span></div>
                             <div>
                                 Affinity: <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'">
                             </div>
@@ -86,8 +90,6 @@
                                 Vulnerability: <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'">
                             </div>
                             <!--
-                            <div>Wins: <span>{{ wizardDuelStats.wins }}</span></div>
-                            <div>Losses: <span>{{ wizardDuelStats.losses }}</span></div>
                             <div>Win Rate: <span>{{ 100 * wizardDuelStats.winRate }}%</span></div>
                             <div>Max Power: <span>{{ wizardDuelStats.powerLow }}</span></div>
                             <div>Min Power: <span>{{ wizardDuelStats.powerLow }}</span></div>
@@ -663,11 +665,11 @@
                             </p>
                             <p>
                                 <!-- View Other Wizards By This Owner -->
-                                <a class="real-styled" v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner)">View all Wizards from this owner</a>
+                                <a class="real-styled" v-on:click="showAllWizardsOfOwner(currentOpposingWizard.owner)">View all wizards from this owner</a>
                             </p>
                             <p v-if="parseInt(currentOpposingWizard.affinity) > 1">
                                 <!-- Show wizard's duel stats -->
-                                <a class="real-styled" v-on:click="showWizardDuelStats(currentOpposingWizard.id)">View Wizard's Duel Statistics</a>
+                                <a class="real-styled" v-on:click="showWizardDuelStats(currentOpposingWizard.id)">View duel statistics</a>
                             </p>
                             <modal v-if="selectedWizardsByAddressModalShown" @close="selectedWizardsByAddressModalShown = false">
                                 <!-- Custom Modal Overrides -->
