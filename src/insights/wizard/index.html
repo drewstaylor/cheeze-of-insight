@@ -748,12 +748,12 @@
             <div class="duels-block" v-if="currentOpposingWizard.duels">
                 <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
                 <div 
-                    :class="'duels-card-container '+ (duel.wizard1DidWin ? 'winner' : 'loser') + ' ' + (duel.timedOut ? 'timed-out' : null)" 
+                    :class="'duels-card-container '+ (duel.wizard1DidWin ? 'winner' : 'loser') + ' ' + (duel.timedOut ? 'timed-out' : '')" 
                     v-for="duel in currentOpposingWizard.duels"
                 >
 
                     <div class="duels-card-left-container">
-                        <div :class="'duels-card-left-outcome '+ (duel.timedOut ? 'timed-out' : null)">
+                        <div :class="'duels-card-left-outcome '+ (duel.timedOut ? 'timed-out' : '')">
                             <span class="duel-player-id" v-if="duel.wizard1Id">#{{ duel.wizard1Id }}</span>
                         </div>
                         <div
@@ -761,7 +761,7 @@
                             :style="'background-image: url('+ duel.wizard1SvgUrl +')'"
                         >
                         </div>
-                        <div :class="'duels-card-left-outcome '+ (duel.timedOut ? 'timed-out' : null)">
+                        <div :class="'duels-card-left-outcome '+ (duel.timedOut ? 'timed-out' : '')">
                             <img class="icon" :src="getIconUrlForAffinity(duel.affinity1)"></img>
                             <span class="duels-outcome-base-points">{{ getPrettyPowerLevel(duel.startPower1) }}</span>
                             <span v-if="((duel.moveSet1 && duel.moveSet2) || duel.timedOut)" :class="duel.wizard1DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard1Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard1Gain) }}</span>
@@ -770,6 +770,10 @@
 
                     <!-- Duel Round Results -->
                     <div class="duels-card-rounds" v-if="duel.moveSet1 && duel.moveSet2">
+                        <!-- Match Occurred Time -->
+                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet">
+                            <span>{{ prettyTime(duel.timestamp) }}</span>
+                        </div>
                         <div class="duels-card-round" v-for="move in duel.moveResults">
                             <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
                                 <img v-if="move.p1" :src="getIconUrlForAffinity(move.p1)" class="duels-card-round-icon"></img>
@@ -788,14 +792,18 @@
                     </div>
                     <!-- Duel In Progress -->
                     <div class="duels-card-rounds" v-if="(!duel.moveSet1 || !duel.moveSet2) && duel.timedOut">
-                        <p class="duel-in-progress">
+                        <!-- Match Occurred Time -->
+                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet">
+                            <span>{{ prettyTime(duel.timestamp) }}</span>
+                        </div>
+                        <p class="duel-timed-out">
                             <span>Timed out</span><br/>
                             <img class="frowned-out" src="../img/frown.png"></img>
                         </p>
                     </div>
 
                     <div class="duels-card-right-container view-opponent-history" v-on:click="showWizard(duel.wizard2Id)">
-                        <div :class="'duels-card-right-outcome '+ (duel.timedOut ? 'timed-out' : null)">
+                        <div :class="'duels-card-right-outcome '+ (duel.timedOut ? 'timed-out' : '')">
                             <span class="duel-player-id" v-if="duel.wizard2Id">
                                 <a class="duel-view-opponent" v-on:click="showWizard(duel.wizard2Id)">#{{ duel.wizard2Id }}</a>
                             </span>
@@ -805,7 +813,7 @@
                             :style="'background-image: url('+duel.wizard2SvgUrl+')'"
                         >
                         </div>
-                        <div :class="'duels-card-right-outcome '+ (duel.timedOut ? 'timed-out' : null)">
+                        <div :class="'duels-card-right-outcome '+ (duel.timedOut ? 'timed-out' : '')">
                             <img class="icon" :src="getIconUrlForAffinity(duel.affinity2)"></img>
                             <span class="duels-outcome-base-points">{{ getPrettyPowerLevel(duel.startPower2) }}</span>
                             <span v-if="((duel.moveSet1 && duel.moveSet2) || duel.timedOut)" :class="duel.wizard2DidWin ? 'duels-outcome-gain-points' : 'duels-outcome-loss-points'">{{ (duel.wizard2Gain > 0 ? "+":"") + getPrettyPowerLevel(duel.wizard2Gain) }}</span>

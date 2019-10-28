@@ -1057,13 +1057,44 @@ if (location.href.indexOf('wizard') !== -1) {
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
+
+                for (let i = 0; i < this.currentOpposingWizard.duels.length; i++) {
+                    if (this.currentOpposingWizard.duels[i].endBlock) {
+                        this.currentOpposingWizard
+                            .duels[i]
+                            .timestamp = await this.getTimeFromBlock(this.currentOpposingWizard.duels[i].endBlock);
+                    }
+                }
+
                 this.duelData = this.currentOpposingWizard.duels;
                 //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 
                 // Disable loading
                 this.isLoading = false;
-                //console.log('Current Opposing Wizard =>', this.currentOpposingWizard);
                 this.$forceUpdate();
+            },
+            getTimeFromBlock: async function (blockNumber) {
+                if (!blockNumber) {
+                    return '';
+                }
+                blockNumber = parseInt(blockNumber);
+                let timestamp = '';
+                if (this.wallets.mainnet) {
+                    let block = await this.web3Providers.mainnet.eth.getBlock(blockNumber);
+                    timestamp = block.timestamp;
+                    return timestamp;
+                } else {
+                    return timestamp;
+                }
+            },
+            prettyTime: function (timestamp) {
+                if (!timestamp) {
+                    return '';
+                }
+                let dateObj = new Date(timestamp * 1000);
+                let date = dateObj.toDateString();
+                let time = dateObj.toLocaleTimeString();
+                return date + ', ' + time;
             },
             showComparisonWizard: async function (wizardId = null) {
                 // Nothing to do..
@@ -1189,14 +1220,13 @@ if (location.href.indexOf('wizard') !== -1) {
                     let wins = 0;
                     let losses = 0;
                     let tied = 0;
-                    // Set win rate stats
+                    // Set block time and win rate stats
                     for (let i = 0; i < duels.length; i++) {
-                        //let duel = this.duelUtils.addDuelDisplayDataArray([duels[i]]);
                         if (duels[i].timedOut) {
                             continue;
                         }
                         // Match duel.wizard1
-                        if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {//here
+                        if (parseInt(duels[i].wizard1Id) == parseInt(this.wizardId)) {
                             if (!duels[i].wizard1DidWin) {
                                 // Losses
                                 ++losses;

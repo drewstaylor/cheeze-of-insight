@@ -429,6 +429,12 @@ img.frowned-out {
     height: 75px;
 }
 
+div.block-time {
+    position: absolute;
+    margin-top: -70px;
+    font-weight: 500;
+}
+
 .duels-card-rounds {
     display: flex;
     justify-content: space-around;
@@ -998,7 +1004,6 @@ a.footer-link:hover {
         width: 100%;
         text-align: center;
     }
-    /*here*/
     .duels-card-container {
         display: inline-block;
         flex: unset;
@@ -1010,6 +1015,9 @@ a.footer-link:hover {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
+    }
+    div.block-time {
+        display: none;
     }
 }
 
