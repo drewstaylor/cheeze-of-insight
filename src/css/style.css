@@ -238,7 +238,7 @@ div.selected-wizard-left {
 div.selected-wizard-right {
     float: right;
     position: relative;
-    top: -55px;
+    /*top: -55px;*/
 }
 
 .icon.external-link {

@@ -1057,15 +1057,6 @@ if (location.href.indexOf('wizard') !== -1) {
                 const duels = await this.api.getDuelsByWizardId(wizardId);
                 this.currentOpposingWizard.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
                 this.currentOpposingWizard.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
-
-                for (let i = 0; i < this.currentOpposingWizard.duels.length; i++) {
-                    if (this.currentOpposingWizard.duels[i].endBlock) {
-                        this.currentOpposingWizard
-                            .duels[i]
-                            .timestamp = await this.getTimeFromBlock(this.currentOpposingWizard.duels[i].endBlock);
-                    }
-                }
-
                 this.duelData = this.currentOpposingWizard.duels;
                 //console.log('this.currentOpposingWizard.duels', this.currentOpposingWizard.duels);
 

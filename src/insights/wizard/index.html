@@ -772,7 +772,7 @@
                     <div class="duels-card-rounds" v-if="duel.moveSet1 && duel.moveSet2">
                         <!-- Match Occurred Time -->
                         <div class="block-time" v-if="duel.endBlock && wallets.mainnet">
-                            <span>{{ prettyTime(duel.timestamp) }}</span>
+                            <span>Block #{{ duel.endBlock }}</span>
                         </div>
                         <div class="duels-card-round" v-for="move in duel.moveResults">
                             <div :class="'duels-card-round-p1 '+ (move.winner == 'p1' ? 'duels-winner' : (move.winner == 'p2' ? 'duels-loser' : ''))">
@@ -793,8 +793,8 @@
                     <!-- Duel In Progress -->
                     <div class="duels-card-rounds" v-if="(!duel.moveSet1 || !duel.moveSet2) && duel.timedOut">
                         <!-- Match Occurred Time -->
-                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet">
-                            <span>{{ prettyTime(duel.timestamp) }}</span>
+                        <div class="block-time" v-if="duel.endBlock">
+                            <span>Block #{{ duel.endBlock }}</span>
                         </div>
                         <p class="duel-timed-out">
                             <span>Timed out</span><br/>
