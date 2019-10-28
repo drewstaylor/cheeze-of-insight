@@ -73,11 +73,11 @@
     <div class="container container-fluid main-content">
         <div class="wrapper mount-wrapper" v-cloak>
 
-            <modal v-if="wizardDuelStatsShown" @close="wizardDuelStatsShown = false">
-                <h3 slot="header">{{ currentOpposingWizard.id }}'s Duel Statistics</h3>
+            <modal v-if="wizardDuelStatsShown" @close="wizardDuelStatsShown = false" class="duel-stats-modal">
+                <h3 slot="header" class="duel-stats-modal-header">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }} Affinity Cast Statistics</h3>
                 <div slot="body">
                     <div v-if="wizardDuelStats">
-                        <div class="wizardDuelStatsMain">
+                        <div class="wizardDuelStatsMain jumbotron btn-inverse">
                             <div>Total matches: <span>{{ wizardDuelStats.totalMatches }}</span></div>
                             <div>Win rate: <span>{{ getWinPercentage(wizardWinRate.wins, wizardWinRate.losses, wizardWinRate.tied) }}%</span></div>
                             <div>Wins: <span>{{ wizardWinRate.wins }}</span></div>
@@ -96,7 +96,7 @@
                             -->
                         </div>
 
-                        <div class="wizardDuelStatsTable">
+                        <div class="wizardDuelStatsTable btn-inverse">
 
                             <table id="duel-stats-table" width="100%">
                                 <thead>

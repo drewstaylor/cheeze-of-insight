@@ -1071,7 +1071,6 @@ if (location.href.indexOf('wizard') !== -1) {
 
                 // Disable loading
                 this.isLoading = false;
-                this.$forceUpdate();
             },
             getTimeFromBlock: async function (blockNumber) {
                 if (!blockNumber) {
