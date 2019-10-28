@@ -225,6 +225,11 @@ if (location.href.indexOf('duels') == -1
             winRatesReady: false,
             accountsSorted: false,
             duels: [],
+            elementals: null,
+            elementalsGrowth: null,
+            wizardsGrowth: null,
+            neutrals: null,
+            neutralsGrowth: null,
             accounts: []
         }),
         firebase: {
@@ -243,19 +248,18 @@ if (location.href.indexOf('duels') == -1
             }, 0);
 
             // Load all duels
-            let duels = await this.api.getAllDuels();
-            this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
+            //let duels = await this.api.getAllDuels();
+            //this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
             // Sort by historical time
-            this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
+            //this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
 
             // Load all wizards
             this.getAllWizards();
 
             // Load all accounts
-            await this.getAllAccounts();
+            //await this.getAllAccounts();
 
-            //here
-            await this.getWinRates();
+            //await this.getWinRates();
 
             //console.log('All duels =>', this.duels);
             //console.log('All accounts =>', this.accounts);
@@ -918,11 +922,17 @@ if (location.href.indexOf('duels') == -1
                 // Define total Wizards
                 this.TOTAL_WIZARDS = wizardsQuery.wizards.length;
 
-                // Sort Wizards
-                if (!this.wizardsSortedBy) {
-                    this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
-                    this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
-                }
+                // Populate Wizards
+                //here
+                this.wizards = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                this.wizardsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
+                this.elementals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                this.elementalsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
+                this.neutrals = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevel);
+                this.neutralsGrowth = wizardsQuery.wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
+
+                // XXX TODO: Legacy, remove this?:
+                this.wizardsSortedBy = SORTED_BY_POWER_LEVEL_STRONGEST;
 
                 // Get pagination args.
                 this.totalWizardsPages = Math.floor(this.wizards.length / this.wizardsPageSize);
@@ -950,7 +960,7 @@ if (location.href.indexOf('duels') == -1
                 this.isLoading = false;
                 //console.log('Wizards =>', this.wizards);
             },
-            getAllAccounts: async function () {//here
+            getAllAccounts: async function () {
                 if (this.wizards) {
                     // Iterate Accounts
                     for (let i = 0; i < this.wizards.length; i++) {
@@ -969,7 +979,7 @@ if (location.href.indexOf('duels') == -1
                     };
                 }
             },
-            getWinRates: async function () {//here
+            getWinRates: async function () {
                 if (!this.duels) {
                     return;
                 }
@@ -1082,22 +1092,18 @@ if (location.href.indexOf('duels') == -1
              * Overall Power
              */
             // Top 4 Wizards
-            topFourWizardsByPower: function () {
+            topFourWizardsByPower: function () {//here
                 if (!this.wizards) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
                 return this.wizards.slice(0,4);
             },
             // Top 4 Elemental Wizards
             topFourElementalsByPower: function () {
-                if (!this.wizards) {
+                if (!this.elementals) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                let elementals = this.wizards.filter((wizard) => {
+                let elementals = this.elementals.filter((wizard) => {
                     if (wizard.affinity) {
                         if (parseInt(wizard.affinity) > 1) {
                             return wizard;
@@ -1108,12 +1114,10 @@ if (location.href.indexOf('duels') == -1
             },
             // Top 4 Neutral Wizards
             topFourNeutralsByPower: function () {
-                if (!this.wizards) {
+                if (!this.neutrals) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                return this.wizards.filter((wizard) => {
+                return this.neutrals.filter((wizard) => {
                     if (wizard.affinity) {
                         if (parseInt(wizard.affinity) < 2) {
                             return wizard;
@@ -1127,53 +1131,38 @@ if (location.href.indexOf('duels') == -1
              */
             // Top 4 Wizards by growth
             topFourWizardsByGrowth: function () {
-                if (!this.wizards) {
+                if (!this.wizardsGrowth) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                let wizards = this.wizards;
-                wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-
-                return wizards.slice(0,3);
+                return this.wizardsGrowth.slice(0,4);
             },
 
             // Top 4 Elemental Wizards by growth
             topFourElementalsByGrowth: function () {
-                if (!this.wizards) {
+                if (!this.elementalsGrowth) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                let wizards = this.wizards;
-                wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-
-                return this.wizards.filter((wizard) => {
+                return this.elementalsGrowth.filter((wizard) => {
                     if (wizard.affinity) {
                         if (parseInt(wizard.affinity) > 1) {
                             return wizard;
                         }
                     }
-                }).slice(0,3);
+                }).slice(0,4);
             },
 
             // Top 4 Neutral Wizards by growth
             topFourNeutralsByGrowth: function () {
-                if (!this.wizards) {
+                if (!this.neutralsGrowth) {
                     return [];
-                } else if (this.sortedBy !== SORTED_BY_POWER_LEVEL_STRONGEST) {
-                    this.wizards = this.wizards.sort(this.wizardUtils.sortByPowerLevel);
                 }
-                let wizards = this.wizards;
-                wizards.sort(this.wizardUtils.sortByPowerLevelGrowth);
-
-                return this.wizards.filter((wizard) => {
+                return this.neutralsGrowth.filter((wizard) => {
                     if (wizard.affinity) {
                         if (parseInt(wizard.affinity) < 2) {
                             return wizard;
                         }
                     }
-                }).slice(0,3);
+                }).slice(0,4);
             },
 
 
@@ -1181,7 +1170,7 @@ if (location.href.indexOf('duels') == -1
              * Duelists
              */
             // Duelist by win rate
-            topFourDuelistByWinRate: function () {//here
+            /*topFourDuelistByWinRate: function () {
                 if (!this.duels || !this.accounts) {
                     return [];
                 } else if (!this.duels.length || !this.accounts.length) {
@@ -1194,7 +1183,7 @@ if (location.href.indexOf('duels') == -1
                 console.log('Accounts =>', this.accounts);
                 // Return slice
                 return this.accounts.slice(0,3);
-            },
+            },*/
 
             /**
              * Recent Duel Window
