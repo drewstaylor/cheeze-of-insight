@@ -263,7 +263,7 @@ if (location.href.indexOf('duels') == -1
             //this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
 
             //console.log('All duels =>', this.duels);
-            console.log('All accounts =>', this.accounts);
+            //console.log('All accounts =>', this.accounts);
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
