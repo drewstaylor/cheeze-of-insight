@@ -1149,10 +1149,17 @@ if (location.href.indexOf('insights') !== -1
                     // Parse / Filter
                     filter = this.wizardsPrimaryFilter.toLowerCase();
                     wizards = this.wizards.filter((wizard) => {
-                        if (wizard.id.toString().indexOf(filter) > -1) {
+                        if (filter.length < 4) {
+                            if (filter == wizard.id) {
                                 return wizard;
-                        }
-                        if (this.affinities[wizard.affinity].toString().toLowerCase().indexOf(filter) > -1) {
+                            }
+                        } else if (wizard.id.toString().indexOf(filter) > -1) {
+                                return wizard;
+                        } else if (filter.length == 42) {
+                            if (wizard.owner.toLowerCase() == filter.toLowerCase()) {
+                                return wizard;
+                            }
+                        } else if (this.affinities[wizard.affinity].toString().toLowerCase().indexOf(filter) > -1) {
                             return wizard;
                         }
                     });
