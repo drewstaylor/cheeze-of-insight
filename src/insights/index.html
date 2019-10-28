@@ -199,7 +199,7 @@
                                             <vs-avatar class="pending-opponnent" size="35px" :src="pending.wizardChallenging.image" v-if="pending.wizardChallenging.image"/>
                                         </vs-row>
 
-                                        <vs-row>#{{ pending.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</vs-row>
+                                        <vs-row>#{{ pending.wizardChallenging.id }} - <img class="icon" :src="'../img/icons/' + affinities[pending.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenging.power) }}</vs-row>
                                     </vs-col>
 
                                     <!-- VS. -->
@@ -217,7 +217,7 @@
                                             <vs-avatar class="pending-wizard" size="35px" :src="pending.wizardChallenged.image" v-if="pending.wizardChallenged.image"/>
                                         </vs-row>
 
-                                        <vs-row>#{{ pending.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</vs-row>
+                                        <vs-row>#{{ pending.wizardChallenged.id }} - <img class="icon" :src="'../img/icons/' + affinities[pending.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="pending.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(pending.wizardChallenged.power) }}</vs-row>
                                     </vs-col>
 
                                 </vs-row>
@@ -252,7 +252,7 @@
                                             <vs-avatar class="pending-opponnent" size="35px" :src="activeDuelSimulation.wizardChallenging.image" v-if="activeDuelSimulation.wizardChallenging.image"/>
                                         </vs-row>
 
-                                        <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenging.id }} - <img class="icon" :src="'../img/icons/' + affinities[activeDuelSimulation.wizardChallenging.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenging.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenging.power) }}</vs-row>
                                     </vs-col>
 
                                     <!-- VS. -->
@@ -270,7 +270,7 @@
                                             <vs-avatar class="pending-wizard" size="35px" :src="activeDuelSimulation.wizardChallenged.image" v-if="activeDuelSimulation.wizardChallenged.image"/>
                                         </vs-row>
 
-                                        <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
+                                        <vs-row>#{{ activeDuelSimulation.wizardChallenged.id }} - <img class="icon" :src="'../img/icons/' + affinities[activeDuelSimulation.wizardChallenged.affinity].toLowerCase() + '.svg'" v-if="activeDuelSimulation.wizardChallenged.affinity !== 0"> - {{ getPrettyPowerLevel(activeDuelSimulation.wizardChallenged.power) }}</vs-row>
                                     </vs-col>
 
                                 </vs-row>
@@ -304,7 +304,7 @@
                                     <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
-                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -329,7 +329,7 @@
                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
-                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -356,7 +356,7 @@
                                 <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
-                                    <p><span v-if="currentWizard.specialPower">{{ currentWizard.specialPower }}</span> Wizard #{{ currentWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
+                                    <p><span v-if="currentWizard.specialPower">{{ currentWizard.specialPower }}</span> Wizard #{{ currentWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentWizard.affinity].toLowerCase() + '.svg'" v-if="currentWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentWizard.power) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -378,7 +378,7 @@
                                 <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
-                                    <p><span v-if="currentOpposingWizard.specialPower">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
+                                    <p><span v-if="currentOpposingWizard.specialPower">{{ currentOpposingWizard.specialPower }}</span> Wizard #{{ currentOpposingWizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[currentOpposingWizard.affinity].toLowerCase() + '.svg'" v-if="currentOpposingWizard.affinity !== 0"> - {{ getPrettyPowerLevel(currentOpposingWizard.power) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -531,21 +531,21 @@
                         <div class="affinity">
                             <p>
                                 <strong>Affinity:</strong>
-                                <img class="icon" :src="'img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'"> {{ currentOpposingWizard.specialPower }}
+                                <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'"> {{ currentOpposingWizard.specialPower }}
                             </p>
                         </div>
                         <!-- Weak Against -->
                         <div class="vulnerability">
                             <p>
                                 <strong>Weak Against:</strong>
-                                <img class="icon" :src="'img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'"> {{ currentOpposingWizard.vulnerability }}
+                                <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'"> {{ currentOpposingWizard.vulnerability }}
                             </p>
                         </div>
                         <!-- Strong Against -->
                         <div class="optimal-opponent">
                             <p>
                                 <strong>Strong Against:</strong>
-                                <img class="icon" :src="'img/icons/' + currentOpposingWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentOpposingWizard.optimalOpponent && currentOpposingWizard.optimalOpponent !== 'Unknown'"> {{ currentOpposingWizard.optimalOpponent }}
+                                <img class="icon" :src="'../img/icons/' + currentOpposingWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentOpposingWizard.optimalOpponent && currentOpposingWizard.optimalOpponent !== 'Unknown'"> {{ currentOpposingWizard.optimalOpponent }}
                             </p>
                         </div>
                         <!-- Power Level -->
@@ -581,7 +581,7 @@
                                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                                     <!-- Card Label (Link Text) -->
                                                     <div class="wizard-card wizard-card-label">
-                                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                        <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                                     </div>
                                                 </div>
                                             </a>
@@ -1019,21 +1019,21 @@
                     <div class="affinity">
                         <p>
                             <strong>Affinity:</strong>
-                            <img class="icon" :src="'img/icons/' + currentWizard.specialPower.toLowerCase() + '.svg'" v-if="currentWizard.specialPower && currentWizard.specialPower !== 'Unknown'"> {{ currentWizard.specialPower }}
+                            <img class="icon" :src="'../img/icons/' + currentWizard.specialPower.toLowerCase() + '.svg'" v-if="currentWizard.specialPower && currentWizard.specialPower !== 'Unknown'"> {{ currentWizard.specialPower }}
                         </p>
                     </div>
                     <!-- Weak Against -->
                     <div class="vulnerability">
                         <p>
                             <strong>Weak Against:</strong>
-                            <img class="icon" :src="'img/icons/' + currentWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentWizard.vulnerability && currentWizard.vulnerability !== 'Unknown'"> {{ currentWizard.vulnerability }}
+                            <img class="icon" :src="'../img/icons/' + currentWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentWizard.vulnerability && currentWizard.vulnerability !== 'Unknown'"> {{ currentWizard.vulnerability }}
                         </p>
                     </div>
                     <!-- Strong Against -->
                     <div class="optimal-opponent">
                             <p>
                                 <strong>Strong Against:</strong>
-                                <img class="icon" :src="'img/icons/' + currentWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentWizard.optimalOpponent && currentWizard.optimalOpponent !== 'Unknown'"> {{ currentWizard.optimalOpponent }}
+                                <img class="icon" :src="'../img/icons/' + currentWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentWizard.optimalOpponent && currentWizard.optimalOpponent !== 'Unknown'"> {{ currentWizard.optimalOpponent }}
                             </p>
                         </div>
                     <div class="power-level">
@@ -1073,7 +1073,7 @@
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">
-                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                             </div>
                                         </div>
                                     </a>
@@ -1310,21 +1310,21 @@
                     <div class="affinity">
                         <p>
                             <strong>Affinity:</strong>
-                            <img class="icon" :src="'img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'"> {{ currentOpposingWizard.specialPower }}
+                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.specialPower.toLowerCase() + '.svg'" v-if="currentOpposingWizard.specialPower && currentOpposingWizard.specialPower !== 'Unknown'"> {{ currentOpposingWizard.specialPower }}
                         </p>
                     </div>
                     <!-- Weak Against -->
                     <div class="vulnerability">
                         <p>
                             <strong>Weak Against:</strong>
-                            <img class="icon" :src="'img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'"> {{ currentOpposingWizard.vulnerability }}
+                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.vulnerability.toLowerCase() + '.svg'" v-if="currentOpposingWizard.vulnerability && currentOpposingWizard.vulnerability !== 'Unknown'"> {{ currentOpposingWizard.vulnerability }}
                         </p>
                     </div>
                     <!-- Strong Against -->
                     <div class="optimal-opponent">
                         <p>
                             <strong>Strong Against:</strong>
-                            <img class="icon" :src="'img/icons/' + currentOpposingWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentOpposingWizard.optimalOpponent && currentOpposingWizard.optimalOpponent !== 'Unknown'"> {{ currentOpposingWizard.optimalOpponent }}
+                            <img class="icon" :src="'../img/icons/' + currentOpposingWizard.optimalOpponent.toLowerCase() + '.svg'" v-if="currentOpposingWizard.optimalOpponent && currentOpposingWizard.optimalOpponent !== 'Unknown'"> {{ currentOpposingWizard.optimalOpponent }}
                         </p>
                     </div>
                     <div class="power-level">
@@ -1362,7 +1362,7 @@
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">
-                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
+                                                <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'../img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
                                             </div>
                                         </div>
                                     </a>
