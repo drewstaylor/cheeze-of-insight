@@ -248,21 +248,22 @@ if (location.href.indexOf('duels') == -1
             }, 0);
 
             // Load all duels
-            //let duels = await this.api.getAllDuels();
-            //this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
+            let duels = await this.api.getAllDuels();
+            this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
             // Sort by historical time
-            //this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
+            this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
 
             // Load all wizards
             this.getAllWizards();
 
-            // Load all accounts
+            // Load all accounts and merge win record
             //await this.getAllAccounts();
 
-            //await this.getWinRates();
+            // Sort accounts
+            //this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
 
             //console.log('All duels =>', this.duels);
-            //console.log('All accounts =>', this.accounts);
+            console.log('All accounts =>', this.accounts);
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -964,17 +965,21 @@ if (location.href.indexOf('duels') == -1
                 if (this.wizards) {
                     // Iterate Accounts
                     for (let i = 0; i < this.wizards.length; i++) {
-                        if (this.accounts.indexOf(wizard.owner) < 0) {
-                            this.accounts[wizard.owner] = [{
-                                wizards: [wizard.id],
+                        if (this.accounts.indexOf(this.wizards[i].owner) < 0) {
+                            this.accounts[this.wizards[i].owner] = [{
+                                wizards: [this.wizards[i].id],
                                 wins: 0,
                                 losses: 0,
                                 tied: 0
                             }];
                         } else {
-                            //if (accounts.indexOf(wizard.owner) < 0) {
-                                accounts[wizard.owner].wizards.push(wizard.id);
-                            //}
+                            if (accounts.indexOf(this.wizards[i].owner) < 0) {
+                                this.accounts[this.wizards[i].owner].wizards.push(this.wizards[i].id);
+                            }
+                        }
+
+                        if (i == (this.wizards.length - 1)) {
+                            this.getWinRates();
                         }
                     };
                 }
@@ -1170,20 +1175,15 @@ if (location.href.indexOf('duels') == -1
              * Duelists
              */
             // Duelist by win rate
-            /*topFourDuelistByWinRate: function () {
+            // XXX (drew): Async issues here atm
+            topFourDuelistByWinRate: function () {
                 if (!this.duels || !this.accounts) {
                     return [];
-                } else if (!this.duels.length || !this.accounts.length) {
-                    return [];
                 }
-                // Sort accounts
-                if (!this.accountsSorted) {
-                    this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
-                }
-                console.log('Accounts =>', this.accounts);
+                console.log('Accounts =>', this.accounts.slice(0,4));
                 // Return slice
-                return this.accounts.slice(0,3);
-            },*/
+                return this.accounts.slice(0,4);
+            },
 
             /**
              * Recent Duel Window

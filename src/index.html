@@ -554,6 +554,36 @@
                         </div>
                     </div>
 
+                    <!--
+                    <h4 class="tk-exocet">Top Duelists By Win Rate</h4>
+                    <p v-if="isLoading">Loading Wizards...</p>
+                    <div class="row paginated-wizards" v-else>
+                        <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourDuelistByWinRate">
+                            <div 
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-on:click="showWizard(wizard.id);">
+                                <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
+                                    <div class="card-img-overlay d-flex justify-content-end">
+                                        <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
+                                    <dl class="card-text row mb-0">
+                                        <dt class="col-sm-4">Rank</dt>
+                                        <dd class="col-sm-8">{{ getPrettyRank(index + 1) }}</dd>
+                                    </dl>
+                                    <dl class="card-text row text-muted">
+                                        <dt class="col-sm-4">Power</dt>
+                                        <dd class="col-sm-8">{{ getPrettyPowerLevel(wizard.power) }}</dd>
+                                        <dt class="col-sm-4">Owner</dt>
+                                        <dd class="col-sm-8"><a v-on:click="showAllWizardsOfOwner(wizard.owner)">{{ wizard.owner.substring(0, 12) }}&hellip;</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
 
                 </div>
             </div>
