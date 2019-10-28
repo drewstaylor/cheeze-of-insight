@@ -577,8 +577,8 @@
                                         <div class="wizard-card-block-item">
                                             <!-- Wizard Image -->
                                             <a v-on:click="showWizard(wizard.id); selectedWizardsByAddressModalShown = false;">
-                                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(currentWizard.power) < 1) ? 'dead' : '']">
-                                                    <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentWizard.image + ')'" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
+                                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                                    <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                                     <!-- Card Label (Link Text) -->
                                                     <div class="wizard-card wizard-card-label">
                                                         <p>Wizard #{{ wizard.id }} - <img class="icon" :src="'img/icons/' + affinities[wizard.affinity].toLowerCase() + '.svg'" v-if="wizard.affinity !== 0"> - {{ getPrettyPowerLevel(wizard.power) }}</p>
