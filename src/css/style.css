@@ -844,6 +844,24 @@ a.footer-link:hover {
     text-decoration: none !important;
 }
 
+#duel-stats-table tbody tr:nth-child(odd) {background-color: #ffef57;}
+#duel-stats-table tbody tr:nth-child(even) {background-color: #ffd45a;}
+#duel-stats-table thead tr {background-color: #ffc033;}
+.duel-stats-total-column { font-weight: 700; }
+.wizardDuelStatsMain {
+    font-size: 1.4em;
+}
+.wizardDuelStatsMain span {
+    font-weight: 600;
+}
+.wizardDuelStatsTable {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+.wizardDuelStatsTable td {
+    padding: 3px;
+}
+
 /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 @media (max-width:320px)  {
     body, html {

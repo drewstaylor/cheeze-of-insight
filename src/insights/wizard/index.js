@@ -104,6 +104,7 @@ if (location.href.indexOf('wizard') !== -1) {
             Provider: require('../../providers'),
             api: require('../../api'),
             duelUtils: require('../../duels'),
+            duelStats: require('../../stats'),
             wizardUtils: require('../../wizards'),
             // Firebase
             firebase: FIREBASE,
@@ -206,6 +207,8 @@ if (location.href.indexOf('wizard') !== -1) {
             manualCurrentWizardSelection: false,
             isBgAnimated: false,
             duelData: [],
+            wizardDuelStatsShown: false,
+            wizardDuelStats: {},
             wizardWinRate: {
                 wins: 0,
                 losses: 0,
@@ -1195,7 +1198,21 @@ if (location.href.indexOf('wizard') !== -1) {
                 let percentage = wins / total * 100;
                 //console.log('wins, losses, total, percentage', [wins, losses, total, percentage]);
                 return percentage.toFixed(2);
-            }
+            },
+            showWizardDuelStats: async function(wizardId) {
+                const that = this;
+                this.wizardDuelStatsShown = true;
+
+                // fetch duel stats
+                const response = await this.api.getDuelsByWizardId(wizardId);
+                const duels = response.duels;
+
+                that.wizardDuelStats = that.duelStats.calculateDuelStatsOverall(duels, parseInt(wizardId));
+
+                // TODO: UI should dress this up
+                that.wizardDuelStats.powerHigh = that.getPrettyPowerLevel(that.wizardDuelStats.powerHigh);
+                that.wizardDuelStats.powerLow = that.getPrettyPowerLevel(that.wizardDuelStats.powerLow);
+            },
         },
         watch: {
             // Computed Win rate
