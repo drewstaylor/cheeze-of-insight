@@ -73,6 +73,39 @@ const apiQuery = async (endpoint = null, method = 'GET', scheme = 'https://', ma
 
 
 /**
+ * Endpoint handler for CW GraphQL API
+ */
+const cwApiQuery = async (payload) => {
+    if (!config.apiCheezeWizardsUrl) {
+        return false;
+    }
+
+    let options = {
+        method: 'POST',
+        uri: config.apiCheezeWizardsUrl,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: payload,
+        // Automatically stringifies the body to JSON
+        json: true
+    };
+
+    let response;
+    await request(options)
+        .then((data) => {
+            response = data;
+        })
+        .catch((err) => {
+            //console.log('Encountered error', err);
+            response = err.response.body;
+        });
+
+    return response;
+};
+
+
+/**
  * API Parsers & Getters
  * 
  * XXX TODO: Make this an exportable module? (atm it can still be require()'d)
@@ -1287,6 +1320,42 @@ const getDuelsBetweenWizards = async (wizard_A = null, wizard_B = null, mainnet 
     return duels;
 };
 
+/**
+ * Gets info on the tournament
+ */
+const getTournamentInfo = async () => {
+    let data;
+    data = await cwApiQuery({
+        "operationName": "CurrentTournamentQuery",
+        "variables": {},
+        "query": `query CurrentTournamentQuery {
+            currentTournament {
+                address
+                tournamentWindow: window
+                phase
+                blueMoldPower: blueWallPower
+                nextBlueMoldPower: nextBlueWallPower
+                isPaused
+                calendarWindows {
+                    tournamentWindow
+                    start
+                    windowStartBlock
+                }
+                fightWindows {
+                    start
+                    durationMin
+                    windowStartBlock
+                    window
+                }
+            }
+        }`
+    });
+
+    if (data.data && data.data.currentTournament) {
+        return data.data.currentTournament;
+    }
+};
+
 // Tests
 let construct = async () => {
     /*// Load all of the summoned Wizards
@@ -1337,5 +1406,6 @@ module.exports = {
     getDuelById: getDuelById,
     getDuelsByWizardId: getDuelsByWizardId,
     getDuelsBetweenWizards: getDuelsBetweenWizards,
-    getWizardTraitsById: getWizardTraitsById
+    getWizardTraitsById: getWizardTraitsById,
+    getTournamentInfo: getTournamentInfo
 }
