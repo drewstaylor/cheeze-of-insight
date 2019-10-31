@@ -493,7 +493,8 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title" style="line-height:1;">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
+                                    <h5 class="card-title" v-if="affinities[wizard.affinity].toLowerCase() == 'neutral'">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
+                                    <h5 class="card-title" v-else>{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
                                     <dl class="card-text row mb-0" v-if="wizardsSortedBy == SORTED_BY_POWER_LEVEL_STRONGEST && !wizardsMineFilter && !wizardsPrimaryFilter">
                                         <dt class="col-sm-4">Rank</dt>
                                         <dd class="col-sm-8">{{ getPrettyRank(index + 1) }}</dd>
