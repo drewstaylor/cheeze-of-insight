@@ -925,6 +925,18 @@ if (location.href.indexOf('insights') !== -1
                     return rarityValue.toFixed(nonZeroIndex);
                 }
             },
+            getPrettyRank: function (rank) {
+                let finalChar = String(rank).slice(-1);
+                if (finalChar == '1') {
+                    return rank + 'st';
+                } else if (finalChar == '2') {
+                    return rank + 'nd';
+                } else if (finalChar == '3') {
+                    return rank + 'rd';
+                } else {
+                    return rank + 'th';
+                }
+            },
             getIconUrlForAffinity: function(affinity) {
                 if (!affinity) {
                     return "";
@@ -1155,7 +1167,7 @@ if (location.href.indexOf('insights') !== -1
                             }
                         } else if (wizard.id.toString().indexOf(filter) > -1) {
                                 return wizard;
-                        } else if (filter.length == 42) {
+                        } else if (filter.length > 40) {
                             if (wizard.owner.toLowerCase() == filter.toLowerCase()) {
                                 return wizard;
                             }
