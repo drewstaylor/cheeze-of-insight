@@ -925,6 +925,20 @@ if (location.href.indexOf('insights') !== -1
                     return rarityValue.toFixed(nonZeroIndex);
                 }
             },
+            getPrettyRank: function (rank) {
+                let finalChar = String(rank).slice(-1);
+                if (finalChar == '1') {
+                    return rank + 'st';
+                } else if (parseInt(rank) == 12) {
+                    return rank + 'th';
+                } else if (finalChar == '2') {
+                    return rank + 'nd';
+                } else if (finalChar == '3') {
+                    return rank + 'rd';
+                } else {
+                    return rank + 'th';
+                }
+            },
             getIconUrlForAffinity: function(affinity) {
                 if (!affinity) {
                     return "";
