@@ -1032,7 +1032,7 @@ if (location.href.indexOf('wizard') !== -1) {
                     this.comparisonMyWizardsModalShown = true;
                 }
             },
-            showWizard: async function (wizardId = null) {//here
+            showWizard: async function (wizardId = null) {
                 if (wizardId == null) {
                     return;
                 } else {
@@ -1071,6 +1071,14 @@ if (location.href.indexOf('wizard') !== -1) {
 
                 // Disable loading
                 this.isLoading = false;
+            },
+            logBlockTime: async function (blockNumber) {
+                if (!blockNumber) {
+                    return;
+                }
+                let time = await this.getTimeFromBlock(blockNumber);
+                time = this.prettyTime(time);
+                console.log(time);
             },
             getTimeFromBlock: async function (blockNumber) {
                 if (!blockNumber) {

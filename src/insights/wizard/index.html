@@ -950,7 +950,7 @@
                 <h4 class="duel-title" v-if="currentOpposingWizard.duels.length">Duels</h4>
                 <div 
                     :class="'duels-card-container '+ (duel.wizard1DidWin ? 'winner' : 'loser') + ' ' + (duel.timedOut ? 'timed-out' : '')" 
-                    v-for="duel in currentOpposingWizard.duels"
+                    v-for="(duel, index) in currentOpposingWizard.duels"
                 >
 
                     <div class="duels-card-left-container">
@@ -972,7 +972,7 @@
                     <!-- Duel Round Results -->
                     <div class="duels-card-rounds" v-if="duel.moveSet1 && duel.moveSet2">
                         <!-- Match Occurred Time -->
-                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet">
+                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet" @click="logBlockTime(duel.endBlock)">
                             <span>Block #{{ duel.endBlock }}</span>
                         </div>
                         <div class="duels-card-round" v-for="move in duel.moveResults">
@@ -994,7 +994,7 @@
                     <!-- Duel In Progress -->
                     <div class="duels-card-rounds" v-if="(!duel.moveSet1 || !duel.moveSet2) && duel.timedOut">
                         <!-- Match Occurred Time -->
-                        <div class="block-time" v-if="duel.endBlock">
+                        <div class="block-time" v-if="duel.endBlock && wallets.mainnet" @click="logBlockTime(duel.endBlock)">
                             <span>Block #{{ duel.endBlock }}</span>
                         </div>
                         <p class="duel-timed-out">
