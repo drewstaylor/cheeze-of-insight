@@ -497,7 +497,7 @@
                                     <h5 class="card-title" v-else>{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
                                     <dl class="card-text row mb-0" v-if="wizardsSortedBy == SORTED_BY_POWER_LEVEL_STRONGEST && !wizardsMineFilter && !wizardsPrimaryFilter">
                                         <dt class="col-sm-4">Rank</dt>
-                                        <dd class="col-sm-8">{{ getPrettyRank(index + 1) }}</dd>
+                                        <dd class="col-sm-8">{{ getRankingFromPagination(index) }}</dd>
                                     </dl>
                                     <dl class="card-text row text-muted">
                                         <dt class="col-sm-4">Power</dt>

@@ -927,7 +927,9 @@ if (location.href.indexOf('insights') !== -1
             },
             getPrettyRank: function (rank) {
                 let finalChar = String(rank).slice(-1);
-                if (finalChar == '1') {
+                if (parseInt(rank) == 11) {
+                    return rank + 'th';
+                } else if (finalChar == '1') {
                     return rank + 'st';
                 } else if (parseInt(rank) == 12) {
                     return rank + 'th';
@@ -1109,6 +1111,13 @@ if (location.href.indexOf('insights') !== -1
                         this.wizardsMineFilter = false;
                         this.currentWizardsPage = 1;
                 }
+            },
+            getRankingFromPagination: function (index) {
+                let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
+                let indexPosition = index + 1;
+                let rank = this.getPrettyRank(indexPosition + pageStart);
+                return rank;
+                //return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
             }
         },
         computed: {
