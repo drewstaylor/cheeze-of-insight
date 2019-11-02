@@ -933,6 +933,8 @@ if (location.href.indexOf('insights') !== -1
                     return rank + 'st';
                 } else if (parseInt(rank) == 12) {
                     return rank + 'th';
+                } else if (parseInt(rank) == 13) {
+                    return rank + 'th';
                 } else if (finalChar == '2') {
                     return rank + 'nd';
                 } else if (finalChar == '3') {
