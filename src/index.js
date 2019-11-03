@@ -1156,7 +1156,9 @@ if (location.href.indexOf('duels') == -1
                             return wizard;
                         }
                     }
-                }).slice(0,4);
+                })
+                .sort(this.wizardUtils.sortByPowerLevelGrowth)
+                .slice(0,4);
             },
 
 
