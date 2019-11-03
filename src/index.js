@@ -87,6 +87,9 @@ Vue.component('vue-simple-context-menu', VueSimpleContextMenu.default);
 // Online users ref.
 const FIREBASE = require('./firebase');
 let usersOnline = FIREBASE.firebaseDb.ref('firechat-general/user-names-online');
+let nextFightWindow = FIREBASE.firebaseDb.ref('next-fight-window');
+let previousFightWindow = FIREBASE.firebaseDb.ref('previous-fight-window');
+let secondPreviousFightWindow = FIREBASE.firebaseDb.ref('second-previous-fight-window');
 
 // Create application
 if (location.href.indexOf('duels') == -1
@@ -230,10 +233,17 @@ if (location.href.indexOf('duels') == -1
             wizardsGrowth: null,
             neutrals: null,
             neutralsGrowth: null,
-            accounts: []
+            accounts: [],
+            tournamentInfo: null,
+            previousFightWindow: null,
+            secondPreviousFightWindow: null,
+            nextFightWindow: null
         }),
         firebase: {
-            usersOnline: usersOnline
+            usersOnline: usersOnline,
+            secondPreviousFightWindow: secondPreviousFightWindow,
+            previousFightWindow: previousFightWindow,
+            nextFightWindow: nextFightWindow
         },
         mounted: async function () {
             // Animate Cheeze Melt
@@ -242,7 +252,7 @@ if (location.href.indexOf('duels') == -1
                 setTimeout(() => {
                     jQuery('document').ready(function () {
                         jQuery('#cheese-of-insight').removeClass('hidden');
-                        jQuery('#holiness-logo').removeClass('hidden');
+                        //jQuery('#holiness-logo').removeClass('hidden');
                     });
                 }, 0);
             }, 0);
@@ -255,6 +265,11 @@ if (location.href.indexOf('duels') == -1
 
             // Load all wizards
             this.getAllWizards();
+
+            this.tournamentInfo = await this.api.getTournamentInfo();
+
+            // Duel window handler
+            this.parseDuelWindow();
 
             // Load all accounts and merge win record
             //await this.getAllAccounts();
@@ -300,6 +315,64 @@ if (location.href.indexOf('duels') == -1
             });
         },
         methods: {
+            // Duel window handler
+            parseDuelWindow: function () {
+                // Sort windows by time
+                if (this.tournamentInfo.calendarWindows) {
+                    this.tournamentInfo.calendarWindows.sort((a,b) => {
+                        let d1 = new Date(a.start).getTime();
+                        let d2 = new Date(b.start).getTime();
+
+                        if (d1 > d2) {
+                            return 1;
+                        } else if (d1 < d2) {
+                            return -1;
+                        }
+                    });
+
+                    this.tournamentInfo.fightWindows.sort((a,b) => {
+                        let d1 = new Date(a.start).getTime();
+                        let d2 = new Date(b.start).getTime();
+
+                        if (d1 > d2) {
+                            return 1;
+                        } else if (d1 < d2) {
+                            return -1;
+                        }
+                    });
+
+                    for (let i = 0; i < this.tournamentInfo.calendarWindows.length; i++) {
+                        let start = new Date(this.tournamentInfo.calendarWindows[i].start).getTime();
+                        start = new Date(start);
+                        // Find next fight window
+                        if (this.tournamentInfo.calendarWindows[i].tournamentWindow.toLowerCase() == "fight") {
+                            // Check against Firebase
+                            if (start.getTime() < parseInt(this.nextFightWindow.time)) {
+                                // Update Firebase
+                                let time = start.getTime();
+                                let block = this.tournamentInfo.calendarWindows[i].windowStartBlock;
+                                // 2nd Previous Fight window
+                                FIREBASE.firebaseDb.ref('second-previous-fight-window').update({
+                                    block: this.previousFightWindow.block,
+                                    time: this.previousFightWindow.time
+                                });
+                                // Previous Fight window
+                                FIREBASE.firebaseDb.ref('previous-fight-window').update({
+                                    block: this.nextFightWindow.block,
+                                    time: this.nextFightWindow.time
+                                });
+                                // Next Fight window
+                                FIREBASE.firebaseDb.ref('next-fight-window').update({
+                                    block: block,
+                                    time: time
+                                });
+
+                            }
+                            break;
+                        } 
+                    }
+                }
+            },
             // Chat / Login
             login: async function () {
                 // Process login as required
