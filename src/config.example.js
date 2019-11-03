@@ -6,6 +6,7 @@ config.apiToken = '';
 config.apiUser = '';
 config.apiMainnetBaseUrl = '';
 config.apiRinkebyBaseUrl = '';
+config.apiCheezeWizardsUrl = '';
 config.mainnetTournamentContract = '';
 config.mainnetWizardsContract = '';
 config.imageStorageUrl = '' + config.mainnetTournamentContract + '/';
