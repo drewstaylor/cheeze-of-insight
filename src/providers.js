@@ -1,6 +1,6 @@
 const Web3 = require('web3');
-const WEBSOCKET_WEB3_PROVIDER_MAINNET = "wss://mainnet.infura.io/ws";
-const WEBSOCKET_WEB3_PROVIDER_RINKEBY = "wss://rinkeby.infura.io/ws";
+const WEBSOCKET_WEB3_PROVIDER_MAINNET = "wss://mainnet.infura.io/ws/v3/a54117bd462643dab586eaa2fd426b6c";
+const WEBSOCKET_WEB3_PROVIDER_RINKEBY = "wss://rinkeby.infura.io/ws/v3/a54117bd462643dab586eaa2fd426b6c";
 
 const mainnetWizardsContract = '0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e';
 
