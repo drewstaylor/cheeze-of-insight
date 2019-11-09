@@ -315,7 +315,10 @@ if (location.href.indexOf('duels') !== -1) {
                 }
 
                 // Instance of Providers
-                let rinkeby = this.web3Providers.rinkeby;
+                //let rinkeby = this.web3Providers.rinkeby;
+                let mainnet = this.web3Providers.mainnet;
+
+                console.log("mainnet?", mainnet);
 
                 // Process Duel resolution
                 let result = await this.DuelSim.SimulateDuel(
@@ -325,11 +328,11 @@ if (location.href.indexOf('duels') !== -1) {
                     this.opposingWizard.power,
                     this.ourWizard.affinity,
                     this.opposingWizard.affinity,
-                    rinkeby
+                    mainnet
                 );
 
                 // Debug
-                //console.log('Resolved Duel =>', result);
+                console.log('Resolved Duel =>', result);
 
                 const power = Math.round(parseInt(result[0]) / 1000000000000);
                 const score = parseInt(result[1]);

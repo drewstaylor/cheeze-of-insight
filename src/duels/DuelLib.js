@@ -1,6 +1,110 @@
 
 const config = require('../config');
-const Contract = config.duelContracts.rinkeby;
+//const Contract = config.duelContracts.rinkeby;
+const Contract = config.duelContracts.mainnet;
+
+const duelResolver = [
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "moveSet",
+				"type": "bytes32"
+			}
+		],
+		"name": "isValidMoveSet",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "moveSet1",
+				"type": "bytes32"
+			},
+			{
+				"name": "moveSet2",
+				"type": "bytes32"
+			},
+			{
+				"name": "power1",
+				"type": "uint256"
+			},
+			{
+				"name": "power2",
+				"type": "uint256"
+			},
+			{
+				"name": "affinity1",
+				"type": "uint256"
+			},
+			{
+				"name": "affinity2",
+				"type": "uint256"
+			}
+		],
+		"name": "resolveDuel",
+		"outputs": [
+			{
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "affinity",
+				"type": "uint256"
+			}
+		],
+		"name": "isValidAffinity",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "pure",
+		"type": "function"
+	}
+];
 
 const testduel={
 
@@ -103,9 +207,11 @@ const validMove=  {
   }
    async function SendWeb3Call(functionABI,inputarray,contract,web3){
     try{
+
+      console.log('[functionABI,inputarray,contract,web3]', [functionABI,inputarray,contract,web3]);
      
-     var DATA=web3.eth.abi.encodeFunctionCall(functionABI,inputarray)
-    // console.log(DATA)
+      var DATA=web3.eth.abi.encodeFunctionCall(functionABI,inputarray)
+      console.log('DATA', DATA);
      
      const transactionObject = {
         to:contract,
@@ -113,12 +219,15 @@ const validMove=  {
        }
       // console.log(transactionObject)
     let ret= await web3.eth.call(transactionObject)
-    //console.log(ret)
+    
+    console.log('Web3 Return =>', ret);
+    
+    
     return ret
       
   
     }catch(err){
-      //console.log(err)
+      console.log('Web3 error =>', err);
     }
     
 }
@@ -136,11 +245,14 @@ const validMove=  {
  const SimulateDuel = async (moves1,moves2,power1,power2,affinity1,affinity2,web3)=>{
     try{
         let MS1= generateMoveSet(moves1[0],moves1[1],moves1[2],moves1[3],moves1[4])
-        //console.log(MS1)
         let MS2= generateMoveSet(moves2[0],moves2[1],moves2[2],moves2[3],moves2[4])
         
-        let result =await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract,web3)
-        //console.log(result)
+        console.log('Moves =>', [MS1, MS2]);
+
+        let result = await SendWeb3Call(testduel,[MS1,MS2,power1,power2,affinity1,affinity2],Contract,web3)
+        
+        console.log('result', result);
+        
         result=web3.eth.abi.decodeParameters(['int256', 'int256'], result);
         return result
 
