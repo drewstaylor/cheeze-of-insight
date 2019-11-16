@@ -1146,10 +1146,11 @@ if (location.href.indexOf('insights') !== -1
                         wizards = this.tokens.mainnet.wizards;
                         // Return owned Wizards
                         if (wizards && this.currentWizardsPage) {
-                            let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * this.currentWizardsPage;
+                            /*let pageStart = (this.currentWizardsPage == 1) ? 0 : this.wizardsPageSize * (this.currentWizardsPage - 1);
                             let wizardsLength = wizards.length;
                             this.totalWizardsPages = (wizardsLength > this.wizardsPageSize) ? Math.floor(wizardsLength / this.wizardsPageSize) : 1;
-                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);
+                            return wizards.slice(pageStart, pageStart + this.wizardsPageSize);*/
+                            return wizards;
                         } else {
                             return [];
                         }
