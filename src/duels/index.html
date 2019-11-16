@@ -257,7 +257,7 @@
 
     <!-- Wizard card template -->
     <script type="text/x-template" id="wizard-card-template">
-        <div class="all-wizards">
+        <div class="all-wizards" @click="window.location.href = window.location.origin + '/insights/wizard/?id=' + wizard.id">
             <div :class="'card mb-3 affinity-' + wizard.specialPower.toLowerCase()">
                 <div class="card-img-top" :style="'background-image: url(' + api.getWizardImageUrlById(wizard.id) + ');'">
                     <div class="card-img-overlay d-flex justify-content-end">
