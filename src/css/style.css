@@ -189,11 +189,15 @@ div.view-single-wizard {
 div.cheese-wizard-image.selected-opponent-img,
 div.cheese-wizard-image.my-wizard-img {
     margin: auto;
-    width: 480px;
-    height: 500px;
+    /*width: 480px;*/
+    height: 650px;
     overflow: hidden;
     background-size: cover;
     background-position: center;
+}
+
+span.address-small {
+    font-size: 11px;
 }
 
 div.cheese-wizard-image.selected-by-address-opponent-img,

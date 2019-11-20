@@ -660,8 +660,24 @@
                         </div>
                         <!-- Owner -->
                         <div class="owner">
-                            <p>
+                            <p v-if="currentOpposingWizard.cwData">
+                                <span v-if="currentOpposingWizard.cwData.owner">
+                                    <strong>Owner:</strong>
+                                    <a :href="'https://www.cheezewizards.com/profile/' + currentOpposingWizard.cwData.owner.id" target="_blank">{{ currentOpposingWizard.cwData.owner.nickname }}</a>&nbsp;
+                                    <span class="address-small">({{ currentOpposingWizard.owner }})</span>
+                                </span>
+                                <span v-if="!currentOpposingWizard.cwData.owner">
+                                    <strong>Owner:</strong> {{ currentOpposingWizard.owner }}
+                                </span>
+                            </p>
+                            <p v-else>
                                 <strong>Owner:</strong> {{ currentOpposingWizard.owner }}
+                            </p>
+                            <p v-if="currentOpposingWizard.cwData">
+                                <span v-if="currentOpposingWizard.cwData.party">
+                                    <strong>Party:</strong>
+                                    <a :href="'https://www.cheezewizards.com/parties/' + currentOpposingWizard.cwData.party.id" target="_blank">{{ currentOpposingWizard.cwData.party.name }}</a>
+                                </span>
                             </p>
                             <p>
                                 <!-- View Other Wizards By This Owner -->
@@ -673,7 +689,10 @@
                             </p>
                             <modal v-if="selectedWizardsByAddressModalShown" @close="selectedWizardsByAddressModalShown = false">
                                 <!-- Custom Modal Overrides -->
-                                <h3 slot="header">{{ currentOpposingWizard.owner }}'s Wizards</h3>
+                                <h3 slot="header">
+                                    <span v-if="!currentOpposingWizard.cwData">{{ currentOpposingWizard.owner }}'s Wizards</span>
+                                    <span v-else>{{ currentOpposingWizard.cwData.owner.nickname }}'s Wizards</span>
+                                </h3>
                                 <div slot="body">
                                     <div class="wizard-card-block-item wizard-card-block-item-outer" v-for="wizard in selectedWizardsByAddress">
                                         <div class="wizard-card-block-item">

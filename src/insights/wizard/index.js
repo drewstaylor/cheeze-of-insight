@@ -1069,6 +1069,10 @@ if (location.href.indexOf('wizard') !== -1) {
                 
                 //console.log('this.duelData =>', this.duelData);
 
+                // Load CW Wizard Data
+                this.currentOpposingWizard.cwData = await this.api.getDuelistDataCW(wizardId);
+                this.$forceUpdate();
+
                 // Disable loading
                 this.isLoading = false;
             },

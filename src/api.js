@@ -1356,9 +1356,103 @@ const getTournamentInfo = async () => {
     }
 };
 
+/**
+ * Get link to CW Duel from Alchemy API Duel ID
+ */
+const getDuelLink = async () => {
+    //here
+};
+
+/**
+ * Get CW API data for duelist
+ * 
+ * '{"operationName":"GetWizardQuery","variables":{},"query":"query GetWizardQuery { getWizard(id: \"42\") { id name ownerAddress affinityType power imageUrl imageUrlPng createdAt status initialPower maxPower lastTransferTime seriesId serialId createdAt party { id name } } }"}'
+ * 
+ * curl 'https://api.cheezewizards.com/query' \
+ *   -H 'content-type: application/json' \
+ *   --data-binary '{ 
+ *      "operationName": "GetWizardQuery",
+ *      "variables":{}, 
+ *      "query": "query GetWizardQuery { 
+ *          getWizard(id: \"42\") { 
+ *              id 
+ *              name 
+ *              ownerAddress 
+ *              affinityType 
+ *              power 
+ *              imageUrl 
+ *              imageUrlPng 
+ *              createdAt 
+ *              status 
+ *              initialPower 
+ *              maxPower 
+ *              lastTransferTime 
+ *              seriesId 
+ *              serialId 
+ *              createdAt 
+ *              party { id name } 
+ *          } 
+ *      }"
+ * }'
+ * 
+ */
+const getDuelistDataCW = async (wizardId) => {
+    // Verify args
+    if (!wizardId) {
+        return false;
+    } else if (typeof wizardId !== 'number') {
+        wizardId = parseInt(wizardId);
+    }
+
+    let data;
+    let query = {
+        "operationName": "GetWizardQuery",
+        "variables": {},
+        "query": `query GetWizardQuery {
+            getWizard(id: \"` + wizardId + `\") {
+                id 
+                owner {
+                    id
+                    nickname
+                }
+                ownerAddress 
+                affinityType 
+                power 
+                imageUrl 
+                imageUrlPng 
+                createdAt 
+                status 
+                initialPower 
+                maxPower 
+                lastTransferTime 
+                seriesId 
+                serialId 
+                createdAt 
+                party { 
+                    id 
+                    name 
+                }
+            }
+        }`
+    };
+
+    data = await cwApiQuery(query);
+
+    if (data.data && data.data.getWizard) {
+        return data.data.getWizard;
+    }
+
+    // Result
+    return data;
+};
+
 // Tests
-let construct = async () => {
-    /*// Load all of the summoned Wizards
+/*let construct = async () => {
+    // Get CW Duelist data
+    let data = await getDuelistDataCW(1353);
+    console.log(data);
+
+    // Load all of the summoned Wizards
     let allWizards = await getAllWizards();
     console.log('Wizards =>', allWizards);
 
@@ -1387,7 +1481,7 @@ let construct = async () => {
     let wizard2 = 1;
     let duelsBetweenWizards = await getDuelsBetweenWizards(wizard, wizard2);
     console.log('Duels between Wizard #' + wizard + ' and Wizard #1' + ' =>', duelsBetweenWizards);
-    */
+    
     
     // Load Traits of a given Wizard by its ID
     //let wizard = 5974;
@@ -1396,7 +1490,8 @@ let construct = async () => {
 };
 
 // Debug:
-//construct();
+construct();
+*/
 
 module.exports = {
     getAllWizards: getAllWizards,
@@ -1407,5 +1502,6 @@ module.exports = {
     getDuelsByWizardId: getDuelsByWizardId,
     getDuelsBetweenWizards: getDuelsBetweenWizards,
     getWizardTraitsById: getWizardTraitsById,
-    getTournamentInfo: getTournamentInfo
+    getTournamentInfo: getTournamentInfo,
+    getDuelistDataCW: getDuelistDataCW
 }
