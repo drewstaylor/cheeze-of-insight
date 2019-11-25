@@ -214,7 +214,9 @@ if (location.href.indexOf('wizard') !== -1) {
                 losses: 0,
                 tied: 0
             },
-            wizardWinPercentage: null
+            wizardWinPercentage: null,
+            tournamentInfo: null,
+            blueMold: null
         }),
         firebase: {
             usersOnline: usersOnline
@@ -275,6 +277,10 @@ if (location.href.indexOf('wizard') !== -1) {
             // Load wizard
             this.wizardId = this.getUrlParameter('id');
             this.showWizard(this.wizardId);
+
+            // Load tournament info (fight windows, mold)
+            this.tournamentInfo = await this.api.getTournamentInfo();
+            this.blueMold = this.getPrettyPowerLevel(this.tournamentInfo.blueMoldPower);
         },
         methods: {
             // Get Wizard param
@@ -877,6 +883,8 @@ if (location.href.indexOf('wizard') !== -1) {
             getPrettyPowerLevel: function (powerLevel) {
                 if (isNaN(powerLevel)) {
                     return '';
+                } else if (typeof powerLevel !== 'number') {
+                    powerLevel = parseInt(powerLevel);
                 }
                 return Math.round(powerLevel / 1000000000000);
             },

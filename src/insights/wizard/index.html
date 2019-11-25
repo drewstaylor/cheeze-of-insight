@@ -497,7 +497,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, true); chatChallengeModal_step1 = false;">
-                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                     <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
@@ -522,7 +522,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, false); chatChallengeModal_step2 = false;">
-                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
@@ -549,7 +549,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <h5>Your Wizard</h5>
-                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(currentWizard.power) < 1) ? 'dead' : '']">
+                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(currentWizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                 <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
@@ -571,7 +571,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <h5>Challenged Wizard</h5>
-                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(currentOpposingWizard.power) < 1) ? 'dead' : '']">
+                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(currentOpposingWizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                 <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
@@ -698,7 +698,7 @@
                                         <div class="wizard-card-block-item">
                                             <!-- Wizard Image -->
                                             <a v-on:click="showWizard(wizard.id); selectedWizardsByAddressModalShown = false;">
-                                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                                     <!-- Card Label (Link Text) -->
                                                     <div class="wizard-card wizard-card-label">
@@ -730,7 +730,7 @@
 
                     <!-- Right Pane - Wizard Image -->
                     <div class="selected-wizard-right" v-if="currentOpposingWizard.image">
-                        <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', (getPrettyPowerLevel(currentOpposingWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'">
+                        <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', (getPrettyPowerLevel(currentOpposingWizard.power) < blueMold) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'">
                             <!--
                             <img class="img-fluid opponent-wizard-img" :src="currentOpposingWizard.image">
                             -->
@@ -1177,7 +1177,7 @@
                     </div>
                     <div>
                     </div>
-                    <div v-bind:class="['cheese-wizard-image', 'my-wizard-img', 'comparison', (getPrettyPowerLevel(currentWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image">
+                    <div v-bind:class="['cheese-wizard-image', 'my-wizard-img', 'comparison', (getPrettyPowerLevel(currentWizard.power) < blueMold) ? 'dead' : '']" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image">
                         <!--
                         <div class="cheese-wizard-image cheese-wizard-image-small">
                             <img class="img-fluid" :src="currentWizard.image">
@@ -1198,7 +1198,7 @@
                                 <div class="wizard-card-block-item">
                                     <!-- Wizard Image -->
                                     <a v-on:click="showMyComparisonWizard(wizard.id); comparisonMyWizardsModalShown = false;">
-                                        <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                        <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">
@@ -1466,7 +1466,7 @@
                             <strong>Lifetime Power Growth:</strong> {{ getPrettyPowerLevel(currentOpposingWizard.power - currentOpposingWizard.initialPower) }}
                         </p>
                     </div>
-                    <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', 'comparison', (getPrettyPowerLevel(currentOpposingWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentOpposingWizard.image">
+                    <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', 'comparison', (getPrettyPowerLevel(currentOpposingWizard.power) < blueMold) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentOpposingWizard.image">
                         <!--
                         <div class="cheese-wizard-image cheese-wizard-image-small">
                             <img class="img-fluid" :src="currentOpposingWizard.image">
@@ -1487,7 +1487,7 @@
                                 <div class="wizard-card-block-item">
                                     <!-- Wizard Image -->
                                     <a v-on:click="showComparisonWizard(wizard.id); comparisonWizardsByAddressModalShown = false;">
-                                        <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']">
+                                        <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']" v-if="blueMold > 0">
                                             <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                             <!-- Card Label (Link Text) -->
                                             <div class="wizard-card wizard-card-label">

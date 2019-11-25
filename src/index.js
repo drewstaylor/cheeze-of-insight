@@ -266,10 +266,8 @@ if (location.href.indexOf('duels') == -1
             // Load all wizards
             this.getAllWizards();
 
+            // Tournament info (fight windows, mold)
             this.tournamentInfo = await this.api.getTournamentInfo();
-
-            // Duel window handler
-            this.parseDuelWindow();
 
             // Load all accounts and merge win record
             //await this.getAllAccounts();
@@ -315,64 +313,6 @@ if (location.href.indexOf('duels') == -1
             });
         },
         methods: {
-            // Duel window handler
-            parseDuelWindow: function () {
-                // Sort windows by time
-                if (this.tournamentInfo.calendarWindows) {
-                    this.tournamentInfo.calendarWindows.sort((a,b) => {
-                        let d1 = new Date(a.start).getTime();
-                        let d2 = new Date(b.start).getTime();
-
-                        if (d1 > d2) {
-                            return 1;
-                        } else if (d1 < d2) {
-                            return -1;
-                        }
-                    });
-
-                    this.tournamentInfo.fightWindows.sort((a,b) => {
-                        let d1 = new Date(a.start).getTime();
-                        let d2 = new Date(b.start).getTime();
-
-                        if (d1 > d2) {
-                            return 1;
-                        } else if (d1 < d2) {
-                            return -1;
-                        }
-                    });
-
-                    for (let i = 0; i < this.tournamentInfo.calendarWindows.length; i++) {
-                        let start = new Date(this.tournamentInfo.calendarWindows[i].start).getTime();
-                        start = new Date(start);
-                        // Find next fight window
-                        if (this.tournamentInfo.calendarWindows[i].tournamentWindow.toLowerCase() == "fight") {
-                            // Check against Firebase
-                            if (start.getTime() < parseInt(this.nextFightWindow.time)) {
-                                // Update Firebase
-                                let time = start.getTime();
-                                let block = this.tournamentInfo.calendarWindows[i].windowStartBlock;
-                                // 2nd Previous Fight window
-                                FIREBASE.firebaseDb.ref('second-previous-fight-window').update({
-                                    block: this.previousFightWindow.block,
-                                    time: this.previousFightWindow.time
-                                });
-                                // Previous Fight window
-                                FIREBASE.firebaseDb.ref('previous-fight-window').update({
-                                    block: this.nextFightWindow.block,
-                                    time: this.nextFightWindow.time
-                                });
-                                // Next Fight window
-                                FIREBASE.firebaseDb.ref('next-fight-window').update({
-                                    block: block,
-                                    time: time
-                                });
-
-                            }
-                            break;
-                        } 
-                    }
-                }
-            },
             // Chat / Login
             login: async function () {
                 // Process login as required

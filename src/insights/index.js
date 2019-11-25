@@ -219,7 +219,8 @@ if (location.href.indexOf('insights') !== -1
             showMyWizardTraits: false,
             showOpponentTraits: false,
             manualCurrentWizardSelection: false,
-            isBgAnimated: false
+            isBgAnimated: false,
+            tournamentInfo: null
         }),
         firebase: {
             usersOnline: usersOnline
@@ -250,6 +251,9 @@ if (location.href.indexOf('insights') !== -1
                     });
                 }, 0);
             }, 0);
+
+            // Tournament info (fight windows, mold)
+            this.tournamentInfo = await this.api.getTournamentInfo();
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
