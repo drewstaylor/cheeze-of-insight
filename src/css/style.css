@@ -177,6 +177,10 @@ div.block-item.block-item-inner:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
+div.single-wizard.match-history {
+    display: flex;
+}
+
 div.single-wizard {
     margin: auto;
     width: 100%;
@@ -188,12 +192,16 @@ div.view-single-wizard {
 
 div.cheese-wizard-image.selected-opponent-img,
 div.cheese-wizard-image.my-wizard-img {
-    margin: auto;
-    /*width: 480px;*/
+    margin: auto;    
     height: 650px;
     overflow: hidden;
     background-size: cover;
     background-position: center;
+}
+
+div.cheese-wizard-image.my-wizard-img.comparison,
+div.cheese-wizard-image.selected-opponent-img.comparison {
+    width: 480px;
 }
 
 span.address-small {
@@ -927,6 +935,9 @@ a.footer-link:hover {
         text-align: center;
         padding-right: 0;
     }
+    div.single-wizard.match-history {
+        display: inline-block;
+    }
     div.selected-wizard-right {
         position: relative;
         top: 0;
@@ -985,6 +996,9 @@ a.footer-link:hover {
         text-align: center;
         padding-right: 0;
     }
+    div.single-wizard.match-history {
+        display: inline-block;
+    }
     div.selected-wizard-right {
         position: relative;
         top: 0;
@@ -1040,7 +1054,9 @@ a.footer-link:hover {
         text-align: center;
         padding-right: 0;
     }
-    
+    div.single-wizard.match-history {
+        display: inline-block;
+    }
     div.selected-wizard-left, div.selected-wizard-right {
         width: 100%;
     }

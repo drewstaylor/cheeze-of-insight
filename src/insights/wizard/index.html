@@ -606,7 +606,7 @@
             <!-- Browse Single Wizard -->
             <div class="view-single-wizard" v-if="navigation.state == VIEW_SELECTED_WIZARD">
                 <p v-if="isLoading">Loading Wizards...</p>
-                <div class="single-wizard" v-if="currentOpposingWizard">
+                <div class="single-wizard match-history" v-if="currentOpposingWizard">
                     <!-- Left Pane - Wizard Image -->
                     <div class="selected-wizard-left">
                         <!-- Title -->
@@ -1177,7 +1177,7 @@
                     </div>
                     <div>
                     </div>
-                    <div v-bind:class="['cheese-wizard-image', 'my-wizard-img', (getPrettyPowerLevel(currentWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image">
+                    <div v-bind:class="['cheese-wizard-image', 'my-wizard-img', 'comparison', (getPrettyPowerLevel(currentWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image">
                         <!--
                         <div class="cheese-wizard-image cheese-wizard-image-small">
                             <img class="img-fluid" :src="currentWizard.image">
@@ -1466,7 +1466,7 @@
                             <strong>Lifetime Power Growth:</strong> {{ getPrettyPowerLevel(currentOpposingWizard.power - currentOpposingWizard.initialPower) }}
                         </p>
                     </div>
-                    <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', (getPrettyPowerLevel(currentOpposingWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentOpposingWizard.image">
+                    <div v-bind:class="['cheese-wizard-image', 'selected-opponent-img', 'comparison', (getPrettyPowerLevel(currentOpposingWizard.power) < 1) ? 'dead' : '']" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentOpposingWizard.image">
                         <!--
                         <div class="cheese-wizard-image cheese-wizard-image-small">
                             <img class="img-fluid" :src="currentOpposingWizard.image">
