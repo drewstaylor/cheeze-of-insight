@@ -10,16 +10,16 @@ let augur = Augur.node;
 augur.connect({
   ethereumNode: {
     httpAddresses: [
-      //"https://rinkeby.infura.io" // hosted HTTP address for Ethereum Rinkeby test network
-      "https://mainnet.infura.io"
+      //"https://rinkeby.infura.io/v3/a54117bd462643dab586eaa2fd426b6c" // hosted HTTP address for Ethereum Rinkeby test network
+      "https://mainnet.infura.io/v3/a54117bd462643dab586eaa2fd426b6c"
     ],
     wsAddresses: [
-      //"wss://rinkeby.infura.io/ws" // hosted WebSocket address Ethereum Rinkeby test network
-      "wss://mainnet.infura.io/ws"
+      //"wss://rinkeby.infura.io/ws/v3/a54117bd462643dab586eaa2fd426b6c" // hosted WebSocket address Ethereum Rinkeby test network
+      "wss://mainnet.infura.io/ws/v3/a54117bd462643dab586eaa2fd426b6c"
     ]
   },
   //augurNode: "wss://dev.augur.net/augur-node" // WebSocket address for an Augur Node on Rinkeby
-  augurNode: "wss://eth-mainnet.alchemyapi.io/jsonrpc/-vPGIFwUyjlMRF9beTLXiGQUK6Nf3k8z"
+  augurNode: "wss://predictions.market:9002"
 }, (error, connectionInfo) => {
   console.log(connectionInfo);
 });
@@ -37,7 +37,7 @@ router.get('/markets/owned', (request, response) => {
   let res;
 
   //console.log(connectionInfo);
-  console.log('Augur connected');
+  //console.log('Augur connected');
 
   // Connected to node, now fetch market ID's
   augur.markets.getMarkets({
@@ -45,7 +45,14 @@ router.get('/markets/owned', (request, response) => {
     creator: process.env.COI_OWNER_ADDRESS
   }, (error, markets) => {
     // No markets response
-    if (!markets.length) {
+    if (!markets) {
+      console.log("Markets not found");
+      res = {
+        error: 'Augur connection could not be verified'
+      };
+      // Send empty data response
+      response.send(JSON.stringify(res));
+    } else if (!markets.length) {
       // Formulate response object
       res = {
         data: {
@@ -90,10 +97,17 @@ router.get('/markets/community', (request, response) => {
   // Connected to node, now fetch market ID's
   augur.markets.getMarkets({
     universe: process.env.AUGUR_UNIVERSE,
-    search: "tags: CheezeWizards, Coinlist"
+    search: "tags: CheezeWizards"
   }, (error, markets) => {
     // No markets response
-    if (!markets.length) {
+    if (!markets) {
+      console.log("Markets not found");
+      res = {
+        error: 'Augur connection could not be verified'
+      };
+      // Send empty data response
+      response.send(JSON.stringify(res));
+    } else if (!markets.length) {
       // Formulate response object
       res = {
         data: {
