@@ -24,6 +24,7 @@
     <link href="css/vuesax.css" rel="stylesheet">
     <link href="css/components.vue-simple-context-menu.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/leaderboard.css" rel="stylesheet">
     <!-- JS Imports -->
     <!-- jQuery is only for Firechat, sigh -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -398,12 +399,17 @@
 
             <h2 class="tk-exocet text-center leaderboard">Leaderboard</h2>
 
-            <div class="row view-all-wizards leaderboard">
+            <div class="tk-exocet text-center leaderboard leaderboard-controls">
+                <h2 style="cursor:pointer;" @click="switchLeaderboard(WIZARDS)" v-bind:class="['leaderboard', 'set-wizards-context', (leaderboardDisplay !== WIZARDS) ? 'disabled' : 'active']">Wizards</h2>
+                <span class="divider"> / </span>
+                <h2 style="cursor:pointer;" @click="switchLeaderboard(PLAYERS)" v-bind:class="['leaderboard', 'set-players-context', (leaderboardDisplay !== PLAYERS) ? 'disabled' : 'active']">Players</h2>
+            </div>
+
+            <div class="row view-all-wizards leaderboard" v-if="leaderboardDisplay == WIZARDS">
                 <div class="all-wizards">
 
-
                     <h4 class="tk-exocet">Top Wizards</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
+                    <p v-if="isLoading.wizards">Loading Wizards...</p>
                     <div class="row paginated-wizards" v-else>
 
                         <!-- Top 4 Wizards By Power Level -->
@@ -435,7 +441,7 @@
 
 
                     <h4 class="tk-exocet">Top Elemental Wizards</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
+                    <p v-if="isLoading.wizards">Loading Wizards...</p>
                     <div class="row paginated-wizards" v-else>
 
                         <!-- Top 4 Elementals By Power Level -->
@@ -467,7 +473,7 @@
 
 
                     <h4 class="tk-exocet">Top Neutral Wizards</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
+                    <p v-if="isLoading.wizards">Loading Wizards...</p>
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourNeutralsByPower">
                             <div 
@@ -497,7 +503,7 @@
 
 
                     <h4 class="tk-exocet">Highest Growth Elementals</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
+                    <p v-if="isLoading.wizards">Loading Wizards...</p>
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourElementalsByGrowth">
                             <div 
@@ -526,7 +532,7 @@
                     </div>
 
                     <h4 class="tk-exocet">Highest Growth Neutrals</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
+                    <p v-if="isLoading.wizards">Loading Wizards...</p>
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourNeutralsByGrowth">
                             <div 
@@ -554,38 +560,67 @@
                         </div>
                     </div>
 
-                    <!--
-                    <h4 class="tk-exocet">Top Duelists By Win Rate</h4>
-                    <p v-if="isLoading">Loading Wizards...</p>
-                    <div class="row paginated-wizards" v-else>
-                        <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourDuelistByWinRate">
-                            <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
-                                v-on:click="showWizard(wizard.id);">
-                                <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
-                                    <div class="card-img-overlay d-flex justify-content-end">
-                                        <img class="icon" :src="getIconUrlForAffinity(wizard.affinity)" v-if="wizard.affinity !== 0">
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ affinities[wizard.affinity] }} Wizard #{{ wizard.id }}</h5>
-                                    <dl class="card-text row mb-0">
-                                        <dt class="col-sm-4">Rank</dt>
-                                        <dd class="col-sm-8">{{ getPrettyRank(index + 1) }}</dd>
-                                    </dl>
-                                    <dl class="card-text row text-muted">
-                                        <dt class="col-sm-4">Power</dt>
-                                        <dd class="col-sm-8">{{ getPrettyPowerLevel(wizard.power) }}</dd>
-                                        <dt class="col-sm-4">Owner</dt>
-                                        <dd class="col-sm-8"><a v-on:click="showAllWizardsOfOwner(wizard.owner)">{{ wizard.owner.substring(0, 12) }}&hellip;</a></dd>
-                                    </dl>
-                                </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="row view-all-duelists leaderboard" v-if="leaderboardDisplay == PLAYERS">
+
+                <!-- //here -->
+
+                <div class="all-wizards players">
+
+                    <h4 class="tk-exocet">Top Players</h4>
+                    <p v-if="isLoading.players">Loading Players...</p>
+                    
+                    <div class="paginated-players" v-else>
+
+                        <div class="player top-players header">
+                            <!-- Duelist Name -->
+                            <div class="header">
+                                <span>Player</span>
+                            </div>
+
+                            <!-- Duelist Power -->
+                            <div class="header">
+                                <span>Total Power</span>
+                            </div>
+
+                            <!-- Duelists Wizards Owned -->
+                            <div class="header">
+                                <span>Wizards Owned</span>
                             </div>
                         </div>
+
+                        <div class="player top-players" v-for="(player, index) in topDuelists">
+                            
+                            <!-- Duelist Name -->
+                            <div class="duelist name">
+                                <a :href="'https://www.cheezewizards.com/profile/' + player.id" target="_blank">
+                                    <span v-if="player.nickname">{{ index + 1 }}.  {{ player.nickname }}</span>
+                                    <span v-else="player.nickname">{{ index + 1 }}. Anonymous Dragon</span>
+                                </a>
+                            </div>
+
+                            <!-- Duelist Power -->
+                            <div class="duelist power">
+                                <span>{{ getPrettyPowerLevel(player.totalPower) }}</span>
+                            </div>
+
+                            <!-- Duelists Wizards Owned -->
+                            <div class="duelist wizards">
+                                <span>{{ player.wizardsOwned }}</span>
+                            </div>
+    
+
+                        </div>
                     </div>
-                    -->
+
 
                 </div>
+
             </div>
 
 

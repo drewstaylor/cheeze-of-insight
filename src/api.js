@@ -1357,13 +1357,6 @@ const getTournamentInfo = async () => {
 };
 
 /**
- * Get link to CW Duel from Alchemy API Duel ID
- */
-const getDuelLink = async () => {
-    //here
-};
-
-/**
  * Get CW API data for duelist
  * 
  * '{"operationName":"GetWizardQuery","variables":{},"query":"query GetWizardQuery { getWizard(id: \"42\") { id name ownerAddress affinityType power imageUrl imageUrlPng createdAt status initialPower maxPower lastTransferTime seriesId serialId createdAt party { id name } } }"}'
@@ -1395,6 +1388,8 @@ const getDuelLink = async () => {
  *      }"
  * }'
  * 
+ * @param {Number} wizardId: ID of wizard to get CW details for
+ * @return {Object}
  */
 const getDuelistDataCW = async (wizardId) => {
     // Verify args
@@ -1446,8 +1441,51 @@ const getDuelistDataCW = async (wizardId) => {
     return data;
 };
 
+/**
+ * Get top dueliests
+ * @param {Number} limit: API pagination limit
+ * @param {String} orderBy: Order records either by `DESC` or `ASC`
+ * @return {Object} `Array` of users
+ */
+const getTopDuelistsCW = async (limit = 20, orderBy = 'DESC') => {
+    let data;
+    let query = {
+        "operationName": "GetUsersQuery",
+        "variables": {},
+        "query": `query GetUsersQuery {
+            getUsers(pagination: {orderDirection: ` + orderBy + `, orderBy: TOTAL_POWER, limit: ` + limit + `}) {
+                users {
+                    id
+                    nickname
+                    twitterHandle
+                    totalPower
+                    wizardsOwned
+                    status
+                    wallets {
+                        address
+                    }
+                }
+            }
+        }`
+    };
+
+
+    data = await cwApiQuery(query);
+
+    if (data.data && data.data.getUsers) {
+        return data.data.getUsers.users;
+    }
+
+    // Result
+    return data;
+};
+
 // Tests
 /*let construct = async () => {
+
+    let data = await getTopDuelistsCW();
+    console.log(data);
+
     // Get CW Duelist data
     let data = await getDuelistDataCW(1353);
     console.log(data);
@@ -1487,11 +1525,10 @@ const getDuelistDataCW = async (wizardId) => {
     //let wizard = 5974;
     //let traits = await getWizardTraitsById(wizard);
     //console.log('Traits =>', traits);
-};
+};*/
 
 // Debug:
-construct();
-*/
+//construct();
 
 module.exports = {
     getAllWizards: getAllWizards,
@@ -1503,5 +1540,6 @@ module.exports = {
     getDuelsBetweenWizards: getDuelsBetweenWizards,
     getWizardTraitsById: getWizardTraitsById,
     getTournamentInfo: getTournamentInfo,
-    getDuelistDataCW: getDuelistDataCW
+    getDuelistDataCW: getDuelistDataCW,
+    getTopDuelistsCW: getTopDuelistsCW
 }

@@ -35,6 +35,10 @@ const PREDICTION_TYPE_MIXED_REVIEWS = 2;
 const PRIMARY_SEARCH = 1;
 const VULNERABILITY_SEARCH = 2;
 
+// Leaderboard types
+const PLAYERS = 0;
+const WIZARDS = 1;
+
 // Contract constants
 const MAINNET = 0;
 const RINKEBY = 1;
@@ -121,6 +125,8 @@ if (location.href.indexOf('duels') == -1
             TOTAL_WIZARDS: null,
             MAINNET: MAINNET,
             RINKEBY: RINKEBY,
+            PLAYERS: PLAYERS,
+            WIZARDS: WIZARDS,
             // Dependencies
             Provider: require('./providers'),
             api: require('./api'),
@@ -155,7 +161,10 @@ if (location.href.indexOf('duels') == -1
                 state: HOME_STATE
             },
             userIsLoggedIn: false,
-            isLoading: false,
+            isLoading: {
+                wizards: false,
+                players: false
+            },
             currentWizardsPage: 1,
             wizardsPageSize: 12,
             totalWizardsPages: null,
@@ -237,7 +246,9 @@ if (location.href.indexOf('duels') == -1
             tournamentInfo: null,
             previousFightWindow: null,
             secondPreviousFightWindow: null,
-            nextFightWindow: null
+            nextFightWindow: null,
+            topDuelists: null,
+            leaderboardDisplay: WIZARDS
         }),
         firebase: {
             usersOnline: usersOnline,
@@ -257,26 +268,14 @@ if (location.href.indexOf('duels') == -1
                 }, 0);
             }, 0);
 
-            // Load all duels
-            //let duels = await this.api.getAllDuels();
-            //this.duels = this.duelUtils.addDuelDisplayDataArray(duels.duels);
-            // Sort by historical time
-            //this.duels.sort(this.wizardUtils.sortByDuelTimeRecentFirst);
-
             // Load all wizards
             this.getAllWizards();
 
+            // Load top duelists
+            this.loadTopPlayers();
+
             // Tournament info (fight windows, mold)
-            this.tournamentInfo = await this.api.getTournamentInfo();
-
-            // Load all accounts and merge win record
-            //await this.getAllAccounts();
-
-            // Sort accounts
-            //this.accounts.sort(this.wizardUtils.sortAccountsByWinRate);
-
-            //console.log('All duels =>', this.duels);
-            //console.log('All accounts =>', this.accounts);
+            this.tournamentInfo = this.api.getTournamentInfo();
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -313,6 +312,20 @@ if (location.href.indexOf('duels') == -1
             });
         },
         methods: {
+            /**
+             * Toggle leaderboard display contet ("wizards" vs. "players")
+             * @param {Integer} target: Valid values can be 0 or 1
+             * @see `const PLAYER`
+             * @see `const WIZARDS`
+             */
+            switchLeaderboard: function (target) {
+                this.leaderboardDisplay = target;
+            },
+            loadTopPlayers: async function () {
+                this.isLoading.players = true;
+                this.topDuelists = await this.api.getTopDuelistsCW();
+                this.isLoading.players = false;
+            },
             // Chat / Login
             login: async function () {
                 // Process login as required
@@ -914,7 +927,7 @@ if (location.href.indexOf('duels') == -1
             // Getters
             getAllWizards: async function () {
                 // Loading state
-                this.isLoading = true;
+                this.isLoading.wizards = true;
 
                 // Get Wizards
                 let wizardsQuery = await this.api.getAllWizards();
@@ -956,7 +969,7 @@ if (location.href.indexOf('duels') == -1
                 }
 
                 // Disable loading
-                this.isLoading = false;
+                this.isLoading.wizards = false;
                 //console.log('Wizards =>', this.wizards);
             },
             getAllAccounts: async function () {
