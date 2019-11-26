@@ -1,0 +1,45 @@
+.leaderboard h2 {
+    margin: auto;
+}
+
+h2.disabled {
+    opacity: 0.5;
+}
+
+.leaderboard-controls h2,
+.header,
+.duelist {
+    display: inline;
+}
+
+.header {
+    width: 100%;
+}
+
+.top-players.header {
+    border: 0.5px solid #000000;
+}
+
+.duelist {
+    width: 100%;
+}
+
+span.divider {
+    font-size: 32px;
+}
+
+div.player.top-players {
+    width: 100%;
+    display: flex;
+    padding: 0.2rem;
+    text-align: center;
+    margin: auto;
+    max-width: 800px;
+}
+
+div.paginated-players {
+    padding: 2rem;
+    background-color: #ffc033;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
