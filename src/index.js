@@ -248,7 +248,8 @@ if (location.href.indexOf('duels') == -1
             secondPreviousFightWindow: null,
             nextFightWindow: null,
             topDuelists: null,
-            leaderboardDisplay: WIZARDS
+            leaderboardDisplay: WIZARDS,
+            blueMold: null
         }),
         firebase: {
             usersOnline: usersOnline,
@@ -275,7 +276,8 @@ if (location.href.indexOf('duels') == -1
             this.loadTopPlayers();
 
             // Tournament info (fight windows, mold)
-            this.tournamentInfo = this.api.getTournamentInfo();
+            this.tournamentInfo = await this.api.getTournamentInfo();
+            this.blueMold = this.getPrettyPowerLevel( parseInt(this.tournamentInfo.blueMoldPower) );
 
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
@@ -314,7 +316,7 @@ if (location.href.indexOf('duels') == -1
         methods: {
             /**
              * Toggle leaderboard display contet ("wizards" vs. "players")
-             * @param {Integer} target: Valid values can be 0 or 1
+             * @param {Number} target: Valid `integer` values can be 0 or 1
              * @see `const PLAYER`
              * @see `const WIZARDS`
              */
@@ -1103,6 +1105,21 @@ if (location.href.indexOf('duels') == -1
                         return user;
                     }
                 });
+            },
+            /**
+             * Leaderboard
+             */
+            playersLeaderboard: function () {
+                if (!this.blueMold || !this.topDuelists) {
+                    return [];
+                }
+
+                let topDuelists = this.topDuelists.filter((player) => {
+                    if (this.getPrettyPowerLevel(player.totalPower) > this.blueMold) {
+                        return player;
+                    }
+                });
+                return topDuelists;
             },
             /**
              * Overall Power
