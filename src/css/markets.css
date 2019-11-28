@@ -97,3 +97,19 @@ div.augur-logo a > img {
     height: auto;
     display: block;
 }
+
+/* Market Notifications */
+div.alert-ribbon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+div.alert {
+    min-width: 100vw;
+    text-align: center;
+}

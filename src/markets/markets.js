@@ -5,7 +5,9 @@ const config = require('../config');
 const request = require('request-promise');
 
 const RINKEBY_MARKET_URL = 'https://dev.augur.net/#!/market?id=';
-const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRiK7jwdRQX71FWNnLgDS1i9mf7wfy/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
+//const MAINNET_MARKET_URL_LEGACY = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRiK7jwdRQX71FWNnLgDS1i9mf7wfy/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
+const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmaM5kLjo21i2eCSiaDQh4S1dG4vUdFkgKYQjQUiD66wHg/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
+
 const MAIN_STATE = 0;
 const EXIT_COI_STATE = 1;
 
@@ -90,14 +92,23 @@ if (location.href.indexOf('markets') !== -1) {
                 }
             },
             isMainnetAugur: true,
-            isPhaseThreeTournament: false,
+            isPhaseThreeTournament: true,
             coiMarkets: [],
             communityMarkets: [],
             applicationState: MAIN_STATE,
-            descrReadMore: true,
+            descrReadMore: false,
             exitTimer: null,
             isBgAnimated: false,
-            wizards: null
+            wizards: null,
+            notification: {
+                latest: 1574963866314,
+                seen: false,
+                displayed: false,
+                type: 'alert',
+                color: 'primary',
+                text: "First prediction market will be released on Friday, November 29th, before end of day (EDT), stay tuned!"
+                
+            }
         }),
         mounted: async function () {
             // Animate Cheeze Melt
@@ -133,8 +144,43 @@ if (location.href.indexOf('markets') !== -1) {
             this.getCoiMarkets();
             // Get Community Markets
             this.getCommunityMarkets();
+
+            // Market notifications
+            this.handleMarketNotifications();
         },
         methods: {
+            // Market notifications
+            handleMarketNotifications: function () {
+                // First notification
+                if (!localStorage.hasOwnProperty('latestNotification')) {
+                    this.notification.displayed = true;
+                    localStorage.setItem('latestNotification', this.notification.latest);
+                // Subsequent notifications
+                } else {
+                    // Hasn't seen latest notification
+                    let lastNotificationSeen = localStorage.latestNotification;
+                    if (this.notification.latest > lastNotificationSeen) {
+                        this.notification.displayed = true;
+                        localStorage.setItem('latestNotification', this.notification.latest);
+                    // Has seen latest notification
+                    } else {
+                        if (localStorage.hasOwnProperty('dismissed')) {
+                            if (localStorage.latestNotificationDismissed < this.notification.latest) {
+                                this.notification.displayed = true;
+                                localStorage.setItem('latestNotification', this.notification.latest);
+                            }
+                        } else {
+                            this.notification.displayed = true;
+                            localStorage.setItem('latestNotification', this.notification.latest);
+                        }
+                    }
+                }
+                //console.log('this.notification =>', this.notification);
+            },
+            dismissMarketNotifications: function () {
+                localStorage.setItem('dismissed', this.notification.latest);
+                this.notification.displayed = false;
+            },
             // Menu Nav
             goHome: function () {
                 return window.location.href = "/";
@@ -193,22 +239,24 @@ if (location.href.indexOf('markets') !== -1) {
                     }
                 }
             },
-            getMarketImageUrl: function (marketTitle) {
-                let baseImgUrl = 'https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/';
+            getMarketImageUrl: async function (marketTitle) {
                 if (!marketTitle) {
                     return '/img/coinlist-promo.png';
                 }
                 let wizardId = null;
+
                 // Example Market Title:
                 // "Will Wizard #1214 increase in power after the next dueling window is resolved?"
                 // Find Wizard, e.g. tag: "Wizard1614"
                 if (marketTitle.indexOf('Will Wizard #') !== -1) {
                     let marketTitlePieces = marketTitle.split('Will Wizard #').join('').split(' ');
                     wizardId = marketTitlePieces[0];
+                    wizardId = parseInt(wizardId);
                     // Return Wizard image or if no Wizard ID is found
                     // return a default Hackathon promo image from Coinlist
                     if (wizardId) {
-                        return baseImgUrl + wizardId + ".svg";
+                        // Resolve wizard image
+                        this.api.getWizardImageUrlById(wizardId);
                     } else {
                         return '/img/coinlist-promo.png';
                     }

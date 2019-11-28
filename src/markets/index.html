@@ -70,6 +70,46 @@
         <!-- MAIN STATE (Markets) -->
         <div class="wrapper mount-wrapper container container-fluid main-content" v-cloak v-if="applicationState == MAIN_STATE">
 
+            <!-- Notifications - Alert (top ribbon) -->
+            <div class="row alert-ribbon" v-if="notification.displayed">
+                <!-- Alert - Primary -->
+                <div class="alert alert-primary" role="alert" v-if="notification.type == 'alert' && notification.color == 'primary'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissMarketNotifications();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Success -->
+                <div class="alert alert-success" role="alert" v-if="notification.type == 'alert' && notification.color == 'success'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissMarketNotifications();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Warning -->
+                <div class="alert alert-warning" role="alert" v-if="notification.type == 'alert' && notification.color == 'warning'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissMarketNotifications();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Alert - Danger -->
+                <div class="alert alert-danger" role="alert" v-if="notification.type == 'alert' && notification.color == 'danger'">
+                    <!-- Alert Text -->
+                    <span class="notification-alert-body">{{notification.text}}</span>
+                    <!-- Close Alert -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissMarketNotifications();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
             <div v-if="!descrReadMore">
                 <h3>Prediction Markets</h3>
                 <p class="descr">COI will be releasing daily prediction markets on Augur!</p>
@@ -139,7 +179,7 @@
                 <div class="community-markets markets wrapper" v-if="communityMarkets">
                     <h5>Community Markets:</h5>
                     <div class="markets-not-found" v-if="!communityMarkets.length">
-                        <p>No community markets found. Want to create some? Clone <a class="underline" href="https://github.com/drewstaylor/coi-market-creation">this</a> repo and follow the README to get started!</p>
+                        <p>No community markets found. Want to create some? Clone <a class="underline" href="https://github.com/Cheeze-Of-Insight/coi-market-creation">this</a> repo and follow the README to get started!</p>
                     </div>
                     <div v-else>
                         <!-- Market Data-->
