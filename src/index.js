@@ -1115,7 +1115,8 @@ if (location.href.indexOf('duels') == -1
                 }
 
                 let topDuelists = this.topDuelists.filter((player) => {
-                    if (this.getPrettyPowerLevel(player.totalPower) > this.blueMold) {
+                    // Ignore invalid molded player InTheCrowd
+                    if (this.getPrettyPowerLevel(player.totalPower) > this.blueMold && player.nickname !== "InTheCrowd") {
                         return player;
                     }
                 });
