@@ -980,7 +980,7 @@ if (location.href.indexOf('duels') == -1
 
                 // Disable loading
                 this.isLoading.wizards = false;
-                //console.log('Wizards =>', this.wizards);
+                console.log('Wizards =>', this.wizards.length);
             },
             getAllAccounts: async function () {
                 if (this.wizards) {
