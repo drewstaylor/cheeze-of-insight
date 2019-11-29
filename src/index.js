@@ -279,6 +279,14 @@ if (location.href.indexOf('duels') == -1
             this.tournamentInfo = await this.api.getTournamentInfo();
             this.blueMold = this.getPrettyPowerLevel( parseInt(this.tournamentInfo.blueMoldPower) );
 
+            let tournamentSchedule = {};
+            tournamentSchedule.calendarWindows = this.tournamentInfo.calendarWindows;
+            tournamentSchedule.fightWindows = this.tournamentInfo.fightWindows;
+            
+            // Augur debugging / prep
+            console.log('Tournament Info =>', JSON.stringify(tournamentSchedule));
+            console.log('Time compare', this.tournamentInfo.calendarWindows[0]);
+
             // Web3 Instance
             this.web3Providers.mainnet = await this.Provider.getWssWeb3Mainnet();
 
