@@ -45,7 +45,7 @@ router.get('/markets/owned', (request, response) => {
     creator: process.env.COI_OWNER_ADDRESS
   }, (error, markets) => {
     // No markets response
-    if (!markets) {
+    /*if (!markets) {
       console.log("Markets not found");
       res = {
         error: 'Augur connection could not be verified'
@@ -61,23 +61,25 @@ router.get('/markets/owned', (request, response) => {
       };
       // Send empty data response
       response.send(JSON.stringify(res));
-    } else {
-      console.log('Fetching market details for =>', markets);
-      // Let's get some markets shall we?
-      augur.markets.getMarketsInfo({
-          marketIds: markets
-      }, (error, marketData) => {
-          //console.log('Markets with meta details =>', marketData);
-          // Formulate response object
-          res = {
-            data: {
-              markets: marketData
-            }
-          };
-          // Return owned markets response
-          response.send(JSON.stringify(res));
-      });
-    }
+    }*/
+
+    markets = ['0x49b01d1071dcb8a611a18a6f9edb49c8ab2c38b0'];
+
+    console.log('Fetching market details for =>', markets);
+    // Let's get some markets shall we?
+    augur.markets.getMarketsInfo({
+        marketIds: markets
+    }, (error, marketData) => {
+        //console.log('Markets with meta details =>', marketData);
+        // Formulate response object
+        res = {
+          data: {
+            markets: marketData
+          }
+        };
+        // Return owned markets response
+        response.send(JSON.stringify(res));
+    });
   });
 
 });

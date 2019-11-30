@@ -8,6 +8,8 @@ const RINKEBY_MARKET_URL = 'https://dev.augur.net/#!/market?id=';
 //const MAINNET_MARKET_URL_LEGACY = 'https://cloudflare-ipfs.com/ipfs/QmUZDUMFRdVb45RtwRiK7jwdRQX71FWNnLgDS1i9mf7wfy/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
 const MAINNET_MARKET_URL = 'https://cloudflare-ipfs.com/ipfs/QmaM5kLjo21i2eCSiaDQh4S1dG4vUdFkgKYQjQUiD66wHg/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=';
 
+//https://cloudflare-ipfs.com/ipfs/QmaM5kLjo21i2eCSiaDQh4S1dG4vUdFkgKYQjQUiD66wHg/?ethereum_node_http=https%3a%2f%2feth-mainnet.alchemyapi.io%2fjsonrpc%2f7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE&augur_node=wss%3a%2f%2fpredictions.market:9002#!/market?id=0x49b01d1071dcb8a611a18a6f9edb49c8ab2c38b0
+
 const MAIN_STATE = 0;
 const EXIT_COI_STATE = 1;
 
