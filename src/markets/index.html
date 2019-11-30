@@ -149,14 +149,16 @@
                     </div>
                     <div v-else>
                         <!-- Market Data-->
-                        <div v-for="(market, index) in coiMarkets" @click="doMarketNavigation(market.id)">
+                        <div v-for="(market, index) in coiMarkets" style="cursor:default !important;">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <img class="market-img-preview img-fluid" :src="getMarketImageUrl(market.description)" :alt="market.description">
+                                        <img class="market-img-preview img-fluid" :src="marketImages[market.id]" :alt="market.description" v-if="marketImages[market.id]">
                                     </div>
                                     <h5 class="card-title">{{ market.description }}</h5>
-                                    <p class="card-text">{{ market.details }}</p>
+                                    <p class="card-text">
+                                        <pre>{{ market.details }}</pre>
+                                    </p>
                                     <div class="category">
                                         <label>
                                             <strong>CATEGORY:</strong>

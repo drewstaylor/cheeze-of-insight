@@ -46,7 +46,6 @@ a.back {
 
 .card:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
-    cursor: pointer;
 }
 
 div.tags,
@@ -113,3 +112,19 @@ div.alert {
     min-width: 100vw;
     text-align: center;
 }
+
+.card-title {
+    text-align: center;
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    cursor: default;
+    width: 90%;
+    margin: auto;
+ }

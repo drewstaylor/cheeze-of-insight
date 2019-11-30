@@ -102,14 +102,14 @@ if (location.href.indexOf('markets') !== -1) {
             exitTimer: null,
             isBgAnimated: false,
             wizards: null,
+            marketImages: {},
             notification: {
                 latest: 1574963866314,
                 seen: false,
                 displayed: false,
                 type: 'alert',
                 color: 'primary',
-                text: "First prediction market will be released on Friday, November 29th, before end of day (EDT), stay tuned!"
-                
+                text: "First prediction market will be released on Friday, November 29th, before end of day (EDT), stay tuned!"   
             }
         }),
         mounted: async function () {
@@ -219,7 +219,10 @@ if (location.href.indexOf('markets') !== -1) {
                     if (coiMarkets.hasOwnProperty('data')) {
                         if (coiMarkets.data.hasOwnProperty('markets')) {
                             this.coiMarkets = coiMarkets.data.markets.reverse();
-                            //console.log('coiMarkets =>', this.coiMarkets);
+                            //console.log('this.coiMarkets', this.coiMarkets);
+                            for (let i = 0; i < this.coiMarkets.length; i++) {
+                                await this.getMarketImageUrl(this.coiMarkets[i].description, this.coiMarkets[i].id)
+                            }
                         }
                     }
                 }
@@ -241,7 +244,7 @@ if (location.href.indexOf('markets') !== -1) {
                     }
                 }
             },
-            getMarketImageUrl: async function (marketTitle) {
+            getMarketImageUrl: async function (marketTitle, id) {
                 if (!marketTitle) {
                     return '/img/coinlist-promo.png';
                 }
@@ -258,7 +261,7 @@ if (location.href.indexOf('markets') !== -1) {
                     // return a default Hackathon promo image from Coinlist
                     if (wizardId) {
                         // Resolve wizard image
-                        this.api.getWizardImageUrlById(wizardId);
+                        this.marketImages[id] = this.api.getWizardImageUrlById(wizardId);
                     } else {
                         return '/img/coinlist-promo.png';
                     }
