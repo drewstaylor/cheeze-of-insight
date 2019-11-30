@@ -104,12 +104,12 @@ if (location.href.indexOf('markets') !== -1) {
             wizards: null,
             marketImages: {},
             notification: {
-                latest: 1574963866314,
+                latest: 1575077015256,
                 seen: false,
                 displayed: false,
                 type: 'alert',
                 color: 'primary',
-                text: "First prediction market will be released on Friday, November 29th, before end of day (EDT), stay tuned!"   
+                text: "Cheeze Wizards prediction markets are here! Let's all cheer (or sneer) for rudeM00se and their Neutral Wizard #5061 😂"   
             }
         }),
         mounted: async function () {
