@@ -906,6 +906,23 @@ a.footer-link:hover {
     padding: 3px;
 }
 
+.dead {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+h2.leaderboard {
+    margin-bottom: 30px;
+}
+
+.leaderboard h4 {
+    background-color: #000;
+    padding: 5px;
+    color: #fff;
+    text-align: center;
+    margin-top: 24px;
+}
+
 /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 @media (max-width:320px)  {
     body, html {
@@ -1099,21 +1116,4 @@ a.footer-link:hover {
         min-width: 320px;
         width:auto;
     }
-}
-
-.dead {
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-}
-
-h2.leaderboard {
-    margin-bottom: 30px;
-}
-
-.leaderboard h4 {
-    background-color: #000;
-    padding: 5px;
-    color: #fff;
-    text-align: center;
-    margin-top: 24px;
 }

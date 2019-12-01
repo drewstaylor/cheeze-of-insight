@@ -127,4 +127,36 @@ pre {
     cursor: default;
     width: 90%;
     margin: auto;
- }
+}
+
+
+/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+@media (max-width:320px)  {
+    .market-img-preview {
+        height: auto !important;
+        width: 100% !important;
+    }
+}
+
+/* smartphones, Android phones, landscape iPhone */
+@media (max-width:480px)  {
+    .market-img-preview {
+        height: auto !important;
+        width: 100% !important;
+    }
+}
+
+/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+@media (max-width:610px)  {
+    .market-img-preview {
+        height: auto !important;
+        width: 100% !important;
+    }
+    span.tag {
+        display: inline-flex;
+    }
+    pre {
+        font-size: 1rem;
+    }
+}
+
