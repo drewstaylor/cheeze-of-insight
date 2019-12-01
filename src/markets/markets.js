@@ -104,12 +104,12 @@ if (location.href.indexOf('markets') !== -1) {
             wizards: null,
             marketImages: {},
             notification: {
-                latest: 1575077015256,
+                latest: 1575162975698,
                 seen: false,
                 displayed: false,
                 type: 'alert',
                 color: 'primary',
-                text: "Cheeze Wizards prediction markets are here! Let's all cheer (or sneer) for rudeM00se and their Neutral Wizard #5061 😂"   
+                text: "Betting season on whales has just opened up, let's all cheer or fear the intimidating accounts of Jabba and BlackKett1e 😂"
             }
         }),
         mounted: async function () {
