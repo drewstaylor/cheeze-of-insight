@@ -221,7 +221,10 @@ if (location.href.indexOf('markets') !== -1) {
                             this.coiMarkets = coiMarkets.data.markets.reverse();
                             //console.log('this.coiMarkets', this.coiMarkets);
                             for (let i = 0; i < this.coiMarkets.length; i++) {
-                                await this.getMarketImageUrl(this.coiMarkets[i].description, this.coiMarkets[i].id)
+                                await this.getMarketImageUrl(this.coiMarkets[i].description, this.coiMarkets[i].id);
+                                if (i == (this.coiMarkets.length -1)) {
+                                    this.$forceUpdate();
+                                }
                             }
                         }
                     }
@@ -244,10 +247,7 @@ if (location.href.indexOf('markets') !== -1) {
                     }
                 }
             },
-            getMarketImageUrl: async function (marketTitle, id) {
-                if (!marketTitle) {
-                    return '/img/coinlist-promo.png';
-                }
+            getMarketImageUrl: async function (marketTitle = null, id = null) {
                 let wizardId = null;
 
                 // Example Market Title:
@@ -263,11 +263,11 @@ if (location.href.indexOf('markets') !== -1) {
                         // Resolve wizard image
                         this.marketImages[id] = this.api.getWizardImageUrlById(wizardId);
                     } else {
-                        return '/img/coinlist-promo.png';
+                        this.marketImages[id] = '/img/coinlist-promo.png';
                     }
                 // Else, show Coinlist promo image
                 } else {
-                    return '/img/coinlist-promo.png';
+                    this.marketImages[id] = '/img/coinlist-promo.png';
                 }
             },
             doMarketNavigation: function (marketAddress) {
