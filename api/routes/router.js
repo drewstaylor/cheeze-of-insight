@@ -63,7 +63,10 @@ router.get('/markets/owned', (request, response) => {
       response.send(JSON.stringify(res));
     }*/
 
-    markets = ['0x49b01d1071dcb8a611a18a6f9edb49c8ab2c38b0'];
+    markets = [
+      '0x49b01d1071dcb8a611a18a6f9edb49c8ab2c38b0',
+      '0x2921aa77ddb5e60be81f5e2b428957534a0b707b'
+    ];
 
     console.log('Fetching market details for =>', markets);
     // Let's get some markets shall we?
