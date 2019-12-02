@@ -301,7 +301,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, true); chatChallengeModal_step1 = false;">
-                                <div class="wizard-card wizard-card-img">
+                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']">
                                     <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
@@ -326,7 +326,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <a v-on:click="selectChallengeWizard(wizard.id, false); chatChallengeModal_step2 = false;">
-                                <div class="wizard-card wizard-card-img">
+                                <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']">
                                     <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + wizard.image + ')'" v-if="wizard.image"></div>
                                     <!-- Card Label (Link Text) -->
                                     <div class="wizard-card wizard-card-label">
@@ -353,7 +353,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <h5>Your Wizard</h5>
-                            <div class="wizard-card wizard-card-img">
+                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']">
                                 <div class="cheese-wizard-image selected-by-address-owned-img" :style="'background-image: url(' + currentWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
@@ -375,7 +375,7 @@
                         <div class="wizard-card-block-item">
                             <!-- Wizard Image -->
                             <h5>Challenged Wizard</h5>
-                            <div class="wizard-card wizard-card-img">
+                            <div v-bind:class="['wizard-card', 'wizard-card-img', (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']">
                                 <div class="cheese-wizard-image selected-by-address-opponent-img" :style="'background-image: url(' + currentOpposingWizard.image + ')'" v-if="currentWizard.image"></div>
                                 <!-- Card Label (Link Text) -->
                                 <div class="wizard-card wizard-card-label">
@@ -415,7 +415,7 @@
                         <!-- Top 4 Wizards By Power Level -->
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourWizardsByPower">
                             <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']"
                                 v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
@@ -447,7 +447,7 @@
                         <!-- Top 4 Elementals By Power Level -->
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourElementalsByPower">
                             <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']"
                                 v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
@@ -477,7 +477,7 @@
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourNeutralsByPower">
                             <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']"
                                 v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
@@ -507,7 +507,7 @@
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourElementalsByGrowth">
                             <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']"
                                 v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
@@ -536,7 +536,7 @@
                     <div class="row paginated-wizards" v-else>
                         <div class="col-md-4 col-lg-3" v-for="(wizard, index) in topFourNeutralsByGrowth">
                             <div 
-                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < 1) ? 'dead' : '']"
+                                v-bind:class="['card', 'mb-3', 'affinity-' + affinities[wizard.affinity].toLowerCase(), 'power-' + wizard.power, (getPrettyPowerLevel(wizard.power) < blueMold) ? 'dead' : '']"
                                 v-on:click="showWizard(wizard.id);">
                                 <div class="card-img-top" :style="'background-image: url(' + getWizardImageUrl(wizard.id) + ');'">
                                     <div class="card-img-overlay d-flex justify-content-end">
