@@ -63,7 +63,7 @@
     "humps": "^2.0.1",
     "knex": "^0.17.5",
     "knex-migrate": "^1.7.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mobx": "^5.10.0",
     "mobx-react": "^6.0.3",
     "mobx-utils": "^5.4.1",
